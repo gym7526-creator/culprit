@@ -74,7 +74,7 @@ export const shelfIngredients: Ingredient[] = [
   i('olives_kalamata', 'Kalamata olives', PA, 15, VEGAN, [[283, 'g', 3.99]], {}),
   i('capers', 'Capers', PA, 0.9, VEGAN, [[100, 'g', 2.49]], {}),
   i('pickles', 'Dill pickles', PA, 0.2, VEGAN, [[680, 'g', 2.49]], { fodmap: { fructan: 'low' } }),
-  i('canned_tuna', 'Canned tuna in water', PA, 1, PESCATARIAN, [[142, 'g', 1.29]], { allergens: ['fish'], protein: 'fish' }),
+  i('canned_tuna', 'Canned tuna in water', PA, 1, PESCATARIAN, [[142, 'g', 1.29]], { gEach: 113, allergens: ['fish'], protein: 'fish' }),
   i('canned_salmon', 'Canned salmon', PA, 6, PESCATARIAN, [[418, 'g', 4.99]], { allergens: ['fish'], protein: 'fish' }),
   i('broth_chicken_lowfodmap', 'Chicken broth, onion- and garlic-free', PA, 0.2, [], [[946, 'ml', 4.49, false]], { gPerMl: 1, note: 'Choose a broth labelled onion- and garlic-free (or certified low-FODMAP).' }),
   i('broth_veg_lowfodmap', 'Vegetable broth, onion- and garlic-free', PA, 0.2, VEGAN, [[946, 'ml', 4.49, false]], { gPerMl: 1, note: 'Choose a broth labelled onion- and garlic-free (or certified low-FODMAP).' }),
