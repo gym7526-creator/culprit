@@ -56,10 +56,10 @@ export const shelfIngredients: Ingredient[] = [
   i('rice_paper', 'Rice paper wrappers', IN, 0.5, VEGAN, [[340, 'g', 3.49]], { gEach: 9 }),
 
   // ---------------------------------------------------------------- pantry: canned & jarred
-  i('canned_chickpeas', 'Canned chickpeas', PA, 2.5, VEGAN, [[439, 'g', 1.09]], { gPerMl: 0.65, fodmap: { gos: 'high' }, safeG: 42, protein: 'legume', note: 'Rinsed canned chickpeas are low at ¼ cup. GOS test food.' }),
-  i('canned_lentils', 'Canned lentils', PA, 0.4, VEGAN, [[425, 'g', 1.49]], { gPerMl: 0.8, fodmap: { gos: 'high' }, safeG: 46, protein: 'legume', note: 'Rinsed canned lentils are low at ¼ cup. GOS test food.' }),
-  i('canned_black_beans', 'Canned black beans', PA, 0.5, VEGAN, [[439, 'g', 1.09]], { gPerMl: 0.7, fodmap: { gos: 'high' }, safeG: 30, protein: 'legume' }),
-  i('canned_kidney_beans', 'Canned kidney beans', PA, 0.5, VEGAN, [[439, 'g', 1.09]], { gPerMl: 0.7, fodmap: { gos: 'high' }, protein: 'legume' }),
+  i('canned_chickpeas', 'Canned chickpeas', PA, 2.5, VEGAN, [[439, 'g', 1.09]], { gEach: 250, gPerMl: 0.65, fodmap: { gos: 'high' }, safeG: 42, protein: 'legume', note: 'Rinsed canned chickpeas are low at ¼ cup. GOS test food.' }),
+  i('canned_lentils', 'Canned lentils', PA, 0.4, VEGAN, [[425, 'g', 1.49]], { gEach: 250, gPerMl: 0.8, fodmap: { gos: 'high' }, safeG: 46, protein: 'legume', note: 'Rinsed canned lentils are low at ¼ cup. GOS test food.' }),
+  i('canned_black_beans', 'Canned black beans', PA, 0.5, VEGAN, [[439, 'g', 1.09]], { gEach: 250, gPerMl: 0.7, fodmap: { gos: 'high' }, safeG: 30, protein: 'legume' }),
+  i('canned_kidney_beans', 'Canned kidney beans', PA, 0.5, VEGAN, [[439, 'g', 1.09]], { gEach: 250, gPerMl: 0.7, fodmap: { gos: 'high' }, protein: 'legume' }),
   i('refried_beans', 'Canned refried beans', PA, 1.5, VEGAN, [[454, 'g', 1.49]], { gPerMl: 1, fodmap: { gos: 'high', fructan: 'high' } }),
   i('coconut_milk', 'Canned coconut milk', PA, 20, VEGAN, [[403, 'ml', 2.29]], { gPerMl: 1, note: 'Low at ½ cup.' }),
   i('coconut_milk_light', 'Canned light coconut milk', PA, 7, VEGAN, [[403, 'ml', 2.29]], { gPerMl: 1 }),

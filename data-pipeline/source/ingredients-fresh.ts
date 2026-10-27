@@ -51,7 +51,7 @@ export const freshIngredients: Ingredient[] = [
   i('coleslaw_mix', 'Coleslaw mix (cabbage + carrot)', P, 0.1, VEGAN, [[397, 'g', 1.99]], { days: 7 }),
   i('broccoli', 'Broccoli crowns', P, 0.4, VEGAN, [[454, 'g', 2.29]], { days: 7, gEach: 300, fodmap: { fructose: 'moderate' }, safeG: 75, note: 'Heads are low; stalks are higher.' }),
   i('green_beans', 'Green beans', P, 0.1, VEGAN, [[454, 'g', 2.49]], { days: 6, fodmap: { sorbitol: 'moderate' }, safeG: 75 }),
-  i('celery', 'Celery', P, 0.2, VEGAN, [[1, 'each', 1.99]], { days: 14, gEach: 450, fodmap: { mannitol: 'high' }, safeG: 10, note: 'Mannitol test food.' }),
+  i('celery', 'Celery', P, 0.2, VEGAN, [[454, 'g', 1.99]], { days: 14, gEach: 40, fodmap: { mannitol: 'high' }, safeG: 10, note: 'gEach = one stalk. Mannitol test food.' }),
   i('cauliflower', 'Cauliflower', P, 0.3, VEGAN, [[1, 'each', 3.49]], { days: 7, gEach: 600, fodmap: { mannitol: 'high' }, note: 'Mannitol test food.' }),
   i('mushrooms_button', 'White mushrooms', P, 0.3, VEGAN, [[227, 'g', 2.29]], { days: 5, fodmap: { mannitol: 'high' } }),
   i('mushrooms_oyster', 'Oyster mushrooms', P, 0.4, VEGAN, [[100, 'g', 3.99]], { days: 5 }),
@@ -74,7 +74,7 @@ export const freshIngredients: Ingredient[] = [
   i('onion_red', 'Red onion', P, 0.1, VEGAN, [[1, 'each', 1.19]], { days: 30, gEach: 150, fodmap: { fructan: 'high' }, swaps: ['green_onion', 'chives'] }),
   i('shallot', 'Shallot', P, 0.1, VEGAN, [[85, 'g', 1.99]], { days: 30, gEach: 40, fodmap: { fructan: 'high' }, swaps: ['green_onion'] }),
   i('leek', 'Leek', P, 0.3, VEGAN, [[1, 'each', 1.79]], { days: 10, gEach: 200, fodmap: { fructan: 'high' }, note: 'Dark green leaves are lower than the white bulb.' }),
-  i('garlic', 'Garlic', P, 0.5, VEGAN, [[1, 'each', 0.69]], { days: 30, gEach: 5, fodmap: { fructan: 'high' }, swaps: ['garlic_infused_oil'], note: 'gEach = one clove; pack = one head. Garlic test food.' }),
+  i('garlic', 'Garlic', P, 0.5, VEGAN, [[60, 'g', 0.69]], { days: 30, gEach: 5, fodmap: { fructan: 'high' }, swaps: ['garlic_infused_oil'], note: 'gEach = one clove; pack = one head (~60 g). Garlic test food.' }),
   i('ginger_fresh', 'Fresh ginger', P, 0.8, VEGAN, [[85, 'g', 0.99]], { days: 21 }),
   i('lemongrass', 'Lemongrass', P, 0.5, VEGAN, [[2, 'each', 1.99]], { days: 10, gEach: 20 }),
   // ---------------------------------------------------------------- produce: fruit
