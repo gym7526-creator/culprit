@@ -1,0 +1,145 @@
+{
+ "basis": "Static chain price indexes relative to Kroger = 1.00. Estimates for planning only; users can override any price.",
+ "chains": [
+  {
+   "id": "walmart",
+   "name": "Walmart",
+   "index": 0.9,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "aldi",
+   "name": "Aldi",
+   "index": 0.85,
+   "regions": [
+    "midwest",
+    "south",
+    "northeast"
+   ]
+  },
+  {
+   "id": "kroger",
+   "name": "Kroger (and family stores)",
+   "index": 1,
+   "regions": [
+    "midwest",
+    "south",
+    "west"
+   ]
+  },
+  {
+   "id": "target",
+   "name": "Target",
+   "index": 1.03,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "heb",
+   "name": "H-E-B",
+   "index": 0.95,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "TX"
+   ]
+  },
+  {
+   "id": "publix",
+   "name": "Publix",
+   "index": 1.12,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "FL",
+    "GA",
+    "AL",
+    "SC",
+    "NC",
+    "TN",
+    "VA",
+    "KY"
+   ]
+  },
+  {
+   "id": "albertsons_safeway",
+   "name": "Albertsons / Safeway",
+   "index": 1.1,
+   "regions": [
+    "west"
+   ]
+  },
+  {
+   "id": "meijer",
+   "name": "Meijer",
+   "index": 0.97,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "MI",
+    "OH",
+    "IN",
+    "IL",
+    "KY",
+    "WI"
+   ]
+  },
+  {
+   "id": "wegmans",
+   "name": "Wegmans",
+   "index": 1.05,
+   "regions": [
+    "northeast",
+    "south"
+   ],
+   "states": [
+    "NY",
+    "PA",
+    "NJ",
+    "MA",
+    "MD",
+    "VA",
+    "NC",
+    "DE"
+   ]
+  },
+  {
+   "id": "whole_foods",
+   "name": "Whole Foods",
+   "index": 1.3,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "trader_joes",
+   "name": "Trader Joe's",
+   "index": 0.98,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "costco",
+   "name": "Costco",
+   "index": 0.88,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "other",
+   "name": "Other",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  }
+ ]
+}

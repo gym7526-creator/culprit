@@ -1,0 +1,215 @@
+/**
+ * Regions, chains and price-method metadata (spec §5.5). Every multiplier here is a documented
+ * ESTIMATE; the monthly BLS refresh (scripts/fetch-bls.ts) replaces the region multipliers and the
+ * base prices it can match. Edit chain indexes in this one place.
+ */
+import type { ChainsFile, PricesFile, RegionsFile } from '../../src/data/content/schema.ts';
+
+export const regions: RegionsFile = {
+  basis:
+    'Estimated regional price multipliers relative to the US city average, pending the BLS Average Price Data refresh. ZIP3 → state is an approximate public mapping.',
+  multipliers: { northeast: 1.08, midwest: 0.94, south: 0.96, west: 1.06 },
+  stateToRegion: {
+    CT: 'northeast',
+    ME: 'northeast',
+    MA: 'northeast',
+    NH: 'northeast',
+    RI: 'northeast',
+    VT: 'northeast',
+    NJ: 'northeast',
+    NY: 'northeast',
+    PA: 'northeast',
+    IL: 'midwest',
+    IN: 'midwest',
+    MI: 'midwest',
+    OH: 'midwest',
+    WI: 'midwest',
+    IA: 'midwest',
+    KS: 'midwest',
+    MN: 'midwest',
+    MO: 'midwest',
+    NE: 'midwest',
+    ND: 'midwest',
+    SD: 'midwest',
+    DE: 'south',
+    DC: 'south',
+    FL: 'south',
+    GA: 'south',
+    MD: 'south',
+    NC: 'south',
+    SC: 'south',
+    VA: 'south',
+    WV: 'south',
+    AL: 'south',
+    KY: 'south',
+    MS: 'south',
+    TN: 'south',
+    AR: 'south',
+    LA: 'south',
+    OK: 'south',
+    TX: 'south',
+    AZ: 'west',
+    CO: 'west',
+    ID: 'west',
+    MT: 'west',
+    NV: 'west',
+    NM: 'west',
+    UT: 'west',
+    WY: 'west',
+    AK: 'west',
+    CA: 'west',
+    HI: 'west',
+    OR: 'west',
+    WA: 'west',
+  },
+  zip3: [
+    [5, 5, 'NY'],
+    [10, 27, 'MA'],
+    [28, 29, 'RI'],
+    [30, 38, 'NH'],
+    [39, 49, 'ME'],
+    [50, 54, 'VT'],
+    [55, 55, 'MA'],
+    [56, 59, 'VT'],
+    [60, 69, 'CT'],
+    [70, 89, 'NJ'],
+    [100, 149, 'NY'],
+    [150, 196, 'PA'],
+    [197, 199, 'DE'],
+    [200, 200, 'DC'],
+    [201, 201, 'VA'],
+    [202, 205, 'DC'],
+    [206, 219, 'MD'],
+    [220, 246, 'VA'],
+    [247, 268, 'WV'],
+    [270, 289, 'NC'],
+    [290, 299, 'SC'],
+    [300, 319, 'GA'],
+    [320, 339, 'FL'],
+    [341, 349, 'FL'],
+    [350, 369, 'AL'],
+    [370, 385, 'TN'],
+    [386, 397, 'MS'],
+    [398, 399, 'GA'],
+    [400, 427, 'KY'],
+    [430, 459, 'OH'],
+    [460, 479, 'IN'],
+    [480, 499, 'MI'],
+    [500, 528, 'IA'],
+    [530, 549, 'WI'],
+    [550, 567, 'MN'],
+    [569, 569, 'DC'],
+    [570, 577, 'SD'],
+    [580, 588, 'ND'],
+    [590, 599, 'MT'],
+    [600, 629, 'IL'],
+    [630, 658, 'MO'],
+    [660, 679, 'KS'],
+    [680, 693, 'NE'],
+    [700, 714, 'LA'],
+    [716, 729, 'AR'],
+    [730, 732, 'OK'],
+    [733, 733, 'TX'],
+    [734, 749, 'OK'],
+    [750, 799, 'TX'],
+    [800, 816, 'CO'],
+    [820, 831, 'WY'],
+    [832, 838, 'ID'],
+    [840, 847, 'UT'],
+    [850, 865, 'AZ'],
+    [870, 884, 'NM'],
+    [885, 885, 'TX'],
+    [889, 898, 'NV'],
+    [900, 961, 'CA'],
+    [967, 968, 'HI'],
+    [970, 979, 'OR'],
+    [980, 994, 'WA'],
+    [995, 999, 'AK'],
+  ],
+};
+
+export const chains: ChainsFile = {
+  basis:
+    'Static chain price indexes relative to Kroger = 1.00. Estimates for planning only; users can override any price.',
+  chains: [
+    { id: 'walmart', name: 'Walmart', index: 0.9, regions: ['all'] },
+    { id: 'aldi', name: 'Aldi', index: 0.85, regions: ['midwest', 'south', 'northeast'] },
+    {
+      id: 'kroger',
+      name: 'Kroger (and family stores)',
+      index: 1.0,
+      regions: ['midwest', 'south', 'west'],
+    },
+    { id: 'target', name: 'Target', index: 1.03, regions: ['all'] },
+    { id: 'heb', name: 'H-E-B', index: 0.95, regions: ['south'], states: ['TX'] },
+    {
+      id: 'publix',
+      name: 'Publix',
+      index: 1.12,
+      regions: ['south'],
+      states: ['FL', 'GA', 'AL', 'SC', 'NC', 'TN', 'VA', 'KY'],
+    },
+    { id: 'albertsons_safeway', name: 'Albertsons / Safeway', index: 1.1, regions: ['west'] },
+    {
+      id: 'meijer',
+      name: 'Meijer',
+      index: 0.97,
+      regions: ['midwest'],
+      states: ['MI', 'OH', 'IN', 'IL', 'KY', 'WI'],
+    },
+    {
+      id: 'wegmans',
+      name: 'Wegmans',
+      index: 1.05,
+      regions: ['northeast', 'south'],
+      states: ['NY', 'PA', 'NJ', 'MA', 'MD', 'VA', 'NC', 'DE'],
+    },
+    { id: 'whole_foods', name: 'Whole Foods', index: 1.3, regions: ['all'] },
+    { id: 'trader_joes', name: "Trader Joe's", index: 0.98, regions: ['all'] },
+    { id: 'costco', name: 'Costco', index: 0.88, regions: ['all'] },
+    { id: 'other', name: 'Other', index: 1.0, regions: ['all'] },
+  ],
+};
+
+/**
+ * Candidate BLS Average Price series (US city average) for items BLS covers. The refresh script
+ * verifies each series against the API before using it; anything unmatched stays an estimate.
+ */
+export const blsCandidates: Record<
+  string,
+  { series: string; unit: 'lb' | 'dozen' | 'gal' | 'each' }
+> = {
+  eggs: { series: 'APU0000708111', unit: 'dozen' },
+  milk: { series: 'APU0000709112', unit: 'gal' },
+  wheat_bread: { series: 'APU0000702111', unit: 'lb' },
+  ground_beef_80: { series: 'APU0000703112', unit: 'lb' },
+  chicken_breast: { series: 'APU0000FF1101', unit: 'lb' },
+  banana_firm: { series: 'APU0000711211', unit: 'lb' },
+  potato_russet: { series: 'APU0000712112', unit: 'lb' },
+  orange: { series: 'APU0000711311', unit: 'lb' },
+  tomato: { series: 'APU0000712311', unit: 'lb' },
+  butter: { series: 'APU0000FS1101', unit: 'lb' },
+  white_rice: { series: 'APU0000701312', unit: 'lb' },
+  coffee_ground: { series: 'APU0000717311', unit: 'lb' },
+  apple: { series: 'APU0000711111', unit: 'lb' },
+};
+
+export function pricesFor(ingredientIds: readonly string[], updatedAt: string): PricesFile {
+  return {
+    updatedAt,
+    basis:
+      'Typical regular (non-sale) store-brand prices, estimated by hand for the MVP. Shown as "est." in the app. Run `npm run content:prices` to refresh from BLS where a series exists.',
+    entries: ingredientIds.map((ingredientId) => {
+      const bls = blsCandidates[ingredientId];
+      return bls
+        ? {
+            ingredientId,
+            method: 'estimate' as const,
+            blsSeries: bls.series,
+            blsUnit: bls.unit,
+            note: 'BLS series not yet fetched',
+          }
+        : { ingredientId, method: 'estimate' as const };
+    }),
+  };
+}

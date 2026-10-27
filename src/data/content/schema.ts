@@ -14,7 +14,14 @@ export const LEVELS = ['none', 'low', 'moderate', 'high'] as const;
 export const Level = z.enum(LEVELS);
 export type Level = z.infer<typeof Level>;
 
-export const FODMAP_GROUPS = ['fructan', 'gos', 'lactose', 'fructose', 'sorbitol', 'mannitol'] as const;
+export const FODMAP_GROUPS = [
+  'fructan',
+  'gos',
+  'lactose',
+  'fructose',
+  'sorbitol',
+  'mannitol',
+] as const;
 export const FodmapGroup = z.enum(FODMAP_GROUPS);
 export type FodmapGroup = z.infer<typeof FodmapGroup>;
 
@@ -181,7 +188,18 @@ export const Ingredient = z.object({
   fatPer100g: z.number().min(0).max(100),
   /** Main protein for plan variety scoring. */
   protein: z
-    .enum(['chicken', 'turkey', 'beef', 'pork', 'fish', 'shellfish', 'egg', 'tofu', 'legume', 'cheese'])
+    .enum([
+      'chicken',
+      'turkey',
+      'beef',
+      'pork',
+      'fish',
+      'shellfish',
+      'egg',
+      'tofu',
+      'legume',
+      'cheese',
+    ])
     .optional(),
   note: z.string().optional(),
 });
@@ -273,10 +291,10 @@ export const Staples = z.object({ items: z.array(StapleItem) });
 export const TestDose = z.object({
   /** Human portion text, e.g. "¼ clove garlic". */
   portion: z.string(),
-  /** Machine quantity for grocery math. */
-  ingredientId: id,
-  qty: z.number().positive(),
-  unit: RecipeUnit,
+  /** Machine quantity for grocery math. Absent for timing tests (late dinner). */
+  ingredientId: id.optional(),
+  qty: z.number().positive().optional(),
+  unit: RecipeUnit.optional(),
 });
 export type TestDose = z.infer<typeof TestDose>;
 
@@ -343,6 +361,8 @@ export const PriceEntry = z.object({
   /** 'estimate' until the BLS refresh script has matched a series. */
   method: z.enum(['estimate', 'bls']),
   blsSeries: z.string().optional(),
+  /** The unit the BLS series is priced in, for converting to our packs. */
+  blsUnit: z.enum(['lb', 'dozen', 'gal', 'each']).optional(),
   blsPeriod: z.string().optional(),
   note: z.string().optional(),
 });

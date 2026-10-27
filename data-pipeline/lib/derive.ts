@@ -23,16 +23,30 @@ const RANK: Record<Level, number> = { none: 0, low: 1, moderate: 2, high: 3 };
 const ALL_DIETS: DietTag[] = ['vegan', 'vegetarian', 'pescatarian'];
 
 /** Level of one ingredient at the per-serving amount, honouring its safe-serving threshold. */
-export function effectiveLevel(ing: Ingredient, group: FodmapGroup, gramsPerServing: number): Level {
+export function effectiveLevel(
+  ing: Ingredient,
+  group: FodmapGroup,
+  gramsPerServing: number,
+): Level {
   const level = ing.fodmap[group];
-  if (RANK[level] >= RANK.moderate && ing.fodmapSafeServingG !== undefined && gramsPerServing <= ing.fodmapSafeServingG) {
+  if (
+    RANK[level] >= RANK.moderate &&
+    ing.fodmapSafeServingG !== undefined &&
+    gramsPerServing <= ing.fodmapSafeServingG
+  ) {
     return 'low';
   }
   return level;
 }
 
-export function deriveRecipe(recipe: RecipeSource, ingredients: ReadonlyMap<string, Ingredient>): RecipeDerived {
-  const fodmapMax = Object.fromEntries(FODMAP_GROUPS.map((g) => [g, 'none' as Level])) as Record<FodmapGroup, Level>;
+export function deriveRecipe(
+  recipe: RecipeSource,
+  ingredients: ReadonlyMap<string, Ingredient>,
+): RecipeDerived {
+  const fodmapMax = Object.fromEntries(FODMAP_GROUPS.map((g) => [g, 'none' as Level])) as Record<
+    FodmapGroup,
+    Level
+  >;
   const reflux = new Set<RefluxTag>();
   const allergens = new Set<Allergen>();
   let diets = new Set<DietTag>(ALL_DIETS);

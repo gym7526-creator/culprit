@@ -64,9 +64,12 @@ export function i(
     skin: extra.skin ?? [],
     allergens: extra.allergens ?? [],
     diets,
-    packs: packs.map(
-      ([size, unit, basePriceUSD, storeBrand = true]): Pack => ({ size, unit, basePriceUSD, storeBrand }),
-    ),
+    packs: packs.map(([size, unit, basePriceUSD, storeBrand = true]): Pack => ({
+      size,
+      unit,
+      basePriceUSD,
+      storeBrand,
+    })),
     fatPer100g,
   };
   if (extra.safeG !== undefined) out.fodmapSafeServingG = extra.safeG;

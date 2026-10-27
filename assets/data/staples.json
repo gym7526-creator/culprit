@@ -1,0 +1,614 @@
+{
+ "items": [
+  {
+   "id": "oats_lf_milk_blueberries",
+   "kind": "breakfast",
+   "text": "Oats with lactose-free milk and blueberries",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "milk"
+   ]
+  },
+  {
+   "id": "eggs_gf_toast_spinach",
+   "kind": "breakfast",
+   "text": "Scrambled eggs on gluten-free toast with spinach",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "egg"
+   ]
+  },
+  {
+   "id": "lf_yogurt_strawberries_seeds",
+   "kind": "breakfast",
+   "text": "Lactose-free yogurt with strawberries and pumpkin seeds",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "milk"
+   ]
+  },
+  {
+   "id": "peanut_butter_banana_toast",
+   "kind": "breakfast",
+   "text": "Sourdough toast with peanut butter and firm banana",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "wheat",
+    "peanut"
+   ]
+  },
+  {
+   "id": "veggie_omelette",
+   "kind": "breakfast",
+   "text": "Omelette with bell pepper, spinach and cheddar",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "egg",
+    "milk"
+   ]
+  },
+  {
+   "id": "chia_pudding_almond",
+   "kind": "breakfast",
+   "text": "Chia pudding made with almond milk, topped with kiwi",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "tree_nut"
+   ]
+  },
+  {
+   "id": "tofu_scramble",
+   "kind": "breakfast",
+   "text": "Tofu scramble with spinach and turmeric",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "soy"
+   ]
+  },
+  {
+   "id": "rice_porridge_maple",
+   "kind": "breakfast",
+   "text": "Rice porridge with maple syrup and cinnamon",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": []
+  },
+  {
+   "id": "oj_eggs_toast",
+   "kind": "breakfast",
+   "text": "Eggs and toast with a small orange juice",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": false,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "egg",
+    "wheat"
+   ]
+  },
+  {
+   "id": "greek_yogurt_honey",
+   "kind": "breakfast",
+   "text": "Greek yogurt with honey and walnuts",
+   "phases": [
+    "personal"
+   ],
+   "calmSafeGut": false,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "milk",
+    "tree_nut"
+   ]
+  },
+  {
+   "id": "leftover_dinner_bowl",
+   "kind": "lunch",
+   "text": "Leftover dinner over rice",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": []
+  },
+  {
+   "id": "chicken_rice_salad",
+   "kind": "lunch",
+   "text": "Chicken, rice and cucumber salad with olive oil",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [],
+   "allergens": []
+  },
+  {
+   "id": "tuna_gf_crackers",
+   "kind": "lunch",
+   "text": "Tuna with mayo on rice crackers, carrot sticks",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "pescatarian"
+   ],
+   "allergens": [
+    "fish",
+    "egg"
+   ]
+  },
+  {
+   "id": "egg_salad_lettuce",
+   "kind": "lunch",
+   "text": "Egg salad in lettuce cups with chives",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "egg"
+   ]
+  },
+  {
+   "id": "quinoa_feta_spinach",
+   "kind": "lunch",
+   "text": "Quinoa with spinach, cucumber and feta",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "milk"
+   ]
+  },
+  {
+   "id": "turkey_cheddar_gf_wrap",
+   "kind": "lunch",
+   "text": "Turkey and cheddar in a gluten-free wrap with lettuce",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [],
+   "allergens": [
+    "milk"
+   ]
+  },
+  {
+   "id": "potato_soup_leftover",
+   "kind": "lunch",
+   "text": "A bowl of leftover soup with gluten-free toast",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "egg"
+   ]
+  },
+  {
+   "id": "tofu_rice_noodle_salad",
+   "kind": "lunch",
+   "text": "Rice noodle salad with tofu, carrot and cucumber",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "soy"
+   ]
+  },
+  {
+   "id": "hummus_veggie_pita",
+   "kind": "lunch",
+   "text": "Hummus and veggie pita",
+   "phases": [
+    "personal"
+   ],
+   "calmSafeGut": false,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "wheat",
+    "sesame"
+   ]
+  },
+  {
+   "id": "tomato_mozzarella_sandwich",
+   "kind": "lunch",
+   "text": "Tomato, mozzarella and basil sandwich",
+   "phases": [
+    "personal"
+   ],
+   "calmSafeGut": false,
+   "calmSafeReflux": false,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "wheat",
+    "milk"
+   ]
+  },
+  {
+   "id": "snack_rice_cakes_pb",
+   "kind": "snack",
+   "text": "Rice cakes with peanut butter",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "peanut"
+   ],
+   "snackCategory": "crunchy"
+  },
+  {
+   "id": "snack_popcorn",
+   "kind": "snack",
+   "text": "Plain popcorn with a little salt",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [],
+   "snackCategory": "crunchy"
+  },
+  {
+   "id": "snack_pumpkin_seeds",
+   "kind": "snack",
+   "text": "A small handful of pumpkin seeds",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [],
+   "snackCategory": "crunchy"
+  },
+  {
+   "id": "snack_cheddar_crackers",
+   "kind": "snack",
+   "text": "Cheddar with rice crackers",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "milk"
+   ],
+   "snackCategory": "protein"
+  },
+  {
+   "id": "snack_boiled_eggs",
+   "kind": "snack",
+   "text": "Two hard-boiled eggs",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "egg"
+   ],
+   "snackCategory": "protein"
+  },
+  {
+   "id": "snack_walnuts",
+   "kind": "snack",
+   "text": "A small handful of walnuts",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "tree_nut"
+   ],
+   "snackCategory": "protein"
+  },
+  {
+   "id": "snack_strawberries",
+   "kind": "snack",
+   "text": "A cup of strawberries",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [],
+   "snackCategory": "fruit"
+  },
+  {
+   "id": "snack_kiwi",
+   "kind": "snack",
+   "text": "Two kiwis",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [],
+   "snackCategory": "fruit"
+  },
+  {
+   "id": "snack_firm_banana",
+   "kind": "snack",
+   "text": "A firm banana",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [],
+   "snackCategory": "fruit"
+  },
+  {
+   "id": "snack_dark_chocolate",
+   "kind": "snack",
+   "text": "A square of dark chocolate",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": false,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [],
+   "snackCategory": "sweet"
+  },
+  {
+   "id": "snack_lf_yogurt_maple",
+   "kind": "snack",
+   "text": "Lactose-free yogurt with a drizzle of maple syrup",
+   "phases": [
+    "calm",
+    "testing",
+    "personal"
+   ],
+   "calmSafeGut": true,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "milk"
+   ],
+   "snackCategory": "sweet"
+  },
+  {
+   "id": "snack_apple_pb",
+   "kind": "snack",
+   "text": "Apple slices with peanut butter",
+   "phases": [
+    "personal"
+   ],
+   "calmSafeGut": false,
+   "calmSafeReflux": true,
+   "diets": [
+    "vegan",
+    "vegetarian",
+    "pescatarian"
+   ],
+   "allergens": [
+    "peanut"
+   ],
+   "snackCategory": "fruit"
+  }
+ ]
+}

@@ -54,7 +54,9 @@ export function r(x: RecipeInput): RecipeSource {
     ingredients: x.ing.map(([ingredientId, qty, unit, prep]) =>
       prep ? { ingredientId, qty, unit, prep } : { ingredientId, qty, unit },
     ),
-    steps: x.steps.map((s) => (typeof s === 'string' ? { text: s } : { text: s[0], timerSec: s[1] })),
+    steps: x.steps.map((s) =>
+      typeof s === 'string' ? { text: s } : { text: s[0], timerSec: s[1] },
+    ),
     kidFriendly: x.kid ?? false,
     mild: x.mild ?? true,
     imageKey: `${GRADIENT[x.cuisine]}:${x.emoji}`,

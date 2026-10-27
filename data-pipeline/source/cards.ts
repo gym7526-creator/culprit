@@ -1,0 +1,286 @@
+/**
+ * Education cards (spec §5.6): 30–60 second reads, plain words, unlocked over the program.
+ * Source links come only from the sourced list in docs/SPEC.md §17.
+ */
+import type { EduCard } from '../../src/data/content/schema.ts';
+
+const NHS = {
+  sourceUrl:
+    'https://www.gloshospitals.nhs.uk/documents/17365/FODMAP_reintroduction_information_for_website_Feb_23_update.pdf',
+  sourceLabel: 'NHS FODMAP reintroduction guide',
+};
+const ACG = {
+  sourceUrl:
+    'https://www.healio.com/news/gastroenterology/20211122/acg-updates-guidelines-for-gerd-diagnosis-management',
+  sourceLabel: 'ACG GERD guideline summary',
+};
+const STUDY = {
+  sourceUrl: 'https://gi.org/journals-publications/ebgi/schoenfeld_nov2024/',
+  sourceLabel: 'Reintroduction study summary (ACG, 2024)',
+};
+const OIL = {
+  sourceUrl: 'https://www.fodmapeveryday.com/know-whats-garlic-oil/',
+  sourceLabel: 'FODMAP Everyday: garlic oil',
+};
+
+const ALL = ['fodmap', 'reflux', 'mixed'] as const;
+const GUT = ['fodmap', 'mixed'] as const;
+const RF = ['reflux', 'mixed'] as const;
+
+type C = Omit<EduCard, 'profiles'> & { profiles: readonly EduCard['profiles'][number][] };
+const c = (x: C): EduCard => ({ ...x, profiles: [...x.profiles] });
+
+export const cards: EduCard[] = [
+  c({
+    id: 'how_it_works',
+    title: 'How Culprit works',
+    unlock: 'onboarding',
+    unlockDay: 0,
+    profiles: ALL,
+    ...NHS,
+    body: 'First, two to four weeks of calm dinners that skip the most common triggers. Then we add foods back one at a time, in small steps, and watch how your stomach responds. At the end, only the foods that seem to bother you get limited.',
+  }),
+  c({
+    id: 'one_food_at_a_time',
+    title: 'Why we test one food at a time',
+    unlock: 'calm',
+    unlockDay: 1,
+    profiles: ALL,
+    ...NHS,
+    body: 'If two new foods arrive on the same day and your stomach complains, we can’t tell which one did it. Testing one food over three days gives a clear answer, and the rest days in between let things settle.',
+  }),
+  c({
+    id: 'calm_is_temporary',
+    title: 'The calm phase is short on purpose',
+    unlock: 'calm',
+    unlockDay: 2,
+    profiles: GUT,
+    ...NHS,
+    body: 'Cutting lots of foods for a long time isn’t the goal. The calm phase lasts two to four weeks, then every group comes back. Most people find they can eat far more than they feared.',
+  }),
+  c({
+    id: 'garlic_oil_trick',
+    title: 'The garlic oil trick',
+    unlock: 'calm',
+    unlockDay: 3,
+    profiles: GUT,
+    ...OIL,
+    body: 'The part of garlic that bothers many stomachs dissolves in water, not oil. So store-bought garlic-infused oil gives you the flavour without it. Buy it ready-made: homemade garlic oil can carry a food-safety risk.',
+  }),
+  c({
+    id: 'green_onion_tops',
+    title: 'Green onion tops are your friend',
+    unlock: 'calm',
+    unlockDay: 4,
+    profiles: GUT,
+    body: 'The white bulb of a green onion is high in fructans, but the green tops are not. Slice the green part for an oniony crunch. Chives work the same way.',
+  }),
+  c({
+    id: 'dinner_three_hours',
+    title: 'Eat dinner three hours before bed',
+    unlock: 'calm',
+    unlockDay: 1,
+    profiles: RF,
+    ...ACG,
+    body: 'Lying down with a full stomach makes it easier for acid to travel up. Finishing dinner two to three hours before bed is one of the simplest heartburn helpers. That’s why your dinners show an “eat by” time.',
+  }),
+  c({
+    id: 'raise_head_of_bed',
+    title: 'Raise the head of your bed',
+    unlock: 'calm',
+    unlockDay: 5,
+    profiles: RF,
+    ...ACG,
+    body: 'If heartburn hits at night, raising the head of your bed by a few inches can help gravity keep acid down. Extra pillows usually don’t do the same job, because they bend you at the waist.',
+  }),
+  c({
+    id: 'one_tap_is_enough',
+    title: 'Why one tap is enough',
+    unlock: 'calm',
+    unlockDay: 2,
+    profiles: ALL,
+    body: 'You don’t need to log meals, because we already know what you ate: we planned it. Your nightly tap tells us how your stomach felt, and that’s all the pattern-finding needs.',
+  }),
+  c({
+    id: 'missed_check_in',
+    title: 'Missed a check-in? That’s okay',
+    unlock: 'calm',
+    unlockDay: 6,
+    profiles: ALL,
+    body: 'If you forget a night, we leave it blank rather than guess. You can still log yesterday until noon. On test days, a missed night just adds a day to that test.',
+  }),
+  c({
+    id: 'unusual_days',
+    title: 'Mark unusual days',
+    unlock: 'calm',
+    unlockDay: 7,
+    profiles: ALL,
+    body: 'Being sick, stressed, travelling, short on sleep or on your period can all upset your stomach. Tap “Unusual day?” when it happens so those days don’t muddy your results.',
+  }),
+  c({
+    id: 'calm_check',
+    title: 'Feeling calmer?',
+    unlock: 'calm',
+    unlockDay: 10,
+    profiles: ALL,
+    body: 'Many people notice fewer symptoms within the first two weeks. If you don’t, that’s useful too. It can mean your symptoms have a different cause, which is worth discussing with a doctor.',
+  }),
+  c({
+    id: 'testing_begins',
+    title: 'Detective mode starts now',
+    unlock: 'testing',
+    unlockDay: 0,
+    profiles: ALL,
+    ...NHS,
+    body: 'Each test adds one food back for up to three days, a little more each day. If your stomach reacts, we stop early. Then you rest until things settle before the next test.',
+  }),
+  c({
+    id: 'why_portions_grow',
+    title: 'Why the portion grows',
+    unlock: 'testing',
+    unlockDay: 1,
+    profiles: ALL,
+    ...NHS,
+    body: 'Plenty of people handle a small amount of a food but not a big one. Starting small and building up lets us find your comfortable amount, so you don’t give up foods you can actually enjoy.',
+  }),
+  c({
+    id: 'placebo_days',
+    title: 'Why some test days are placebos',
+    unlock: 'testing',
+    unlockDay: 2,
+    profiles: ALL,
+    ...STUDY,
+    body: 'Expecting a reaction can create one. In a 2024 study, about a quarter of people reacted to a harmless placebo. So some of your test days are placebo checks, and we reveal which ones at the end.',
+  }),
+  c({
+    id: 'reaction_next_day',
+    title: 'Reactions can show up the next day',
+    unlock: 'testing',
+    unlockDay: 3,
+    profiles: GUT,
+    body: 'Some foods take a while to travel through. That’s why we look at the night of the test and the night after it. Keep tapping as normal.',
+  }),
+  c({
+    id: 'stop_early',
+    title: 'It’s fine to stop a test early',
+    unlock: 'testing',
+    unlockDay: 4,
+    profiles: ALL,
+    body: 'If a test food clearly bothers you, you don’t need to keep eating it. A reaction on day one or two is a result in itself, and we move on once you feel settled.',
+  }),
+  c({
+    id: 'common_triggers',
+    title: 'The usual suspects',
+    unlock: 'testing',
+    unlockDay: 5,
+    profiles: GUT,
+    ...STUDY,
+    body: 'In reintroduction studies, wheat and onion-type foods (fructans) and mannitol were the most common triggers, each bothering about half of the people tested. That’s why we test them first.',
+  }),
+  c({
+    id: 'triggers_are_personal',
+    title: 'Your triggers are your own',
+    unlock: 'testing',
+    unlockDay: 7,
+    profiles: ALL,
+    ...STUDY,
+    body: 'Most people react to at least one group, but which one varies a lot. A food that bothers a friend may be fine for you. That’s why testing beats guessing.',
+  }),
+  c({
+    id: 'coffee_test',
+    title: 'Coffee, tested fairly',
+    unlock: 'testing',
+    unlockDay: 2,
+    profiles: RF,
+    body: 'Coffee is a common suspect for heartburn, but it doesn’t bother everyone. We test it in the morning, away from bedtime, so timing doesn’t blur the result.',
+  }),
+  c({
+    id: 'fat_and_heartburn',
+    title: 'Rich meals and heartburn',
+    unlock: 'testing',
+    unlockDay: 4,
+    profiles: RF,
+    body: 'Fatty meals stay in the stomach longer, which can give acid more chances to rise. That’s why calm dinners keep fat moderate, and why we test richer food on its own.',
+  }),
+  c({
+    id: 'smaller_dinners',
+    title: 'Smaller dinners may help',
+    unlock: 'calm',
+    unlockDay: 8,
+    profiles: RF,
+    ...ACG,
+    body: 'A very full stomach presses on the valve at its top. If evenings are rough, try a slightly smaller dinner and a bigger lunch.',
+  }),
+  c({
+    id: 'stress_and_gut',
+    title: 'Stress talks to your stomach',
+    unlock: 'calm',
+    unlockDay: 9,
+    profiles: ALL,
+    body: 'Your gut and brain are closely connected, so a stressful day can show up as stomach symptoms. A few slow breaths before eating, or a short walk after dinner, may help.',
+  }),
+  c({
+    id: 'eat_slowly',
+    title: 'Slow down at meals',
+    unlock: 'calm',
+    unlockDay: 11,
+    profiles: ALL,
+    body: 'Eating fast means swallowing more air and bigger bites. Putting your fork down between bites is a small habit that may ease bloating and heartburn.',
+  }),
+  c({
+    id: 'fiber_variety',
+    title: 'Keep fiber in the mix',
+    unlock: 'calm',
+    unlockDay: 12,
+    profiles: GUT,
+    body: 'Low-FODMAP doesn’t mean low fiber. Oats, quinoa, potatoes with skins, carrots, kiwi and pumpkin seeds keep things moving while you test.',
+  }),
+  c({
+    id: 'water_matters',
+    title: 'Water matters',
+    unlock: 'calm',
+    unlockDay: 13,
+    profiles: ALL,
+    body: 'Plain water helps digestion and keeps fiber working. Keeping a bottle nearby makes it easy, and sipping through the day works better than gulping at meals.',
+  }),
+  c({
+    id: 'eating_out',
+    title: 'Eating out during the program',
+    unlock: 'testing',
+    unlockDay: 6,
+    profiles: ALL,
+    body: 'Plain grilled meat or fish, rice or potatoes, and simple vegetables are usually the safest picks. Ask for sauces on the side. Mark the night as “eating out” so we don’t count it as a test.',
+  }),
+  c({
+    id: 'personal_plan',
+    title: 'Your personal plan',
+    unlock: 'personal',
+    unlockDay: 0,
+    profiles: ALL,
+    body: 'From now on, your weekly plans include every food that seemed fine for you. Foods that bothered you only in larger amounts come back in the portion you handled well.',
+  }),
+  c({
+    id: 'retest_later',
+    title: 'Tolerances can change',
+    unlock: 'personal',
+    unlockDay: 7,
+    profiles: ALL,
+    body: 'A food that bothered you today may be fine in a few months. You can retest anything from your case file, and we’ll offer a check-in after three months.',
+  }),
+  c({
+    id: 'share_with_doctor',
+    title: 'Share your results with a doctor',
+    unlock: 'personal',
+    unlockDay: 3,
+    profiles: ALL,
+    body: 'Your case file can be exported as a PDF with every test, portion and result. It’s a helpful starting point for a conversation with your doctor or dietitian.',
+  }),
+  c({
+    id: 'red_flags_reminder',
+    title: 'When to see a doctor',
+    unlock: 'calm',
+    unlockDay: 14,
+    profiles: ALL,
+    body: 'Culprit helps you spot food patterns, but some symptoms need a proper look: blood in your stool, black stool, weight loss you can’t explain, trouble swallowing, ongoing vomiting or chest pain. If any of these happen, contact a doctor.',
+  }),
+];

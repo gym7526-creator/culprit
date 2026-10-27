@@ -1,0 +1,1605 @@
+{
+ "updatedAt": "2026-10-27",
+ "basis": "Typical regular (non-sale) store-brand prices, estimated by hand for the MVP. Shown as \"est.\" in the app. Run `npm run content:prices` to refresh from BLS where a series exists.",
+ "entries": [
+  {
+   "ingredientId": "acorn_squash",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "agave_syrup",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "alfalfa_sprouts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "allspice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "almond_milk",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "almonds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ancho_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "apple",
+   "method": "estimate",
+   "blsSeries": "APU0000711111",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "apple_cider_vinegar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "applesauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "arborio_rice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "artichoke_hearts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "arugula",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "asafoetida",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "asparagus",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "avocado",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "baby_carrots",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "baby_spinach",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bacon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "baking_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "balsamic_vinegar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "banana_firm",
+   "method": "estimate",
+   "blsSeries": "APU0000711211",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "basil_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "basil_fresh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "basmati_rice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bay_leaves",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bbq_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bean_sprouts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "beef_chuck_roast",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "beef_sirloin",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "beef_stew_meat",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "beer",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "beets",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bell_pepper_green",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bell_pepper_red",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bell_pepper_yellow",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "black_pepper",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "black_tea",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "blackberries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "blueberries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "bok_choy",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "brazil_nuts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "brie",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "broccoli",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "broth_beef",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "broth_chicken",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "broth_chicken_lowfodmap",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "broth_veg",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "broth_veg_lowfodmap",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "brown_rice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "brown_sugar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "brussels_sprouts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "buckwheat_groats",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "burger_buns",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "butter",
+   "method": "estimate",
+   "blsSeries": "APU0000FS1101",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "butter_lettuce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "butternut_squash",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_black_beans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_chickpeas",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_corn",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_green_beans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_kidney_beans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_lentils",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_pineapple",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_pumpkin",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_salmon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_sardines",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "canned_tuna",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cantaloupe",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "capers",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cardamom",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "carrot",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cashews",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cauliflower",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cayenne",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "celery",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chamomile_tea",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chayote",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cheddar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cherries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cherry_tomatoes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chia_seeds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chicken_breast",
+   "method": "estimate",
+   "blsSeries": "APU0000FF1101",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "chicken_drumsticks",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chicken_sausage",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chicken_tenders",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chicken_thigh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chili_flakes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chipotle_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "chives",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cilantro",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cinnamon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "clementine",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cloves_ground",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cocoa_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coconut_aminos",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coconut_cream",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coconut_milk",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coconut_milk_light",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coconut_yogurt",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cod_fillet",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coffee_ground",
+   "method": "estimate",
+   "blsSeries": "APU0000717311",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "cola",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coleslaw_mix",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "collard_greens",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cooking_spray",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "coriander_ground",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "corn_on_cob",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "corn_tortillas",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cornstarch",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cottage_cheese",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "couscous",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cream_cheese",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cremini_mushrooms",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "crushed_tomatoes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cucumber",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "cumin",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "curry_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "daikon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "dark_chocolate",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "decaf_coffee",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "deli_turkey",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "diced_tomatoes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "dijon_mustard",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "dill_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "dill_fresh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "dried_apricots",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "dried_cranberries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "egg_noodles",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "eggplant",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "eggs",
+   "method": "estimate",
+   "blsSeries": "APU0000708111",
+   "blsUnit": "dozen",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "enchilada_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "endive",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "everything_seasoning",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "fennel_bulb",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "fennel_seeds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "feta",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "fish_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "five_spice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "flank_steak",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "flaxseed",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "flour",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "fresh_mozzarella",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_bell_peppers",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_berries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_broccoli",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_cauliflower_rice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_chicken_breast",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_cod",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_corn",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_edamame",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_green_beans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_hash_browns",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_kale",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_mango",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_mixed_veg",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_peas",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_pineapple",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_salmon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_shrimp",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_spinach",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "frozen_tilapia",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "garam_masala",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "garlic",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "garlic_infused_oil",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "garlic_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_bread",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_breadcrumbs",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_buns",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_crackers",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_flour",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_pasta",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "gf_wraps",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ghee",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ginger_fresh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ginger_paste",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ginger_tea",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "goat_cheese",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "grapefruit",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "grapes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "greek_yogurt",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "green_beans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "green_cabbage",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "green_leaf_lettuce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "green_onion",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "green_tea",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ground_beef_80",
+   "method": "estimate",
+   "blsSeries": "APU0000703112",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "ground_beef_lean",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ground_chicken",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ground_ginger",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ground_lamb",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ground_pork",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ground_turkey",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "half_and_half",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ham_steak",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "hazelnuts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "heavy_cream",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "hemp_seeds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "hoisin_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "honey",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "honeydew",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "hot_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "hummus",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "iceberg",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "italian_sausage",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "italian_seasoning",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "jalapeno",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "jasmine_rice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "jicama",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "kabocha_squash",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "kale",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "kefir_plain",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ketchup",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "kiwi",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "lactose_free_cream_cheese",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "leek",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "lemon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "lemongrass",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "lemongrass_paste",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "lime",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "macadamia_nuts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mahi_mahi",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mango",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "maple_syrup",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "marinara_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "marjoram_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mayonnaise",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "milk",
+   "method": "estimate",
+   "blsSeries": "APU0000709112",
+   "blsUnit": "gal",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "milk_lactose_free",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "millet",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mini_cucumbers",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mint_fresh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "miso_paste",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "monterey_jack",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mozzarella",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mushrooms_button",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mushrooms_oyster",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mussels",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "mustard_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "napa_cabbage",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "nectarine",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "nutmeg",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "nutritional_yeast",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "oat_milk",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "olive_oil",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "olives_black",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "olives_kalamata",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "onion_powder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "onion_red",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "onion_white",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "onion_yellow",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "orange",
+   "method": "estimate",
+   "blsSeries": "APU0000711311",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "orange_juice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "oregano_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "orzo",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "oyster_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "panko",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "papaya",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "paprika",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "parmesan",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "parsley",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "parsnip",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "passion_fruit",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pasta",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "peach",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "peanut_butter",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "peanuts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pear",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pecans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pepper_jack",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "peppermint_tea",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pesto",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pickled_jalapenos",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pickles",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pineapple",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pistachios",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pita",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "plum",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "poblano",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "polenta",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "popcorn_kernels",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pork_chops",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pork_shoulder",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pork_tenderloin",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "portobello",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "potato_baby",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "potato_red",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "potato_russet",
+   "method": "estimate",
+   "blsSeries": "APU0000712112",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "potato_yukon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "provolone",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "prunes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "pumpkin_seeds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "quinoa",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "radicchio",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "radishes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "raisins",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "raspberries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "red_cabbage",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "red_leaf_lettuce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "red_wine",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "red_wine_vinegar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "refried_beans",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rhubarb",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rice_cakes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rice_milk",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rice_noodles",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rice_paper",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rice_vinegar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "ricotta",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "roasted_red_peppers",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rolled_oats",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "romaine",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rosemary_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rosemary_fresh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "rutabaga",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sage_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "salmon_fillet",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "salsa",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "salsa_verde",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "salt",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "scallops",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "serrano",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sesame_oil",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sesame_seeds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "shallot",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "shredded_coconut",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "shrimp",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sliced_almonds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "smoked_paprika",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "smoked_salmon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "snow_peas",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sour_cream",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sourdough_bread",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "soy_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "spaghetti_squash",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sparkling_water",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "spring_mix",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sriracha",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "strawberries",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "strawberry_jam",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sugar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sugar_snap_peas",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sumac",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sun_dried_tomatoes",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sunflower_seeds",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sweet_chili_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "sweet_potato",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "swiss_chard",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "swiss_cheese",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "taco_shells",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tahini",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tamari",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tarragon_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tempeh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "teriyaki_sauce",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "thai_red_curry_paste",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "thyme_dried",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "thyme_fresh",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tilapia",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tofu_extra_firm",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tofu_firm",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tofu_silken",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tomato",
+   "method": "estimate",
+   "blsSeries": "APU0000712311",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "tomato_passata",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tomato_paste",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "tortilla_chips",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "trout",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "turkey_bacon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "turkey_cutlets",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "turmeric",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "turnip",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "udon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "vanilla_extract",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "vegetable_oil",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "walnuts",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "watercress",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "watermelon",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "wheat_bread",
+   "method": "estimate",
+   "blsSeries": "APU0000702111",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "wheat_tortillas",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "white_rice",
+   "method": "estimate",
+   "blsSeries": "APU0000701312",
+   "blsUnit": "lb",
+   "note": "BLS series not yet fetched"
+  },
+  {
+   "ingredientId": "white_vinegar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "white_wine",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "wild_rice",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "worcestershire",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "yellow_mustard",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "yellow_squash",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "yogurt_lactose_free",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "yogurt_plain",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "zaatar",
+   "method": "estimate"
+  },
+  {
+   "ingredientId": "zucchini",
+   "method": "estimate"
+  }
+ ]
+}
