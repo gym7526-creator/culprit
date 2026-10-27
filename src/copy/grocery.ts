@@ -1,0 +1,26 @@
+/** Grocery list strings (spec §6.5, §10.4). */
+export const groceryCopy = {
+  aisles: {
+    produce: 'Produce',
+    bakery: 'Bakery',
+    meat_seafood: 'Meat & seafood',
+    dairy: 'Dairy & eggs',
+    frozen: 'Frozen',
+    pantry: 'Pantry',
+    international: 'International',
+    spices: 'Spices',
+    beverages: 'Drinks',
+    custom: 'Your items',
+  },
+  packCount: '{count} × {size}',
+  sizeOz: '{n} oz',
+  sizeLb: '{n} lb',
+  sizeFlOz: '{n} fl oz',
+  sizeGal: '{n} gal',
+  sizeCount: '{n} ct',
+  pantry: 'You have this',
+  shareHeader: 'Culprit grocery list · {total} est.',
+  shareLine: '☐ {name} ({packs})',
+  sharePantry: 'Already in your kitchen: {items}',
+  testFood: 'Test food',
+} as const;

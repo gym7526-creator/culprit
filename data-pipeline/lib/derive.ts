@@ -14,30 +14,16 @@ import {
   type RefluxTag,
 } from '../../src/data/content/schema.ts';
 
+import { effectiveLevel, LEVEL_RANK } from '../../src/engines/fodmap.ts';
 import { toGrams } from './units.ts';
 
 /** Reflux "moderate-fat cap": grams of fat per serving above which a dinner isn't calm-safe for reflux. */
 export const REFLUX_FAT_CAP_G = 25;
 
-const RANK: Record<Level, number> = { none: 0, low: 1, moderate: 2, high: 3 };
+const RANK = LEVEL_RANK;
 const ALL_DIETS: DietTag[] = ['vegan', 'vegetarian', 'pescatarian'];
 
-/** Level of one ingredient at the per-serving amount, honouring its safe-serving threshold. */
-export function effectiveLevel(
-  ing: Ingredient,
-  group: FodmapGroup,
-  gramsPerServing: number,
-): Level {
-  const level = ing.fodmap[group];
-  if (
-    RANK[level] >= RANK.moderate &&
-    ing.fodmapSafeServingG !== undefined &&
-    gramsPerServing <= ing.fodmapSafeServingG
-  ) {
-    return 'low';
-  }
-  return level;
-}
+export { effectiveLevel };
 
 export function deriveRecipe(
   recipe: RecipeSource,
