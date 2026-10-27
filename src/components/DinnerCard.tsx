@@ -57,90 +57,91 @@ export function DinnerCard({
     .join('. ');
 
   return (
-    <Pressable
-      testID={testID}
-      onPress={onPress}
-      disabled={!onPress || locked}
-      accessibilityRole={onPress && !locked ? 'button' : undefined}
-      accessibilityLabel={a11y}
-      style={({ pressed }) => [
-        styles.card,
-        elevated,
-        { backgroundColor: colors.surface },
-        pressed ? { opacity: opacity.pressed } : null,
-      ]}
-    >
-      <LinearGradient
-        colors={gradients[scheme][gradient]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.hero, large ? styles.heroLarge : null]}
+    // The card and its "more" button are siblings: nesting buttons is invalid on web and
+    // confusing for VoiceOver.
+    <View testID={testID} style={[styles.card, elevated, { backgroundColor: colors.surface }]}>
+      <Pressable
+        onPress={onPress}
+        disabled={!onPress || locked}
+        accessibilityRole={onPress && !locked ? 'button' : undefined}
+        accessibilityLabel={a11y}
+        style={({ pressed }) => (pressed ? { opacity: opacity.pressed } : null)}
       >
-        <Text style={large ? styles.emojiLarge : styles.emoji} accessible={false}>
-          {emoji}
-        </Text>
-        {testNight ? (
-          <View style={[styles.badge, styles.badgeLeft, { backgroundColor: colors.partialSoft }]}>
-            <FlaskConical size={size.iconSm} color={colors.partialInk} />
-            <Text variant="caption" color="partialInk">
-              {componentCopy.dinner.testNight}
+        <LinearGradient
+          colors={gradients[scheme][gradient]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.hero, large ? styles.heroLarge : null]}
+        >
+          <Text style={large ? styles.emojiLarge : styles.emoji} accessible={false}>
+            {emoji}
+          </Text>
+          {testNight ? (
+            <View style={[styles.badge, styles.badgeLeft, { backgroundColor: colors.partialSoft }]}>
+              <FlaskConical size={size.iconSm} color={colors.partialInk} />
+              <Text variant="caption" color="partialInk">
+                {componentCopy.dinner.testNight}
+              </Text>
+            </View>
+          ) : null}
+          {locked ? (
+            <View style={[styles.badge, styles.badgeRight, { backgroundColor: colors.surface }]}>
+              <Lock size={size.iconSm} color={colors.textPrimary} />
+            </View>
+          ) : null}
+        </LinearGradient>
+
+        <View style={styles.body}>
+          <View style={styles.titleRow}>
+            <Text variant={large ? 'headline' : 'bodyStrong'} style={styles.flex} numberOfLines={2}>
+              {title}
             </Text>
           </View>
-        ) : null}
-        {locked ? (
-          <View style={[styles.badge, styles.badgeRight, { backgroundColor: colors.surface }]}>
-            <Lock size={size.iconSm} color={colors.textPrimary} />
-          </View>
-        ) : null}
-      </LinearGradient>
 
-      <View style={styles.body}>
-        <View style={styles.titleRow}>
-          <Text variant={large ? 'headline' : 'bodyStrong'} style={styles.flex} numberOfLines={2}>
-            {title}
-          </Text>
-          {onMorePress && !locked ? (
-            <Pressable
-              onPress={onMorePress}
-              accessibilityRole="button"
-              accessibilityLabel={moreLabel ?? title}
-              hitSlop={space.xs}
-              style={styles.more}
-            >
-              <Ellipsis size={size.iconMd} color={colors.textSecondary} />
-            </Pressable>
+          <View style={styles.metaRow}>
+            <Clock size={size.iconSm} color={colors.textSecondary} />
+            <Text variant="callout" color="textSecondary">
+              {meta}
+            </Text>
+          </View>
+
+          {eatBy ? (
+            <View style={[styles.eatBy, { backgroundColor: colors.brandSoft }]}>
+              <Text variant="caption" color="brandInk">
+                {format(componentCopy.dinner.eatBy, { time: eatBy })}
+              </Text>
+            </View>
+          ) : null}
+
+          {locked ? (
+            <View style={styles.lockedRow}>
+              <BlurView
+                intensity={20}
+                tint={scheme === 'dark' ? 'dark' : 'light'}
+                style={StyleSheet.absoluteFill}
+              />
+              <Text variant="caption" color="textSecondary">
+                {componentCopy.dinner.locked}
+              </Text>
+            </View>
           ) : null}
         </View>
-
-        <View style={styles.metaRow}>
-          <Clock size={size.iconSm} color={colors.textSecondary} />
-          <Text variant="callout" color="textSecondary">
-            {meta}
-          </Text>
-        </View>
-
-        {eatBy ? (
-          <View style={[styles.eatBy, { backgroundColor: colors.brandSoft }]}>
-            <Text variant="caption" color="brandInk">
-              {format(componentCopy.dinner.eatBy, { time: eatBy })}
-            </Text>
-          </View>
-        ) : null}
-
-        {locked ? (
-          <View style={styles.lockedRow}>
-            <BlurView
-              intensity={20}
-              tint={scheme === 'dark' ? 'dark' : 'light'}
-              style={StyleSheet.absoluteFill}
-            />
-            <Text variant="caption" color="textSecondary">
-              {componentCopy.dinner.locked}
-            </Text>
-          </View>
-        ) : null}
-      </View>
-    </Pressable>
+      </Pressable>
+      {onMorePress && !locked ? (
+        <Pressable
+          onPress={onMorePress}
+          accessibilityRole="button"
+          accessibilityLabel={moreLabel ?? title}
+          style={({ pressed }) => [
+            styles.more,
+            { backgroundColor: colors.surface },
+            pressed ? { opacity: opacity.pressed } : null,
+          ]}
+        >
+          <Ellipsis size={size.iconMd} color={colors.textPrimary} />
+        </Pressable>
+      ) : null}
+    </View>
   );
 }
 
@@ -168,7 +169,16 @@ const styles = StyleSheet.create({
   body: { padding: space.md, gap: space.xs },
   titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: space.xs },
   flex: { flex: 1 },
-  more: { minWidth: size.minTouch, minHeight: size.iconLg, alignItems: 'flex-end' },
+  more: {
+    position: 'absolute',
+    top: space.xxs,
+    right: space.xxs,
+    width: size.minTouch,
+    height: size.minTouch,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: space.xxs + space.xxs / 2 },
   eatBy: {
     alignSelf: 'flex-start',

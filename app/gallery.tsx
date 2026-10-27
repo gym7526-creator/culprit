@@ -116,7 +116,7 @@ function Swatches() {
   );
 }
 
-function GalleryContent() {
+function GalleryContent({ onClose }: { onClose: () => void }) {
   const showToast = useUiStore((st) => st.showToast);
   const [loadingPrimary, setLoadingPrimary] = useState(false);
   const [single, setSingle] = useState<'stomach' | 'skin' | 'both' | null>('stomach');
@@ -142,9 +142,12 @@ function GalleryContent() {
     <>
       <Screen scroll bottomInset={BOTTOM_CTA_SPACE}>
         <View style={styles.header}>
-          <Text variant="title" accessibilityRole="header">
-            {g.title}
-          </Text>
+          <View style={styles.titleRow}>
+            <Text variant="title" accessibilityRole="header" style={styles.flex}>
+              {g.title}
+            </Text>
+            <TextButton label={common.close} onPress={onClose} />
+          </View>
           <Text variant="callout" color="textSecondary">
             {g.subtitle}
           </Text>
@@ -419,15 +422,7 @@ export default function Gallery() {
   const router = useRouter();
   if (!__DEV__) return <Redirect href="/" />;
   return (
-    <View style={styles.flex}>
-      <GalleryContent />
-      <View style={styles.close}>
-        <TextButton
-          label={common.close}
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
-        />
-      </View>
-    </View>
+    <GalleryContent onClose={() => (router.canGoBack() ? router.back() : router.replace('/'))} />
   );
 }
 
@@ -442,5 +437,5 @@ const styles = StyleSheet.create({
   swatch: { width: SWATCH * 1.8, gap: space.xxs },
   swatchColor: { height: SWATCH, borderRadius: radius.chip, borderWidth: size.hairline },
   confettiBox: { minHeight: size.galleryPreview, justifyContent: 'center' },
-  close: { position: 'absolute', top: space.xxxl, right: space.xs },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: space.xs },
 });
