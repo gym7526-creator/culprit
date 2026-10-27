@@ -1,0 +1,61 @@
+import Storage from 'expo-sqlite/kv-store';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+
+import type { ColorScheme } from '@/theme/tokens';
+
+/**
+ * Small, non-health preferences only. Health data (check-ins, results, safety answers) lives in SQLite
+ * (src/data), never here.
+ */
+export type PrefsState = {
+  /** null = follow the system. */
+  themeOverride: ColorScheme | null;
+  /** Last onboarding route reached, for resume-on-relaunch (Phase 3). */
+  onboardingStep: string | null;
+  onboardingCompleted: boolean;
+  /** "HH:mm", 24h. Defaults from the spec: check-in 8:30 pm, bedtime 11:00 pm. */
+  checkInTime: string;
+  bedtime: string;
+  /** Dev-only time travel, in days, applied to the injected `now()` (Phase 2+). */
+  devTimeOffsetDays: number;
+};
+
+export type PrefsActions = {
+  setThemeOverride: (scheme: ColorScheme | null) => void;
+  setOnboardingStep: (step: string | null) => void;
+  completeOnboarding: () => void;
+  setCheckInTime: (time: string) => void;
+  setBedtime: (time: string) => void;
+  shiftDevTime: (days: number) => void;
+  resetPrefs: () => void;
+};
+
+export const defaultPrefs: PrefsState = {
+  themeOverride: null,
+  onboardingStep: null,
+  onboardingCompleted: false,
+  checkInTime: '20:30',
+  bedtime: '23:00',
+  devTimeOffsetDays: 0,
+};
+
+export const usePrefsStore = create<PrefsState & PrefsActions>()(
+  persist(
+    (set) => ({
+      ...defaultPrefs,
+      setThemeOverride: (themeOverride) => set({ themeOverride }),
+      setOnboardingStep: (onboardingStep) => set({ onboardingStep }),
+      completeOnboarding: () => set({ onboardingCompleted: true, onboardingStep: null }),
+      setCheckInTime: (checkInTime) => set({ checkInTime }),
+      setBedtime: (bedtime) => set({ bedtime }),
+      shiftDevTime: (days) => set((s) => ({ devTimeOffsetDays: s.devTimeOffsetDays + days })),
+      resetPrefs: () => set(defaultPrefs),
+    }),
+    {
+      name: 'culprit-prefs',
+      version: 1,
+      storage: createJSONStorage(() => Storage),
+    },
+  ),
+);

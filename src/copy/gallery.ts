@@ -1,0 +1,96 @@
+/** Strings for the dev-only design-system gallery (app/gallery.tsx). Sample data is illustrative only. */
+export const galleryCopy = {
+  title: 'Design system',
+  subtitle: 'Every component and state. Dev builds only.',
+  openGallery: 'Open design gallery',
+  themeLabel: 'Theme',
+  themeSystem: 'System',
+  themeLight: 'Light',
+  themeDark: 'Dark',
+
+  sections: {
+    type: 'Typography',
+    colors: 'Colors',
+    buttons: 'Buttons',
+    options: 'Option cards',
+    chips: 'Chips',
+    progress: 'Progress bar',
+    cards: 'Cards',
+    dinner: 'Dinner cards',
+    test: 'Test banner',
+    checkIn: 'Check-in faces',
+    ring: 'Score ring',
+    budget: 'Budget bar',
+    pills: 'Status pills',
+    overlays: 'Sheet, toast, confetti',
+    inputs: 'Stepper, slider, time picker',
+    empty: 'Empty state',
+    cta: 'Pinned CTA',
+  },
+
+  sample: {
+    display: 'Case solved',
+    title: 'Your first week is ready.',
+    headline: 'Tonight’s dinner',
+    body: 'Eating 3 hours before bed is one of the biggest heartburn helpers.',
+    bodyStrong: 'One tap. Two seconds.',
+    callout: 'Set aside for now: onion, garlic, wheat',
+    caption: 'Prices are estimates',
+
+    primary: 'Build my plan',
+    secondary: 'Shuffle week',
+    textButton: 'I already have an account',
+    disabled: 'Disabled',
+    loading: 'Loading',
+
+    optionStomach: { emoji: '🫃', label: 'My stomach', sublabel: 'Bloating, gas, heartburn…' },
+    optionSkin: {
+      emoji: '✨',
+      label: 'My skin',
+      sublabel: 'Coming soon, we’ll start with your stomach',
+    },
+    optionBoth: { emoji: '🔁', label: 'Both' },
+    optionDisabledNote: 'Disabled',
+
+    cardTitle: 'Why we test one food at a time',
+    cardBody: 'If two new foods arrive together, we can’t tell which one did it.',
+
+    dinnerTitle: 'Ginger chicken stir-fry',
+    dinnerTitle2: 'Lemon herb salmon sheet pan',
+    dinnerMinutes: 25,
+    dinnerPrice: '$11.40',
+    dinnerMinutes2: 30,
+    dinnerPrice2: '$14.20',
+    dinnerEatBy: '8:00 pm',
+
+    testTitle: '🧪 Tonight’s test',
+    testFood: '½ clove garlic, added to your stir-fry.',
+    reset: 'Reset',
+
+    ringLabel: 'Program progress',
+    budgetUnder: { total: 112.4, budget: 130 },
+    budgetNear: { total: 128.9, budget: 130 },
+    budgetOver: { total: 141.2, budget: 130 },
+
+    showSheet: 'Open bottom sheet',
+    sheetTitle: 'Swap this dinner',
+    sheetBody: 'Three alternatives with price differences will appear here.',
+    showToast: 'Show toast',
+    toastGood: 'Good toast',
+    toastTrigger: 'Coral toast',
+    toastText: 'Checked in · 6-day streak',
+    confetti: 'Fire confetti',
+
+    stepperLabel: 'People eating',
+    sliderLabel: 'How much it gets in the way',
+    sliderFaces: ['😌', '🙂', '😐', '😣', '😫'],
+    timeLabel: 'Bedtime',
+
+    emptyEmoji: '🔍',
+    emptyTitle: 'No suspects yet',
+    emptyBody: 'Your first test starts after the calm phase.',
+    emptyCta: 'See the plan',
+
+    ctaNote: 'This button is pinned above the safe area with a soft fade behind it.',
+  },
+} as const;

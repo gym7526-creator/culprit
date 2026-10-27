@@ -1,0 +1,32 @@
+import { setUpTests } from 'react-native-reanimated';
+
+setUpTests();
+
+// expo-sqlite's native module isn't available under Jest: back the kv-store with a Map.
+jest.mock('expo-sqlite/kv-store', () => {
+  const store = new Map<string, string>();
+  const api = {
+    getItem: async (k: string) => store.get(k) ?? null,
+    setItem: async (k: string, v: string) => {
+      store.set(k, v);
+    },
+    removeItem: async (k: string) => store.delete(k),
+    clear: async () => store.clear(),
+  };
+  return { __esModule: true, default: api };
+});
+
+jest.mock('expo-haptics', () => ({
+  impactAsync: jest.fn(() => Promise.resolve()),
+  selectionAsync: jest.fn(() => Promise.resolve()),
+  notificationAsync: jest.fn(() => Promise.resolve()),
+  ImpactFeedbackStyle: { Light: 'light', Medium: 'medium' },
+  NotificationFeedbackType: { Success: 'success', Warning: 'warning' },
+}));
+
+// Under Jest, worklets resolves its web build (see the reanimated resolver), but gesture-handler's
+// native entry still tries to bind the UI runtime. Use gesture-handler's own web no-op instead.
+jest.mock(
+  'react-native-gesture-handler/lib/module/handlers/gestures/installUIRuntimeBindings',
+  () => ({ installUIRuntimeBindings: () => undefined }),
+);
