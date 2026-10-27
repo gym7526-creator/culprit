@@ -33,6 +33,7 @@
     "@react-native/jest-preset": "~0.88.0",
     "@testing-library/react-native": "^14.1.0",
     "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.5",
     "@types/react": "~19.3.0",
     "eslint": "^9.39.5",
     "eslint-config-expo": "^58.0.4",
@@ -53,9 +54,10 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "check": "npm run lint && npm run typecheck && npm test",
+    "check": "npm run lint && npm run typecheck && npm test && npm run content:validate",
     "content:build": "node --no-warnings data-pipeline/scripts/build.ts",
-    "content:validate": "node --no-warnings data-pipeline/scripts/validate.ts"
+    "content:validate": "node --no-warnings data-pipeline/scripts/validate.ts",
+    "content:prices": "node --no-warnings data-pipeline/scripts/fetch-bls.ts"
   },
   "private": true,
   "jest": {

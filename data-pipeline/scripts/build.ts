@@ -4,7 +4,7 @@
  * Usage: npm run content:build
  */
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { z } from 'zod';
@@ -20,6 +20,7 @@ import {
   Staples,
   TestsFile,
 } from '../../src/data/content/schema.ts';
+import { applyBls, regionMultipliers, type BlsSnapshot } from '../lib/bls.ts';
 import { checkContent } from '../lib/coverage.ts';
 import { deriveRecipe } from '../lib/derive.ts';
 import { DATA_DIR } from '../lib/load.ts';
@@ -27,7 +28,7 @@ import { cards } from '../source/cards.ts';
 import { extraIngredients } from '../source/ingredients-extra.ts';
 import { freshIngredients } from '../source/ingredients-fresh.ts';
 import { shelfIngredients } from '../source/ingredients-shelf.ts';
-import { chains, pricesFor, regions } from '../source/places.ts';
+import { blsCandidates, chains, pricesFor, regions as regionsSource } from '../source/places.ts';
 import { recipesCalmBoth } from '../source/recipes-calm-both.ts';
 import { recipesCalmGut } from '../source/recipes-calm-gut.ts';
 import { recipesCalmReflux } from '../source/recipes-calm-reflux.ts';
@@ -35,10 +36,35 @@ import { recipesEveryday } from '../source/recipes-everyday.ts';
 import { staples } from '../source/staples.ts';
 import { testsFile } from '../source/tests.ts';
 
-const ingredients = z
+const authoredIngredients = z
   .array(Ingredient)
   .parse([...freshIngredients, ...shelfIngredients, ...extraIngredients])
   .sort((a, b) => a.id.localeCompare(b.id));
+
+// Apply the latest BLS snapshot if `npm run content:prices` has been run.
+const today = new Date().toISOString().slice(0, 10);
+const blsPath = join(import.meta.dirname, '..', 'source', 'bls-prices.json');
+const snapshot: BlsSnapshot | null = existsSync(blsPath)
+  ? (JSON.parse(readFileSync(blsPath, 'utf8')) as BlsSnapshot)
+  : null;
+const estimated = pricesFor(
+  authoredIngredients.map((i) => i.id),
+  today,
+);
+const { ingredients, prices } = snapshot
+  ? applyBls(authoredIngredients, estimated, snapshot)
+  : { ingredients: authoredIngredients, prices: estimated };
+const regions = snapshot
+  ? {
+      ...regionsSource,
+      multipliers: regionMultipliers(
+        Object.values(blsCandidates).map((c) => c.series),
+        snapshot,
+        regionsSource.multipliers,
+      ),
+    }
+  : regionsSource;
+
 const ingMap = new Map(ingredients.map((i) => [i.id, i]));
 
 const sources = z
@@ -48,19 +74,13 @@ const recipes = z
   .array(Recipe)
   .parse(sources.map((r) => ({ ...r, derived: deriveRecipe(r, ingMap) })));
 
-const today = new Date().toISOString().slice(0, 10);
 const files: Record<string, unknown> = {
   'ingredients.json': ingredients,
   'recipes.json': recipes,
   'tests.json': TestsFile.parse(testsFile),
   'staples.json': Staples.parse({ items: staples }),
   'cards.json': CardsFile.parse({ cards }),
-  'prices.json': PricesFile.parse(
-    pricesFor(
-      ingredients.map((i) => i.id),
-      today,
-    ),
-  ),
+  'prices.json': PricesFile.parse(prices),
   'regions.json': RegionsFile.parse(regions),
   'chains.json': ChainsFile.parse(chains),
 };

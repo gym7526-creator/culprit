@@ -17,4 +17,14 @@ module.exports = defineConfig([
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
+  {
+    // CLI scripts print reports.
+    files: ['data-pipeline/scripts/**/*.ts'],
+    rules: { 'no-console': 'off' },
+  },
+  {
+    // zod idiom: a schema value and its inferred type share one name.
+    files: ['src/data/content/schema.ts'],
+    rules: { '@typescript-eslint/no-redeclare': 'off' },
+  },
 ]);

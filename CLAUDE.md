@@ -75,7 +75,10 @@ npx expo install <pkg>     # always (resolves SDK-compatible versions)
 npm run lint               # eslint (flat config, expo + prettier)
 npm run typecheck          # tsc --noEmit
 npm test                   # jest (jest-expo preset)
-npm run check              # all three
+npm run check              # lint + typecheck + tests + content:validate
+npm run content:build      # rebuild /assets/data from data-pipeline/source (derives all recipe tags)
+npm run content:validate   # schema + integrity + §5.2 coverage report (fails on any problem)
+npm run content:prices     # monthly BLS refresh → data-pipeline/source/bls-prices.json, then content:build
 npm start                  # expo start
 ```
 
@@ -167,13 +170,36 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
 - `npx expo export --platform ios --platform android` bundles cleanly (verifies Metro resolution end to end).
 - `app.json` uses placeholder bundle IDs `com.culprit.app`: replace them with the real ones before the first EAS build.
 
+## Content pipeline (Phase 1, done)
+
+- Sources are TypeScript in `data-pipeline/source/` (compact helpers `i()` for ingredients, `r()` for recipes).
+  `content:build` validates each item against `src/data/content/schema.ts`, **derives every recipe tag** in
+  `data-pipeline/lib/derive.ts`, writes `/assets/data/*.json` + `manifest.json` (content version = content hash).
+  Never hand-edit `/assets/data`; the validator rejects stale or edited `derived` blocks.
+- Pipeline scripts run on Node 22's built-in TypeScript stripping (`node file.ts`): imports use `.ts` extensions,
+  no enums/namespaces. `@types/node` is a dev dependency for them.
+- Derivation rules: `calmSafeGut` = every FODMAP group ≤ low at the per-serving amount (an ingredient's
+  `fodmapSafeServingG` lowers moderate/high to low at or under that weight); `calmSafeReflux` = no reflux tags
+  and ≤ `REFLUX_FAT_CAP_G` (25 g) fat per serving; diets = intersection; allergens = union; `glutenFree` = no
+  wheat allergen; `lowGlycemic` = no high-glycemic ingredient.
+- FODMAP levels are general public knowledge (never Monash data) and **need dietitian review before launch**.
+- Prices: hand-estimated typical store-brand prices, always shown as "est.". `content:prices` fetches BLS
+  Average Price series (13 candidates in `source/places.ts`, verified against the API at fetch time) and
+  regional series; the build applies them with a 0.9 store-brand factor. The sandbox can't reach api.bls.gov,
+  so it hasn't been run yet.
+- Test library: 18 tests + a placebo `control`, NHS 3-day escalating protocol. Alcohol is 21+ and opt-in.
+  The late-dinner test is timing-only (doses without ingredients).
+- Cards cite only the §17 sources (a test enforces this).
+- **Pending owner approval:** the build-time recipe drafting script (spec §5.2) should use `@anthropic-ai/sdk`
+  as a devDependency. The 150 MVP recipes were drafted directly; the script lands once the dependency is approved.
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
       dev gallery, copy module, SQLite + migrations, Zustand skeleton, CLAUDE.md.
-- [ ] **1 Content pipeline:** zod schemas, ~350 ingredients, recipe drafting script, tag derivation, validator with §5.2
+- [x] **1 Content pipeline:** zod schemas, 390 ingredients, 150 recipes, tag derivation, validator with §5.2
       coverage rules, tests/staples/cards JSON, BLS price pipeline + region/chain tables, ZIP3→region.
-      `npm run content:validate` prints a coverage report.
+      `npm run content:validate` prints a coverage report. (LLM drafting script pending dependency approval.)
 - [ ] **2 Engines:** program, scoring (25+ tests), plan (<150 ms), grocery, price, schedule. A debug CLI prints a 4-week
       simulation.
 - [ ] **3 Onboarding + plan preview:** §8 screens, real engine output at O21, resume-on-relaunch, safety logic,
@@ -192,3 +218,5 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
   template's AGENTS.md suggested `src/app`, which was removed in favour of this file).
 - 2026-10-27: Added the `*Ink` and `onBrand` tokens for WCAG contrast (see Design system).
 - 2026-10-27: Prefs persistence uses `expo-sqlite/kv-store` instead of adding AsyncStorage.
+- 2026-10-27: Reflux moderate-fat cap set to 25 g per serving. `@types/node` added (types only) for pipeline scripts.
+- 2026-10-27: Markdown is excluded from Prettier (it reflowed CLAUDE.md lists).

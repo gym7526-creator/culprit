@@ -6,14 +6,16 @@
 import { checkContent } from '../lib/coverage.ts';
 import { loadContent } from '../lib/load.ts';
 
-let content: ReturnType<typeof loadContent>;
-try {
-  content = loadContent();
-} catch (e) {
-  console.error((e as Error).message);
-  process.exit(1);
+function loadOrExit(): ReturnType<typeof loadContent> {
+  try {
+    return loadContent();
+  } catch (e) {
+    console.error((e as Error).message);
+    process.exit(1);
+  }
 }
 
+const content = loadOrExit();
 const { errors, warnings, report } = checkContent(content);
 console.log(
   `Culprit content ${content.manifest.contentVersion} (built ${content.manifest.builtAt})\n`,
