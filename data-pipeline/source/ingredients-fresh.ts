@@ -158,7 +158,7 @@ export const freshIngredients: Ingredient[] = [
   i('greek_yogurt', 'Plain Greek yogurt', D, 4, VEGETARIAN, [[907, 'g', 4.99]], { days: 14, gPerMl: 1.05, allergens: ['milk'], skin: ['dairy_milk'], fodmap: { lactose: 'moderate' }, safeG: 40 }),
   i('yogurt_lactose_free', 'Lactose-free plain yogurt', D, 3, VEGETARIAN, [[680, 'g', 4.49]], { days: 14, gPerMl: 1.05, allergens: ['milk'], skin: ['dairy_milk'] }),
   i('coconut_yogurt', 'Plain coconut yogurt', D, 10, VEGAN, [[454, 'g', 4.99]], { days: 14, gPerMl: 1.05 }),
-  i('cheddar', 'Cheddar cheese', D, 33, VEGETARIAN, [[227, 'g', 2.99]], { days: 30, allergens: ['milk'], skin: ['dairy_milk'], protein: 'cheese' }),
+  i('cheddar', 'Cheddar cheese', D, 33, VEGETARIAN, [[227, 'g', 2.99]], { days: 30, gEach: 21, allergens: ['milk'], skin: ['dairy_milk'], protein: 'cheese' }),
   i('mozzarella', 'Shredded mozzarella', D, 22, VEGETARIAN, [[227, 'g', 2.99]], { days: 21, allergens: ['milk'], skin: ['dairy_milk'], protein: 'cheese' }),
   i('fresh_mozzarella', 'Fresh mozzarella', D, 20, VEGETARIAN, [[227, 'g', 4.49]], { days: 10, allergens: ['milk'], skin: ['dairy_milk'], protein: 'cheese' }),
   i('parmesan', 'Parmesan cheese', D, 29, VEGETARIAN, [[142, 'g', 3.99]], { days: 60, allergens: ['milk'], skin: ['dairy_milk'], staple: true }),
