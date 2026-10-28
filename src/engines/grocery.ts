@@ -57,29 +57,30 @@ export type GroceryList = {
 };
 
 /** Cheapest whole-pack combination covering `need` (pack sizes in the same unit). */
-export function cheapestPacks(need: number, packs: readonly { size: number; price: number }[]): { choice: PackChoice[]; cost: number } {
+export function cheapestPacks(
+  need: number,
+  packs: readonly { size: number; price: number }[],
+): { choice: PackChoice[]; cost: number } {
   if (need <= 0 || packs.length === 0) return { choice: [], cost: 0 };
-  let best: { choice: PackChoice[]; cost: number; over: number } | null = null;
+  const found = { cost: Infinity, over: Infinity, counts: [] as number[] };
   let explored = 0;
 
-  const search = (i: number, covered: number, cost: number, counts: number[]) => {
+  // Depth-first over pack counts, pruning anything already dearer than the best found.
+  const search = (i: number, covered: number, cost: number, counts: number[]): void => {
     if (explored++ > MAX_PACK_COMBINATIONS) return;
     if (covered >= need - 1e-9) {
       const over = covered - need;
-      if (!best || cost < best.cost - 1e-9 || (Math.abs(cost - best.cost) < 1e-9 && over < best.over)) {
-        best = {
-          cost,
-          over,
-          choice: counts.map((count, packIndex) => ({ packIndex, count })).filter((c) => c.count > 0),
-        };
+      if (cost < found.cost - 1e-9 || (Math.abs(cost - found.cost) < 1e-9 && over < found.over)) {
+        found.cost = cost;
+        found.over = over;
+        found.counts = [...counts];
       }
       return;
     }
-    if (i >= packs.length) return;
-    const p = packs[i]!;
-    const maxCount = Math.ceil((need - covered) / p.size);
-    for (let n = maxCount; n >= 0; n--) {
-      if (best && cost + n * p.price > best.cost + 1e-9) continue;
+    const p = packs[i];
+    if (!p) return;
+    for (let n = Math.ceil((need - covered) / p.size); n >= 0; n--) {
+      if (cost + n * p.price > found.cost + 1e-9) continue;
       counts[i] = n;
       search(i + 1, covered + n * p.size, cost + n * p.price, counts);
     }
@@ -87,14 +88,21 @@ export function cheapestPacks(need: number, packs: readonly { size: number; pric
   };
   search(0, 0, 0, packs.map(() => 0));
 
-  if (best) return { choice: (best as { choice: PackChoice[] }).choice, cost: roundCents((best as { cost: number }).cost) };
-  // Greedy fallback: cheapest price per unit, as many as needed.
+  if (found.cost < Infinity) {
+    const choice = found.counts
+      .map((count, packIndex) => ({ packIndex, count }))
+      .filter((c) => c.count > 0);
+    return { choice, cost: roundCents(found.cost) };
+  }
+  // Greedy fallback: the best price per unit, as many as needed.
   let bi = 0;
   packs.forEach((p, i) => {
-    if (p.price / p.size < packs[bi]!.price / packs[bi]!.size) bi = i;
+    const best = packs[bi]!;
+    if (p.price / p.size < best.price / best.size) bi = i;
   });
-  const count = Math.ceil(need / packs[bi]!.size);
-  return { choice: [{ packIndex: bi, count }], cost: roundCents(count * packs[bi]!.price) };
+  const pick = packs[bi]!;
+  const count = Math.ceil(need / pick.size);
+  return { choice: [{ packIndex: bi, count }], cost: roundCents(count * pick.price) };
 }
 
 /** "2 × 16 oz", "1 × 12 ct", "1 × 64 fl oz". US units for display. */
@@ -105,7 +113,7 @@ export function packLabel(size: number, unit: PackUnit, count: number): string {
     s = size >= 3700 ? format(groceryCopy.sizeGal, { n: Math.round((size / 3785.41) * 10) / 10 }) : format(groceryCopy.sizeFlOz, { n: Math.round(size / 29.5735) });
   } else {
     const oz = size / 28.3495;
-    s = oz >= 32 && Math.abs(oz / 16 - Math.round(oz / 16)) < 0.1
+    s = oz >= 15.5 && Math.abs(oz / 16 - Math.round(oz / 16)) < 0.1
       ? format(groceryCopy.sizeLb, { n: Math.round(oz / 16) })
       : format(groceryCopy.sizeOz, { n: Math.round(oz * 10) / 10 });
   }
