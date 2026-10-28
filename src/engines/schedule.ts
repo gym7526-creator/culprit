@@ -48,7 +48,9 @@ export type ScheduleInput = {
   testNights: Readonly<Record<DayKey, { portion: string; dish: string }>>;
   sundayPlan: { count: number; total: string; store: string } | null;
   trialEnds: { day: DayKey; time: string } | null;
-  milestones: readonly ({ kind: 'calm_complete' | 'case_solved' } | { kind: 'result_ready'; group: string })[];
+  milestones: readonly (
+    { kind: 'calm_complete' | 'case_solved' } | { kind: 'result_ready'; group: string }
+  )[];
   enabled: { checkin: boolean; tests: boolean; plan: boolean; trial: boolean; milestones: boolean };
 };
 
@@ -75,7 +77,9 @@ function absMinutes(origin: DayKey, day: DayKey, time: string): number {
 /** Moves a quiet-hours time to the evening before it (21:00 the same or previous day). */
 function outOfQuietHours(day: DayKey, time: string): { day: DayKey; time: string } {
   if (!isQuiet(time)) return { day, time };
-  return toMinutes(time) >= QUIET_START_MIN ? { day, time: QUIET_FALLBACK } : { day: addDays(day, -1), time: QUIET_FALLBACK };
+  return toMinutes(time) >= QUIET_START_MIN
+    ? { day, time: QUIET_FALLBACK }
+    : { day: addDays(day, -1), time: QUIET_FALLBACK };
 }
 
 export function scheduleNotifications(input: ScheduleInput): ScheduledNotification[] {
@@ -89,11 +93,23 @@ export function scheduleNotifications(input: ScheduleInput): ScheduledNotificati
     const day = addDays(input.now.day, i);
 
     if (input.enabled.checkin && !input.checkedInDays.has(day)) {
-      push({ id: `checkin:${day}`, kind: 'checkin', day, time: input.checkInTime, body: notificationCopy.checkIn });
+      push({
+        id: `checkin:${day}`,
+        kind: 'checkin',
+        day,
+        time: input.checkInTime,
+        body: notificationCopy.checkIn,
+      });
       const follow = fromMinutes(toMinutes(input.checkInTime) + FOLLOW_UP_MIN);
       // The follow-up must stay on the same evening and outside quiet hours.
       if (!isQuiet(follow) && toMinutes(follow) > toMinutes(input.checkInTime)) {
-        push({ id: `followup:${day}`, kind: 'checkin_followup', day, time: follow, body: notificationCopy.checkInFollowUp });
+        push({
+          id: `followup:${day}`,
+          kind: 'checkin_followup',
+          day,
+          time: follow,
+          body: notificationCopy.checkInFollowUp,
+        });
       }
     }
 
@@ -120,10 +136,17 @@ export function scheduleNotifications(input: ScheduleInput): ScheduledNotificati
   }
 
   if (input.enabled.trial && input.trialEnds) {
-    const at = absMinutes(input.now.day, input.trialEnds.day, input.trialEnds.time) - TRIAL_LEAD_MIN;
+    const at =
+      absMinutes(input.now.day, input.trialEnds.day, input.trialEnds.time) - TRIAL_LEAD_MIN;
     const day = addDays(input.now.day, Math.floor(at / 1440));
     const moved = outOfQuietHours(day, fromMinutes(at));
-    push({ id: 'trial', kind: 'trial_ending', day: moved.day, time: moved.time, body: notificationCopy.trialEnding });
+    push({
+      id: 'trial',
+      kind: 'trial_ending',
+      day: moved.day,
+      time: moved.time,
+      body: notificationCopy.trialEnding,
+    });
   }
 
   if (input.enabled.milestones) {
@@ -132,7 +155,10 @@ export function scheduleNotifications(input: ScheduleInput): ScheduledNotificati
     const soonDay = addDays(input.now.day, Math.floor(soonAbs / 1440));
     const soon = fromMinutes(soonAbs);
     const when = isQuiet(soon)
-      ? { day: toMinutes(soon) >= QUIET_START_MIN ? addDays(soonDay, 1) : soonDay, time: fromMinutes(QUIET_END_MIN) }
+      ? {
+          day: toMinutes(soon) >= QUIET_START_MIN ? addDays(soonDay, 1) : soonDay,
+          time: fromMinutes(QUIET_END_MIN),
+        }
       : { day: soonDay, time: soon };
     input.milestones.forEach((m, idx) => {
       const body =
@@ -141,11 +167,19 @@ export function scheduleNotifications(input: ScheduleInput): ScheduledNotificati
           : m.kind === 'calm_complete'
             ? notificationCopy.calmComplete
             : notificationCopy.caseSolved;
-      push({ id: `milestone:${m.kind}:${idx}`, kind: m.kind, day: when.day, time: when.time, body });
+      push({
+        id: `milestone:${m.kind}:${idx}`,
+        kind: m.kind,
+        day: when.day,
+        time: when.time,
+        body,
+      });
     });
   }
 
   return out.sort(
-    (a, b) => absMinutes(input.now.day, a.day, a.time) - absMinutes(input.now.day, b.day, b.time) || a.id.localeCompare(b.id),
+    (a, b) =>
+      absMinutes(input.now.day, a.day, a.time) - absMinutes(input.now.day, b.day, b.time) ||
+      a.id.localeCompare(b.id),
   );
 }

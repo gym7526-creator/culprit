@@ -31,9 +31,16 @@ describe('packPrice', () => {
   });
 
   it('applies a user override last, per store', () => {
-    const ctx = { chainId: 'aldi', regionMultiplier: 1.08, chainIndex: 0.85, overrides: { [overrideKey('aldi', 'eggs', 0)]: 2.5 } };
+    const ctx = {
+      chainId: 'aldi',
+      regionMultiplier: 1.08,
+      chainIndex: 0.85,
+      overrides: { [overrideKey('aldi', 'eggs', 0)]: 2.5 },
+    };
     expect(packPrice(pack, 'eggs', 0, ctx)).toBe(2.5);
-    expect(packPrice(pack, 'eggs', 0, { ...ctx, chainId: 'walmart' })).toBe(roundCents(3.49 * 1.08 * 0.85));
+    expect(packPrice(pack, 'eggs', 0, { ...ctx, chainId: 'walmart' })).toBe(
+      roundCents(3.49 * 1.08 * 0.85),
+    );
   });
 });
 
@@ -58,7 +65,10 @@ describe('ZIP lookup', () => {
 
   it('prices unknown ZIPs at the national average', () => {
     expect(priceContext('00001', 'kroger', regions, chains).regionMultiplier).toBe(1);
-    expect(priceContext('94103', 'whole_foods', regions, chains)).toMatchObject({ regionMultiplier: 1.06, chainIndex: 1.3 });
+    expect(priceContext('94103', 'whole_foods', regions, chains)).toMatchObject({
+      regionMultiplier: 1.06,
+      chainIndex: 1.3,
+    });
     expect(priceContext('94103', 'nope', regions, chains).chainIndex).toBe(1);
   });
 });

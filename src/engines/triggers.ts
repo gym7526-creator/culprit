@@ -50,7 +50,10 @@ export function triggerGroupsOf(ing: Ingredient, gramsPerServing: number): TestG
 }
 
 /** Grams per serving of each test group a recipe contains. */
-export function recipeGroupAmounts(recipe: Recipe, ingredients: ReadonlyMap<string, Ingredient>): Map<TestGroup, number> {
+export function recipeGroupAmounts(
+  recipe: Recipe,
+  ingredients: ReadonlyMap<string, Ingredient>,
+): Map<TestGroup, number> {
   const out = new Map<TestGroup, number>();
   for (const ri of recipe.ingredients) {
     const ing = ingredients.get(ri.ingredientId);

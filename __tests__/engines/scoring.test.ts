@@ -17,14 +17,26 @@ const START = '2026-03-01';
 const CALM = rangeDays(START, 10);
 const T1 = addDays(START, 10); // first dose day
 
-function ci(day: string, score: Score, extra: { symptoms?: Symptom[]; unusual?: UnusualReason[]; taken?: boolean | null } = {}): CheckIn {
-  return { day, score, symptoms: extra.symptoms ?? [], unusual: extra.unusual ?? [], testFoodTaken: extra.taken ?? null };
+function ci(
+  day: string,
+  score: Score,
+  extra: { symptoms?: Symptom[]; unusual?: UnusualReason[]; taken?: boolean | null } = {},
+): CheckIn {
+  return {
+    day,
+    score,
+    symptoms: extra.symptoms ?? [],
+    unusual: extra.unusual ?? [],
+    testFoodTaken: extra.taken ?? null,
+  };
 }
 
 /** Builds a check-in map: calm days at `calm` score, then the given scores from T1 onward. */
 function history(calm: Score | Score[], after: (Score | CheckIn | null)[]): Map<string, CheckIn> {
   const m = new Map<string, CheckIn>();
-  CALM.forEach((d, i) => m.set(d, ci(d, Array.isArray(calm) ? (calm[i % calm.length] as Score) : calm)));
+  CALM.forEach((d, i) =>
+    m.set(d, ci(d, Array.isArray(calm) ? (calm[i % calm.length] as Score) : calm)),
+  );
   after.forEach((s, i) => {
     const d = addDays(T1, i);
     if (s === null) return;
@@ -35,8 +47,18 @@ function history(calm: Score | Score[], after: (Score | CheckIn | null)[]): Map<
 
 const PORTIONS = ['¼ clove garlic', '½ clove garlic', '¾ clove garlic'];
 
-function garlicTest(doseDays = [T1, addDays(T1, 1), addDays(T1, 2)], kind: ScoredTest['kind'] = 'real'): ScoredTest {
-  return { id: 't1', group: 'garlic', kind, doseDays, portions: PORTIONS, matchingSymptoms: ['bloating', 'gas', 'pain'] };
+function garlicTest(
+  doseDays = [T1, addDays(T1, 1), addDays(T1, 2)],
+  kind: ScoredTest['kind'] = 'real',
+): ScoredTest {
+  return {
+    id: 't1',
+    group: 'garlic',
+    kind,
+    doseDays,
+    portions: PORTIONS,
+    matchingSymptoms: ['bloating', 'gas', 'pain'],
+  };
 }
 
 describe('baseline', () => {
@@ -57,7 +79,10 @@ describe('baseline', () => {
   });
 
   it('returns null with fewer than 3 valid days', () => {
-    const m = new Map<string, CheckIn>([[CALM[0]!, ci(CALM[0]!, 1)], [CALM[1]!, ci(CALM[1]!, 1)]]);
+    const m = new Map<string, CheckIn>([
+      [CALM[0]!, ci(CALM[0]!, 1)],
+      [CALM[1]!, ci(CALM[1]!, 1)],
+    ]);
     expect(computeBaseline(CALM, m, T1)).toBeNull();
   });
 
@@ -162,7 +187,10 @@ describe('missing and unusual days', () => {
   });
 
   it('a thin baseline gives an unclear result', () => {
-    const m = new Map<string, CheckIn>([[CALM[8]!, ci(CALM[8]!, 1)], [T1, ci(T1, 4)]]);
+    const m = new Map<string, CheckIn>([
+      [CALM[8]!, ci(CALM[8]!, 1)],
+      [T1, ci(T1, 4)],
+    ]);
     const r = scoreTest(garlicTest([T1]), m, CALM);
     expect(r.outcome).toBe('unclear');
     expect(r.failedChecks).toEqual(['thin_baseline']);
@@ -218,7 +246,11 @@ describe('confidence', () => {
 
 describe('controls, retests and self-reports', () => {
   it('scores a placebo and turns it into a control signal', () => {
-    const r = scoreTest({ ...garlicTest([T1], 'control'), group: 'control' }, history(1, [3, 1]), CALM);
+    const r = scoreTest(
+      { ...garlicTest([T1], 'control'), group: 'control' },
+      history(1, [3, 1]),
+      CALM,
+    );
     expect(r.reactionDose).toBe(1);
     expect(r.explanation).toMatch(/placebo/);
     expect(toControlSignal(r, T1)).toEqual({ day: T1, reacted: true, delta: 2 });
@@ -226,7 +258,12 @@ describe('controls, retests and self-reports', () => {
 
   it('a placebo is not compared against itself', () => {
     const controls: ControlSignal[] = [{ day: T1, reacted: true, delta: 2 }];
-    const r = scoreTest({ ...garlicTest([T1], 'control'), group: 'control' }, history(1, [3, 1]), CALM, controls);
+    const r = scoreTest(
+      { ...garlicTest([T1], 'control'), group: 'control' },
+      history(1, [3, 1]),
+      CALM,
+      controls,
+    );
     expect(r.failedChecks).not.toContain('control_reaction');
   });
 
@@ -260,6 +297,8 @@ describe('explanations', () => {
 
   it('describes a tolerated test', () => {
     const r = scoreTest(garlicTest(), history(0, [0, 1, 0, 0]), CALM);
-    expect(r.explanation).toBe('Your stomach stayed around “Great” through all three days, up to ¾ clove garlic.');
+    expect(r.explanation).toBe(
+      'Your stomach stayed around “Great” through all three days, up to ¾ clove garlic.',
+    );
   });
 });

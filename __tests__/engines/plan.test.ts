@@ -62,7 +62,9 @@ describe('filters', () => {
   });
 
   it('respects diet, allergens, gluten, dislikes and equipment', () => {
-    const pool = eligibleRecipes(input({ diet: 'vegetarian', allergens: ['soy'], glutenFree: true, dislikes: ['zucchini'] }));
+    const pool = eligibleRecipes(
+      input({ diet: 'vegetarian', allergens: ['soy'], glutenFree: true, dislikes: ['zucchini'] }),
+    );
     expect(pool.length).toBeGreaterThan(0);
     for (const r of pool) {
       expect(r.derived.diets).toContain('vegetarian');
@@ -71,11 +73,14 @@ describe('filters', () => {
       expect(r.ingredients.map((i) => i.ingredientId)).not.toContain('zucchini');
     }
     expect(eligibleRecipes(input()).some((r) => r.equipment.includes('grill'))).toBe(false);
-    expect(eligibleRecipes(input({ equipment: ['grill'] })).some((r) => r.equipment.includes('grill'))).toBe(true);
+    expect(
+      eligibleRecipes(input({ equipment: ['grill'] })).some((r) => r.equipment.includes('grill')),
+    ).toBe(true);
   });
 
   it('keeps to the time limit when there are enough dinners', () => {
-    for (const id of ids(generatePlan(input({ maxMinutes: 30 })))) expect(RECIPE.get(id!)!.minutes).toBeLessThanOrEqual(35);
+    for (const id of ids(generatePlan(input({ maxMinutes: 30 }))))
+      expect(RECIPE.get(id!)!.minutes).toBeLessThanOrEqual(35);
   });
 
   it('never repeats a dinner within a week', () => {
@@ -87,7 +92,15 @@ describe('filters', () => {
 describe('nights', () => {
   it('marks non-cook and eating-out nights', () => {
     const p = generatePlan(input({ eatingOut: [addDays(MONDAY, 2)] }));
-    expect(p.nights.map((n) => n.status)).toEqual(['cook', 'cook', 'eating_out', 'cook', 'cook', 'not_cooking', 'not_cooking']);
+    expect(p.nights.map((n) => n.status)).toEqual([
+      'cook',
+      'cook',
+      'eating_out',
+      'cook',
+      'cook',
+      'not_cooking',
+      'not_cooking',
+    ]);
     expect(p.nights[2]?.recipeId).toBeNull();
   });
 
@@ -135,7 +148,10 @@ describe('determinism and variety', () => {
 
   it('avoids dinners from the last 4 weeks when it can', () => {
     const first = ids(generatePlan(input()));
-    const history = first.map((recipeId, i) => ({ recipeId: recipeId!, day: addDays(MONDAY, -7 + i) }));
+    const history = first.map((recipeId, i) => ({
+      recipeId: recipeId!,
+      day: addDays(MONDAY, -7 + i),
+    }));
     const next = ids(generatePlan(input({ weekStart: MONDAY, history })));
     expect(next.filter((id) => first.includes(id)).length).toBeLessThan(2);
   });
@@ -148,7 +164,9 @@ describe('determinism and variety', () => {
   });
 
   it('prefers kid-friendly dinners for families', () => {
-    const kids = cooked(generatePlan(input({ kids: true }))).filter((n) => RECIPE.get(n.recipeId!)?.kidFriendly).length;
+    const kids = cooked(generatePlan(input({ kids: true }))).filter(
+      (n) => RECIPE.get(n.recipeId!)?.kidFriendly,
+    ).length;
     expect(kids).toBeGreaterThanOrEqual(4);
   });
 });
@@ -168,7 +186,9 @@ describe('budget', () => {
   });
 
   it('a tighter budget never costs more', () => {
-    expect(generatePlan(input({ budget: 60 })).total).toBeLessThanOrEqual(generatePlan(input({ budget: 400 })).total);
+    expect(generatePlan(input({ budget: 60 })).total).toBeLessThanOrEqual(
+      generatePlan(input({ budget: 400 })).total,
+    );
   });
 });
 
@@ -191,9 +211,14 @@ describe('two-week mode', () => {
     const p = generatePlan(input({ nights: 14 }));
     expect(p.nights).toHaveLength(14);
     expect(cooked(p)).toHaveLength(10);
-    const perish = (id: string) => RECIPE.get(id)!.ingredients.filter((x) => (ING.get(x.ingredientId)?.perishableDays ?? 99) <= 7).length;
-    const week = (w: number) => cooked(p).filter((n) => (w === 1 ? n.day < addDays(MONDAY, 7) : n.day >= addDays(MONDAY, 7)));
-    const avg = (ns: typeof p.nights) => ns.reduce((s, n) => s + perish(n.recipeId!), 0) / ns.length;
+    const perish = (id: string) =>
+      RECIPE.get(id)!.ingredients.filter(
+        (x) => (ING.get(x.ingredientId)?.perishableDays ?? 99) <= 7,
+      ).length;
+    const week = (w: number) =>
+      cooked(p).filter((n) => (w === 1 ? n.day < addDays(MONDAY, 7) : n.day >= addDays(MONDAY, 7)));
+    const avg = (ns: typeof p.nights) =>
+      ns.reduce((s, n) => s + perish(n.recipeId!), 0) / ns.length;
     expect(avg(week(2))).toBeLessThanOrEqual(avg(week(1)) + 0.5);
     expect(weekday(p.nights[13]!.day)).toBe(6);
   });

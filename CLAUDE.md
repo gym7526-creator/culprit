@@ -79,6 +79,7 @@ npm run check              # lint + typecheck + tests + content:validate
 npm run content:build      # rebuild /assets/data from data-pipeline/source (derives all recipe tags)
 npm run content:validate   # schema + integrity + §5.2 coverage report (fails on any problem)
 npm run content:prices     # monthly BLS refresh → data-pipeline/source/bls-prices.json, then content:build
+npm run engine:simulate -- --weeks 4 --profile fodmap   # day-by-day program simulation with real engines
 npm start                  # expo start
 ```
 
@@ -193,6 +194,30 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
 - **Pending owner approval:** the build-time recipe drafting script (spec §5.2) should use `@anthropic-ai/sdk`
   as a devDependency. The 150 MVP recipes were drafted directly; the script lands once the dependency is approved.
 
+## Engines (Phase 2, done)
+
+All in `src/engines`, pure TypeScript, no React. **Engines import each other with relative `.ts` paths** (no `@/`
+alias) so Node can run them directly for `engine:simulate`; type-only imports are erased. No TS-only runtime syntax
+(enums, namespaces, constructor parameter properties).
+
+- `dates.ts`: "YYYY-MM-DD" day keys, UTC-safe math, Monday-first weeks. `rng.ts`: FNV-1a + mulberry32.
+- `scoring.ts` (§6.3): baseline = last 5 valid calm/rest scores; reaction = Δ ≥ 2, or Δ ≥ 1 with a matching chip;
+  confidence by failed checks (SD > 0.8, unusual days in window, nearby placebo reaction; similar-size placebo
+  reaction → low); low + borderline → unclear. Explanations from `src/copy/results.ts`.
+- `program.ts` (§6.1): `advance(state, {checkins, tests, now})` replays ready days (a day is ready once it has a
+  check-in, or after noon the next day). Calm 14–28 days; tests up to 3 dose nights (a missed check-in or "didn't eat
+  it" repeats the dose; max 6 attempts); same-night reaction stops early; rest until 2 good days (≤ baseline + 1).
+  Pause/resume, retests, self-reports, `projectSchedule()` for planning test nights, `personalRules()` for plans.
+- `triggers.ts`: ingredient → test groups (fructan split into wheat / onion / garlic; mixed products count as both
+  onion and garlic). Personal plans exclude triggers and allow partial groups only up to the safe dose's grams.
+- `plan.ts` (§6.4): filters → per-(night, recipe) score (cost + variety/recency/feedback/kids/perishables + seeded
+  jitter) → greedy (test nights first) → swap/replace local search with bound pruning → whole-pack grocery total →
+  budget retries → 2 suggestions. `swapOptions`, `applySwap`, `planGroceries`, `eatByTime`.
+- `grocery.ts` (§6.5): cheapest whole-pack combination (bounded DFS, greedy fallback), store-walk aisle order,
+  pantry cross-off, share text. `price.ts` (§6.6): base × region × chain, override last, ZIP3 lookup, chain order.
+- `schedule.ts` (§6.7): pure list of pending local notifications; quiet hours 22:00–08:00 except the chosen
+  check-in time; follow-up +45 min; trial reminder moved out of quiet hours to 21:00 the evening before.
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -200,8 +225,8 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
 - [x] **1 Content pipeline:** zod schemas, 390 ingredients, 150 recipes, tag derivation, validator with §5.2
       coverage rules, tests/staples/cards JSON, BLS price pipeline + region/chain tables, ZIP3→region.
       `npm run content:validate` prints a coverage report. (LLM drafting script pending dependency approval.)
-- [ ] **2 Engines:** program, scoring (25+ tests), plan (<150 ms), grocery, price, schedule. A debug CLI prints a 4-week
-      simulation.
+- [x] **2 Engines:** program, scoring (34 tests), plan (~15 ms/week in Node), grocery, price, schedule.
+      `npm run engine:simulate` prints a program simulation.
 - [ ] **3 Onboarding + plan preview:** §8 screens, real engine output at O21, resume-on-relaunch, safety logic,
       notification pre-permission. Maestro: 3 profiles + under-18 blocked.
 - [ ] **4 Paywall + purchases:** RevenueCat (owner adds keys/products), 3-step paywall, welcome offer, restore,
@@ -220,3 +245,9 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
 - 2026-10-27: Prefs persistence uses `expo-sqlite/kv-store` instead of adding AsyncStorage.
 - 2026-10-27: Reflux moderate-fat cap set to 25 g per serving. `@types/node` added (types only) for pipeline scripts.
 - 2026-10-27: Markdown is excluded from Prettier (it reflowed CLAUDE.md lists).
+- 2026-10-28: **Scoring window refinement.** The spec's window max(score[day], score[day+1]) makes a bad score on the
+  next dose night count against the *previous* dose, so partials could almost never happen. The next day now only
+  counts when it isn't itself the next dose day; a reaction on dose night 2 means dose 1's portion was tolerated
+  (matches the NHS guidance the spec cites). Delayed reactions still count on rest days.
+- 2026-10-28: Stovetop, oven and sheet pan are assumed available; other equipment must be selected in onboarding.
+- 2026-10-28: Test-night foods go on the grocery list at the day-3 portion (one person).

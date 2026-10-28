@@ -45,24 +45,41 @@ function make(over: Partial<CreateOptions> = {}): ProgramState {
 type DayFn = (day: string, s: ProgramState) => Partial<CheckIn> | null;
 
 /** Simulates `days` days from calm day 1, checking in each evening and advancing the next morning. */
-function simulate(s0: ProgramState, days: number, fn: DayFn, checkins = new Map<string, CheckIn>()) {
+function simulate(
+  s0: ProgramState,
+  days: number,
+  fn: DayFn,
+  checkins = new Map<string, CheckIn>(),
+) {
   let s = s0;
   for (let i = 0; i < days; i++) {
     const day = addDays(DAY1, i);
     const c = fn(day, s);
-    if (c) checkins.set(day, { day, score: 0, symptoms: [], unusual: [], testFoodTaken: null, ...c });
+    if (c)
+      checkins.set(day, { day, score: 0, symptoms: [], unusual: [], testFoodTaken: null, ...c });
     s = advance(s, { checkins, tests: T.tests, now: { day: addDays(day, 1), hour: 13 } });
   }
   return { s, checkins };
 }
 
-const always = (score: Score): DayFn => () => ({ score });
+const always =
+  (score: Score): DayFn =>
+  () => ({ score });
 
 describe('queue', () => {
   it('follows the fodmap order with one placebo per 4 tests', () => {
     const q = buildQueue(T.order, T.tests, baseOpts);
     const real = q.filter((x) => x.kind === 'real').map((x) => x.group);
-    expect(real).toEqual(['wheat', 'onion', 'garlic', 'mannitol', 'gos', 'lactose', 'fructose', 'sorbitol']);
+    expect(real).toEqual([
+      'wheat',
+      'onion',
+      'garlic',
+      'mannitol',
+      'gos',
+      'lactose',
+      'fructose',
+      'sorbitol',
+    ]);
     expect(q.filter((x) => x.kind === 'control')).toHaveLength(2);
     expect(q[0]?.kind).toBe('real');
   });
@@ -72,7 +89,12 @@ describe('queue', () => {
   });
 
   it('skips wheat for celiac, known-fine and self-reported foods', () => {
-    const q = buildQueue(T.order, T.tests, { ...baseOpts, celiac: true, knownFine: ['lactose'], selfReported: ['onion'] });
+    const q = buildQueue(T.order, T.tests, {
+      ...baseOpts,
+      celiac: true,
+      knownFine: ['lactose'],
+      selfReported: ['onion'],
+    });
     const groups = q.map((x) => x.group);
     expect(groups).not.toContain('wheat');
     expect(groups).not.toContain('lactose');
@@ -82,12 +104,20 @@ describe('queue', () => {
   it('only includes alcohol for 21+ users who opt in', () => {
     const reflux = { ...baseOpts, profile: 'reflux' as const };
     expect(buildQueue(T.order, T.tests, reflux).map((x) => x.group)).not.toContain('alcohol');
-    expect(buildQueue(T.order, T.tests, { ...reflux, alcoholOptIn: true, age: 20 }).map((x) => x.group)).not.toContain('alcohol');
-    expect(buildQueue(T.order, T.tests, { ...reflux, alcoholOptIn: true, age: 21 }).map((x) => x.group)).toContain('alcohol');
+    expect(
+      buildQueue(T.order, T.tests, { ...reflux, alcoholOptIn: true, age: 20 }).map((x) => x.group),
+    ).not.toContain('alcohol');
+    expect(
+      buildQueue(T.order, T.tests, { ...reflux, alcoholOptIn: true, age: 21 }).map((x) => x.group),
+    ).toContain('alcohol');
   });
 
   it('interleaves mixed profiles starting with the main symptom', () => {
-    const q = buildQueue(T.order, T.tests, { ...baseOpts, profile: 'mixed', refluxFirst: true }).filter((x) => x.kind === 'real');
+    const q = buildQueue(T.order, T.tests, {
+      ...baseOpts,
+      profile: 'mixed',
+      refluxFirst: true,
+    }).filter((x) => x.kind === 'real');
     expect(q.slice(0, 4).map((x) => x.group)).toEqual(['coffee', 'wheat', 'tomato', 'onion']);
   });
 });
@@ -127,20 +157,27 @@ describe('calm phase', () => {
   });
 
   it('unusual days do not count toward the calm streak', () => {
-    const fn: DayFn = (d) => (d === addDays(DAY1, 13) ? { score: 0, unusual: ['sick'] } : { score: 0 });
+    const fn: DayFn = (d) =>
+      d === addDays(DAY1, 13) ? { score: 0, unusual: ['sick'] } : { score: 0 };
     const { s } = simulate(make(), 14, fn);
     expect(s.phase).toBe('calm');
   });
 });
 
 describe('testing', () => {
-  const calmThen = (after: (offset: number, s: ProgramState) => Partial<CheckIn> | null): DayFn => (d, s) => {
-    const offset = Math.round((Date.parse(d) - Date.parse(addDays(DAY1, 14))) / 86_400_000);
-    return offset < 0 ? { score: 1 } : after(offset, s);
-  };
+  const calmThen =
+    (after: (offset: number, s: ProgramState) => Partial<CheckIn> | null): DayFn =>
+    (d, s) => {
+      const offset = Math.round((Date.parse(d) - Date.parse(addDays(DAY1, 14))) / 86_400_000);
+      return offset < 0 ? { score: 1 } : after(offset, s);
+    };
 
   it('runs a tolerated test over 3 doses, rests 1 day, then starts the next', () => {
-    const { s } = simulate(make(), 14 + 5, calmThen(() => ({ score: 1 })));
+    const { s } = simulate(
+      make(),
+      14 + 5,
+      calmThen(() => ({ score: 1 })),
+    );
     const first = s.completed[0]!;
     expect(first.group).toBe('wheat');
     expect(first.doseDays).toHaveLength(3);
@@ -150,7 +187,11 @@ describe('testing', () => {
   });
 
   it('stops early on a same-night reaction and rests until two good days', () => {
-    const { s } = simulate(make(), 14 + 4, calmThen((o) => ({ score: o === 0 ? 4 : o === 1 ? 3 : 1 })));
+    const { s } = simulate(
+      make(),
+      14 + 4,
+      calmThen((o) => ({ score: o === 0 ? 4 : o === 1 ? 3 : 1 })),
+    );
     const first = s.completed[0]!;
     expect(first.doseDays).toHaveLength(1);
     expect(first.result?.outcome).toBe('trigger');
@@ -161,14 +202,26 @@ describe('testing', () => {
   });
 
   it('repeats the dose when the test food was not eaten', () => {
-    const { s } = simulate(make(), 14 + 4, calmThen((o) => ({ score: 1, testFoodTaken: o === 1 ? false : null })));
+    const { s } = simulate(
+      make(),
+      14 + 4,
+      calmThen((o) => ({ score: 1, testFoodTaken: o === 1 ? false : null })),
+    );
     expect(s.completed[0]?.doseDays).toHaveLength(3);
     expect(s.completed[0]?.endedOn).toBe(addDays(DAY1, 14 + 3));
   });
 
   it('extends the test by a day when a dose-night check-in is missing', () => {
-    const { s } = simulate(make(), 14 + 4, calmThen((o) => (o === 0 ? null : { score: 1 })));
-    expect(s.completed[0]?.doseDays).toEqual([addDays(DAY1, 15), addDays(DAY1, 16), addDays(DAY1, 17)]);
+    const { s } = simulate(
+      make(),
+      14 + 4,
+      calmThen((o) => (o === 0 ? null : { score: 1 })),
+    );
+    expect(s.completed[0]?.doseDays).toEqual([
+      addDays(DAY1, 15),
+      addDays(DAY1, 16),
+      addDays(DAY1, 17),
+    ]);
   });
 
   it('reaches the personal phase when every test is done', () => {
@@ -193,7 +246,12 @@ describe('late check-ins', () => {
     expect(isDayReady('2026-04-01', { day: '2026-04-02', hour: 12 }, none)).toBe(true);
   });
   it('processes a day immediately once it has a check-in', () => {
-    const m = new Map<string, CheckIn>([['2026-04-01', { day: '2026-04-01', score: 1, symptoms: [], unusual: [], testFoodTaken: null }]]);
+    const m = new Map<string, CheckIn>([
+      [
+        '2026-04-01',
+        { day: '2026-04-01', score: 1, symptoms: [], unusual: [], testFoodTaken: null },
+      ],
+    ]);
     expect(isDayReady('2026-04-01', { day: '2026-04-01', hour: 21 }, m)).toBe(true);
   });
   it('never processes the future', () => {
@@ -258,6 +316,11 @@ describe('projection', () => {
     expect(p[addDays(DAY1, 16)]).toEqual({ type: 'dose', group: 'wheat', kind: 'real', dose: 3 });
     expect(p[addDays(DAY1, 17)]).toEqual({ type: 'rest' });
     const second = s.queue[1]!;
-    expect(p[addDays(DAY1, 18)]).toEqual({ type: 'dose', group: second.group, kind: second.kind, dose: 1 });
+    expect(p[addDays(DAY1, 18)]).toEqual({
+      type: 'dose',
+      group: second.group,
+      kind: second.kind,
+      dose: 1,
+    });
   });
 });

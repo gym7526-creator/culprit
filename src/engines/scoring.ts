@@ -148,7 +148,10 @@ function recoveryText(days: number | null): string {
 }
 
 /** The placebo test closest in time to `day` (by its first dose day). */
-export function nearestControl(day: DayKey, controls: readonly ControlSignal[]): ControlSignal | null {
+export function nearestControl(
+  day: DayKey,
+  controls: readonly ControlSignal[],
+): ControlSignal | null {
   let best: ControlSignal | null = null;
   for (const c of controls) {
     if (!best || Math.abs(diffDays(c.day, day)) < Math.abs(diffDays(best.day, day))) best = c;
@@ -181,7 +184,8 @@ export function scoreTest(
     explanation: '',
   };
   if (!firstDay) return { ...empty, explanation: resultCopy.noData };
-  if (!base) return { ...empty, failedChecks: ['thin_baseline'], explanation: resultCopy.noBaseline };
+  if (!base)
+    return { ...empty, failedChecks: ['thin_baseline'], explanation: resultCopy.noBaseline };
 
   const windows = test.doseDays.map((d, i) =>
     doseWindow(d, test.doseDays[i + 1], checkins, test.matchingSymptoms),
@@ -208,7 +212,10 @@ export function scoreTest(
   if (scoredWindows.some((w) => w.unusual)) failed.push('unusual_days');
   const ctl = test.kind === 'control' ? null : nearestControl(firstDay, controls);
   const similarControl =
-    ctl !== null && ctl.reacted && ctl.delta !== null && Math.abs(ctl.delta - maxDelta) <= SIMILAR_CONTROL_DELTA;
+    ctl !== null &&
+    ctl.reacted &&
+    ctl.delta !== null &&
+    Math.abs(ctl.delta - maxDelta) <= SIMILAR_CONTROL_DELTA;
   if (ctl?.reacted) failed.push('control_reaction');
   const confidence: Confidence =
     similarControl || failed.length >= 2 ? 'low' : failed.length === 1 ? 'medium' : 'high';
@@ -216,7 +223,8 @@ export function scoreTest(
   const reacted = reactionIndex >= 0;
   const reactionDose = reacted ? ((reactionIndex + 1) as 1 | 2 | 3) : null;
   const allThreeEaten = test.doseDays.length >= 3;
-  const borderline = !reacted && scoredWindows.some((w, i) => isBorderline(deltas[i] ?? null, w.chip));
+  const borderline =
+    !reacted && scoredWindows.some((w, i) => isBorderline(deltas[i] ?? null, w.chip));
 
   let outcome: Outcome;
   if (reacted) outcome = reactionIndex === 0 ? 'trigger' : 'partial';
@@ -224,7 +232,9 @@ export function scoreTest(
   else if (!allThreeEaten) outcome = 'unclear';
   else outcome = 'tolerated';
 
-  const safeDose = (reacted ? reactionIndex : outcome === 'tolerated' ? 3 : Math.min(2, deltas.length)) as 0 | 1 | 2 | 3;
+  const safeDose = (
+    reacted ? reactionIndex : outcome === 'tolerated' ? 3 : Math.min(2, deltas.length)
+  ) as 0 | 1 | 2 | 3;
 
   // Explanation.
   let explanation: string;

@@ -57,7 +57,8 @@
     "check": "npm run lint && npm run typecheck && npm test && npm run content:validate",
     "content:build": "node --no-warnings data-pipeline/scripts/build.ts",
     "content:validate": "node --no-warnings data-pipeline/scripts/validate.ts",
-    "content:prices": "node --no-warnings data-pipeline/scripts/fetch-bls.ts"
+    "content:prices": "node --no-warnings data-pipeline/scripts/fetch-bls.ts",
+    "engine:simulate": "node --no-warnings data-pipeline/scripts/simulate.ts"
   },
   "private": true,
   "jest": {

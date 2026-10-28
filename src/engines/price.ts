@@ -23,7 +23,12 @@ export function overrideKey(chainId: string, ingredientId: string, packIndex: nu
   return `${chainId}:${ingredientId}:${packIndex}`;
 }
 
-export function packPrice(pack: Pack, ingredientId: string, packIndex: number, ctx: PriceContext): number {
+export function packPrice(
+  pack: Pack,
+  ingredientId: string,
+  packIndex: number,
+  ctx: PriceContext,
+): number {
   const override = ctx.overrides[overrideKey(ctx.chainId, ingredientId, packIndex)];
   if (override !== undefined) return roundCents(override);
   return roundCents(pack.basePriceUSD * ctx.regionMultiplier * ctx.chainIndex);
@@ -61,7 +66,11 @@ export function priceContext(
 }
 
 /** Chains for the O13 list: ones common in the user's state/region first, then nationwide, then the rest. */
-export function chainsForZip(zip: string, regions: RegionsFile, chains: ChainsFile): ChainsFile['chains'] {
+export function chainsForZip(
+  zip: string,
+  regions: RegionsFile,
+  chains: ChainsFile,
+): ChainsFile['chains'] {
   const state = zipToState(zip, regions);
   const region = state ? regions.stateToRegion[state] : undefined;
   const rank = (c: ChainsFile['chains'][number]): number => {

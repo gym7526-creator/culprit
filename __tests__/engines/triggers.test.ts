@@ -1,4 +1,9 @@
-import { allowedInPersonalPlan, doseGrams, recipeGroupAmounts, triggerGroupsOf } from '@/engines/triggers';
+import {
+  allowedInPersonalPlan,
+  doseGrams,
+  recipeGroupAmounts,
+  triggerGroupsOf,
+} from '@/engines/triggers';
 
 import { ING, recipe, TESTS } from './helpers';
 
@@ -35,8 +40,12 @@ describe('triggerGroupsOf', () => {
 describe('personal plan rules', () => {
   it('excludes recipes with a confirmed trigger', () => {
     const r = recipe('spaghetti_marinara'); // garlic + marinara (onion/garlic) + wheat pasta
-    expect(allowedInPersonalPlan(r, { triggers: ['garlic'], partial: [] }, TESTS.tests, ING)).toBe(false);
-    expect(allowedInPersonalPlan(r, { triggers: ['mint'], partial: [] }, TESTS.tests, ING)).toBe(true);
+    expect(allowedInPersonalPlan(r, { triggers: ['garlic'], partial: [] }, TESTS.tests, ING)).toBe(
+      false,
+    );
+    expect(allowedInPersonalPlan(r, { triggers: ['mint'], partial: [] }, TESTS.tests, ING)).toBe(
+      true,
+    );
   });
 
   it('allows a partial group only up to the safe dose', () => {
@@ -46,14 +55,21 @@ describe('personal plan rules', () => {
     const dose3 = doseGrams(test('garlic'), 3, ING)!; // ¾ clove = 3.75 g
     expect(dose3).toBeCloseTo(3.75);
     expect(
-      allowedInPersonalPlan(recipe('garlic_herb_roast_chicken'), { triggers: [], partial: [{ group: 'garlic', safeDose: 2 }] }, TESTS.tests, ING),
+      allowedInPersonalPlan(
+        recipe('garlic_herb_roast_chicken'),
+        { triggers: [], partial: [{ group: 'garlic', safeDose: 2 }] },
+        TESTS.tests,
+        ING,
+      ),
     ).toBe(false);
   });
 
   it('a calm-safe recipe fits every rule set', () => {
     const r = recipe('ginger_soy_chicken_rice_bowls');
     const everything = TESTS.tests.map((t) => t.id).filter((g) => g !== 'control');
-    expect(allowedInPersonalPlan(r, { triggers: everything, partial: [] }, TESTS.tests, ING)).toBe(true);
+    expect(allowedInPersonalPlan(r, { triggers: everything, partial: [] }, TESTS.tests, ING)).toBe(
+      true,
+    );
   });
 
   it('timing tests have no dose weight', () => {

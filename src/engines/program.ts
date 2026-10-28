@@ -123,7 +123,11 @@ function interleave<T>(a: readonly T[], b: readonly T[]): T[] {
 }
 
 /** Test order (spec §5.4) with skips, safety gates and one placebo per block of real tests. */
-export function buildQueue(order: TestsFile['order'], tests: readonly TestDefinition[], o: QueueOptions): QueueItem[] {
+export function buildQueue(
+  order: TestsFile['order'],
+  tests: readonly TestDefinition[],
+  o: QueueOptions,
+): QueueItem[] {
   const byId = new Map(tests.map((t) => [t.id, t]));
   const allowed = (g: TestGroup) => {
     const t = byId.get(g);
@@ -147,7 +151,9 @@ export function buildQueue(order: TestsFile['order'], tests: readonly TestDefini
   const rand = seededRandom(`${o.seed}:controls`);
   const out: QueueItem[] = [];
   for (let i = 0; i < groups.length; i += order.controlEvery) {
-    const block: QueueItem[] = groups.slice(i, i + order.controlEvery).map((group) => ({ group, kind: 'real' }));
+    const block: QueueItem[] = groups
+      .slice(i, i + order.controlEvery)
+      .map((group) => ({ group, kind: 'real' }));
     // Never first in the whole program, and only for full blocks.
     if (block.length === order.controlEvery) {
       const at = 1 + Math.floor(rand() * (block.length - 1));
@@ -158,7 +164,11 @@ export function buildQueue(order: TestsFile['order'], tests: readonly TestDefini
   return out;
 }
 
-export function createProgram(order: TestsFile['order'], tests: readonly TestDefinition[], o: CreateOptions): ProgramState {
+export function createProgram(
+  order: TestsFile['order'],
+  tests: readonly TestDefinition[],
+  o: CreateOptions,
+): ProgramState {
   const base: ProgramState = {
     version: 1,
     phase: o.gentle ? 'personal' : 'setup',
@@ -188,7 +198,9 @@ export function createProgram(order: TestsFile['order'], tests: readonly TestDef
 // ----------------------------------------------------------------------------------------- helpers
 
 function isPaused(s: ProgramState, day: DayKey): boolean {
-  return s.pauses.some((p) => diffDays(p.from, day) >= 0 && (p.to === null || diffDays(day, p.to) > 0));
+  return s.pauses.some(
+    (p) => diffDays(p.from, day) >= 0 && (p.to === null || diffDays(day, p.to) > 0),
+  );
 }
 
 /** Calm and rest days: the days a baseline may be drawn from. */
@@ -205,7 +217,14 @@ function startNextTest(s: ProgramState, startOn: DayKey): ProgramState {
   return {
     ...s,
     queue: rest,
-    current: { id: `t${s.nextId}`, group: next.group, kind: next.kind, startedOn: startOn, doseDays: [], attempts: 0 },
+    current: {
+      id: `t${s.nextId}`,
+      group: next.group,
+      kind: next.kind,
+      startedOn: startOn,
+      doseDays: [],
+      attempts: 0,
+    },
     nextId: s.nextId + 1,
   };
 }
@@ -230,7 +249,12 @@ function scoreCompleted(s: ProgramState, ctx: AdvanceContext, done: CompletedTes
   );
 }
 
-function sameNightReaction(s: ProgramState, ctx: AdvanceContext, test: ActiveTest, day: DayKey): boolean {
+function sameNightReaction(
+  s: ProgramState,
+  ctx: AdvanceContext,
+  test: ActiveTest,
+  day: DayKey,
+): boolean {
   const c = ctx.checkins.get(day);
   const base = computeBaseline(baselineCandidates(s), ctx.checkins, test.startedOn);
   if (!c || !base) return false;
@@ -276,7 +300,12 @@ function processDay(state: ProgramState, day: DayKey, ctx: AdvanceContext): Prog
       s.calmDaysDone >= CALM_MIN_DAYS &&
       streakDays.every((d) => {
         const c = ctx.checkins.get(d);
-        return s.dayLog[d] === 'calm' && c !== undefined && c.unusual.length === 0 && c.score <= CALM_SETTLED_SCORE;
+        return (
+          s.dayLog[d] === 'calm' &&
+          c !== undefined &&
+          c.unusual.length === 0 &&
+          c.score <= CALM_SETTLED_SCORE
+        );
       });
     if (settled || s.calmDaysDone >= CALM_MAX_DAYS) {
       s = {
@@ -323,7 +352,9 @@ function processDay(state: ProgramState, day: DayKey, ctx: AdvanceContext): Prog
     s = { ...s, dayLog: { ...s.dayLog, [day]: 'rest' } };
     // Close any result whose next-day window has now passed.
     const completed = s.completed.map((t) =>
-      t.result === null && diffDays(t.endedOn, day) >= 1 ? { ...t, result: scoreCompleted(s, ctx, t) } : t,
+      t.result === null && diffDays(t.endedOn, day) >= 1
+        ? { ...t, result: scoreCompleted(s, ctx, t) }
+        : t,
     );
     s = { ...s, completed };
 
@@ -371,7 +402,9 @@ export function advance(state: ProgramState, ctx: AdvanceContext): ProgramState 
 export function pauseProgram(s: ProgramState, day: DayKey): ProgramState {
   if (s.pauses.some((p) => p.to === null)) return s;
   // An interrupted test goes back to the front of the queue and starts over later.
-  const queue = s.current ? [{ group: s.current.group, kind: s.current.kind }, ...s.queue] : s.queue;
+  const queue = s.current
+    ? [{ group: s.current.group, kind: s.current.kind }, ...s.queue]
+    : s.queue;
   return { ...s, current: null, queue, pauses: [...s.pauses, { from: day, to: null }] };
 }
 
@@ -396,12 +429,17 @@ export function requestRetest(s: ProgramState, group: TestGroup): ProgramState {
 
 export function markSelfReported(s: ProgramState, group: TestGroup): ProgramState {
   if (s.selfReported.includes(group)) return s;
-  return { ...s, queue: s.queue.filter((q) => q.group !== group), selfReported: [...s.selfReported, group] };
+  return {
+    ...s,
+    queue: s.queue.filter((q) => q.group !== group),
+    selfReported: [...s.selfReported, group],
+  };
 }
 
 // ------------------------------------------------------------------------------------------ views
 
-export type GroupStatus = 'untested' | 'testing' | 'trigger' | 'partial' | 'cleared' | 'unclear' | 'self_reported';
+export type GroupStatus =
+  'untested' | 'testing' | 'trigger' | 'partial' | 'cleared' | 'unclear' | 'self_reported';
 
 /** Latest result per group (retests replace earlier results). Placebos are excluded. */
 export function latestResults(s: ProgramState): Map<TestGroup, TestResult> {
@@ -416,7 +454,8 @@ export function latestResults(s: ProgramState): Map<TestGroup, TestResult> {
 export function groupStatus(s: ProgramState, group: TestGroup): GroupStatus {
   if (s.current?.group === group && s.current.doseDays.length > 0) return 'testing';
   const r = latestResults(s).get(group);
-  if (!r) return s.completed.some((t) => t.group === group && t.result === null) ? 'testing' : 'untested';
+  if (!r)
+    return s.completed.some((t) => t.group === group && t.result === null) ? 'testing' : 'untested';
   switch (r.outcome) {
     case 'trigger':
       return 'trigger';
@@ -442,7 +481,8 @@ export function personalRules(s: ProgramState): PersonalRules {
   const partial: PersonalRules['partial'] = [];
   for (const [group, r] of latestResults(s)) {
     if (r.outcome === 'trigger' || r.outcome === 'self_reported') triggers.push(group);
-    else if (r.outcome === 'partial' && (r.safeDose === 1 || r.safeDose === 2)) partial.push({ group, safeDose: r.safeDose });
+    else if (r.outcome === 'partial' && (r.safeDose === 1 || r.safeDose === 2))
+      partial.push({ group, safeDose: r.safeDose });
   }
   return { triggers, partial };
 }
@@ -452,7 +492,13 @@ export type TodayInfo = {
   paused: boolean;
   calmDay: number | null;
   calmTarget: number;
-  test: { group: TestGroup; kind: TestKind; dose: number; totalDoses: number; startsOn: DayKey } | null;
+  test: {
+    group: TestGroup;
+    kind: TestKind;
+    dose: number;
+    totalDoses: number;
+    startsOn: DayKey;
+  } | null;
   testsDone: number;
   testsTotal: number;
   /** 0..1 for the program ring. */
@@ -461,7 +507,9 @@ export type TodayInfo = {
 
 export function todayInfo(s: ProgramState, day: DayKey): TodayInfo {
   const realDone = s.completed.filter((t) => t.kind !== 'control').length + s.selfReported.length;
-  const realLeft = s.queue.filter((q) => q.kind !== 'control').length + (s.current && s.current.kind !== 'control' ? 1 : 0);
+  const realLeft =
+    s.queue.filter((q) => q.kind !== 'control').length +
+    (s.current && s.current.kind !== 'control' ? 1 : 0);
   const testsTotal = realDone + realLeft;
   const calmShare = s.phase === 'setup' ? 0 : Math.min(1, s.calmDaysDone / CALM_MIN_DAYS);
   const testShare = testsTotal === 0 ? (s.phase === 'personal' ? 1 : 0) : realDone / testsTotal;
@@ -469,14 +517,24 @@ export function todayInfo(s: ProgramState, day: DayKey): TodayInfo {
   return {
     phase: s.phase,
     paused: isPaused(s, day),
-    calmDay: s.phase === 'calm' || s.phase === 'setup' ? Math.min(CALM_MAX_DAYS, s.calmDaysDone + (s.phase === 'calm' ? 1 : 0)) : null,
+    calmDay:
+      s.phase === 'calm' || s.phase === 'setup'
+        ? Math.min(CALM_MAX_DAYS, s.calmDaysDone + (s.phase === 'calm' ? 1 : 0))
+        : null,
     calmTarget: CALM_MIN_DAYS,
     test: cur
-      ? { group: cur.group, kind: cur.kind, dose: Math.min(DOSES_PER_TEST, cur.doseDays.length + 1), totalDoses: DOSES_PER_TEST, startsOn: cur.startedOn }
+      ? {
+          group: cur.group,
+          kind: cur.kind,
+          dose: Math.min(DOSES_PER_TEST, cur.doseDays.length + 1),
+          totalDoses: DOSES_PER_TEST,
+          startsOn: cur.startedOn,
+        }
       : null,
     testsDone: realDone,
     testsTotal,
-    progress: s.phase === 'personal' ? 1 : Math.round((calmShare * 0.25 + testShare * 0.75) * 100) / 100,
+    progress:
+      s.phase === 'personal' ? 1 : Math.round((calmShare * 0.25 + testShare * 0.75) * 100) / 100,
   };
 }
 
@@ -499,7 +557,11 @@ export type ProjectedDay =
  * between tests). Used to plan test nights into the week; plans are regenerated whenever the
  * program actually moves.
  */
-export function projectSchedule(s: ProgramState, from: DayKey, days: number): Record<DayKey, ProjectedDay> {
+export function projectSchedule(
+  s: ProgramState,
+  from: DayKey,
+  days: number,
+): Record<DayKey, ProjectedDay> {
   const out: Record<DayKey, ProjectedDay> = {};
   if (s.gentle || s.phase === 'personal') {
     for (let i = 0; i < days; i++) out[addDays(from, i)] = { type: 'personal' };
@@ -514,7 +576,8 @@ export function projectSchedule(s: ProgramState, from: DayKey, days: number): Re
   const timeline: ProjectedDay[] = [];
   let calmDone = s.calmDaysDone;
   if (s.phase === 'setup' || s.phase === 'calm') {
-    const lead = s.phase === 'setup' && s.calmStartedOn ? Math.max(0, diffDays(from, s.calmStartedOn)) : 0;
+    const lead =
+      s.phase === 'setup' && s.calmStartedOn ? Math.max(0, diffDays(from, s.calmStartedOn)) : 0;
     for (let i = 0; i < lead; i++) timeline.push({ type: 'rest' });
     while (calmDone < CALM_MIN_DAYS) {
       calmDone++;
@@ -532,7 +595,8 @@ export function projectSchedule(s: ProgramState, from: DayKey, days: number): Re
   } else if (s.phase === 'testing') {
     timeline.push({ type: 'rest' }); // waiting for two good days
   }
-  for (const q of s.queue) items.push({ group: q.group, kind: q.kind, dosesLeft: DOSES_PER_TEST, startOffset: 0 });
+  for (const q of s.queue)
+    items.push({ group: q.group, kind: q.kind, dosesLeft: DOSES_PER_TEST, startOffset: 0 });
 
   items.forEach((it, idx) => {
     for (let i = timeline.length; i < it.startOffset; i++) timeline.push({ type: 'rest' });

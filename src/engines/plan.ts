@@ -122,7 +122,9 @@ function safetyOk(r: Recipe, input: PlanInput): boolean {
     case 'calm_both':
       return r.derived.calmSafeGut && r.derived.calmSafeReflux;
     case 'personal':
-      return input.personal ? allowedInPersonalPlan(r, input.personal, input.tests, input.ingredients) : true;
+      return input.personal
+        ? allowedInPersonalPlan(r, input.personal, input.tests, input.ingredients)
+        : true;
     case 'gentle':
       return true;
   }
@@ -247,7 +249,8 @@ class Planner {
     if (fb === -1) score += WEIGHTS.disliked;
     if (fb === 1) score += WEIGHTS.liked;
     if (input.kids && !r.kidFriendly) score += WEIGHTS.notKidFriendly;
-    if (input.nights === 14 && slot.index >= 7) score += WEIGHTS.perishableInWeekTwo * f.perishables.size;
+    if (input.nights === 14 && slot.index >= 7)
+      score += WEIGHTS.perishableInWeekTwo * f.perishables.size;
     score += (hashString(`${this.seed}|${slot.day}|${r.id}`) / 4294967296) * WEIGHTS.jitter;
     return score;
   }
@@ -260,7 +263,8 @@ class Planner {
       if (!id) return;
       const r = this.byId.get(id)!;
       score += this.unaryScore(i, r);
-      for (const p of this.facts.get(id)!.perishables) perishCount.set(p, (perishCount.get(p) ?? 0) + 1);
+      for (const p of this.facts.get(id)!.perishables)
+        perishCount.set(p, (perishCount.get(p) ?? 0) + 1);
     });
     // Adjacent (consecutive calendar nights) variety.
     for (let i = 1; i < assign.length; i++) {
@@ -271,7 +275,8 @@ class Planner {
       const fa = this.facts.get(a)!;
       const fb = this.facts.get(b)!;
       if (fa.protein && fa.protein === fb.protein) score += WEIGHTS.sameProteinAdjacent;
-      if (this.byId.get(a)!.cuisine === this.byId.get(b)!.cuisine) score += WEIGHTS.sameCuisineAdjacent;
+      if (this.byId.get(a)!.cuisine === this.byId.get(b)!.cuisine)
+        score += WEIGHTS.sameCuisineAdjacent;
     }
     // Reward shared perishables (less waste), capped per recipe pair-ish.
     let shared = 0;
@@ -295,10 +300,14 @@ class Planner {
   /** Score change from neighbours and unary terms only (perishable sharing excluded). */
   private localDelta(assign: readonly (string | null)[], i: number, next: string): number {
     const prev = assign[i] ?? null;
-    let d = this.unaryScore(i, this.byId.get(next)!) - (prev ? this.unaryScore(i, this.byId.get(prev)!) : 0);
+    let d =
+      this.unaryScore(i, this.byId.get(next)!) -
+      (prev ? this.unaryScore(i, this.byId.get(prev)!) : 0);
     for (const j of [i - 1, i + 1]) {
       if (j < 0 || j >= assign.length) continue;
-      d += this.pairPenalty(i, j, next, assign[j] ?? null) - this.pairPenalty(i, j, prev, assign[j] ?? null);
+      d +=
+        this.pairPenalty(i, j, next, assign[j] ?? null) -
+        this.pairPenalty(i, j, prev, assign[j] ?? null);
     }
     return d;
   }
@@ -312,7 +321,13 @@ class Planner {
     const assign: (string | null)[] = this.slots.map(() => null);
     const used = new Set<string>();
     // Constrained (test) nights first.
-    const order = this.slots.map((s, i) => i).sort((a, b) => Number(this.slots[b]!.testGroup !== null) - Number(this.slots[a]!.testGroup !== null) || a - b);
+    const order = this.slots
+      .map((s, i) => i)
+      .sort(
+        (a, b) =>
+          Number(this.slots[b]!.testGroup !== null) - Number(this.slots[a]!.testGroup !== null) ||
+          a - b,
+      );
     for (const i of order) {
       const slot = this.slots[i]!;
       let best: string | null = null;
@@ -321,7 +336,8 @@ class Planner {
       for (const r of this.candidates(slot)) {
         if (used.has(r.id)) continue;
         // Cheap bound first; only score fully when this candidate could win.
-        if (base + this.localDelta(assign, i, r.id) - this.maxShareGain(r.id) >= bestScore) continue;
+        if (base + this.localDelta(assign, i, r.id) - this.maxShareGain(r.id) >= bestScore)
+          continue;
         const trial = [...assign];
         trial[i] = r.id;
         const s = this.total(trial);
@@ -349,7 +365,11 @@ class Planner {
           const a = current[i];
           const b = current[j];
           if (!a || !b) continue;
-          if (!this.fits(this.slots[i]!, this.byId.get(b)!) || !this.fits(this.slots[j]!, this.byId.get(a)!)) continue;
+          if (
+            !this.fits(this.slots[i]!, this.byId.get(b)!) ||
+            !this.fits(this.slots[j]!, this.byId.get(a)!)
+          )
+            continue;
           const trial = [...current];
           trial[i] = b;
           trial[j] = a;
@@ -389,40 +409,69 @@ class Planner {
 
 export function eatByTime(bedtime: string, gapMinutes: number): string {
   const { hour12, minute, period } = parseTime(bedtime);
-  const total = (((hour12 % 12) + (period === 'pm' ? 12 : 0)) * 60 + minute - gapMinutes + 24 * 60) % (24 * 60);
+  const total =
+    (((hour12 % 12) + (period === 'pm' ? 12 : 0)) * 60 + minute - gapMinutes + 24 * 60) % (24 * 60);
   const h24 = Math.floor(total / 60);
   return toTime(h24 % 12 === 0 ? 12 : h24 % 12, total % 60, h24 >= 12 ? 'pm' : 'am');
 }
 
-function groceryFor(input: PlanInput, recipeIds: readonly string[], byId: ReadonlyMap<string, Recipe>): GroceryList {
+function groceryFor(
+  input: PlanInput,
+  recipeIds: readonly string[],
+  byId: ReadonlyMap<string, Recipe>,
+): GroceryList {
   const recipes = recipeIds.map((id) => byId.get(id)).filter((r): r is Recipe => r !== undefined);
   const needs = needsForRecipes(recipes, input.household);
   // Test foods (one person's portion per dose night) go on the list too.
   for (const [day, group] of Object.entries(input.testNights)) {
-    if (diffDays(input.weekStart, day) < 0 || diffDays(input.weekStart, day) >= input.nights) continue;
+    if (diffDays(input.weekStart, day) < 0 || diffDays(input.weekStart, day) >= input.nights)
+      continue;
     const dose = input.tests.find((t) => t.id === group)?.doses[2];
     if (dose?.ingredientId && dose.qty !== undefined && dose.unit) {
-      needs.push({ ingredientId: dose.ingredientId, qty: dose.qty, unit: dose.unit, usedBy: `test:${group}` });
+      needs.push({
+        ingredientId: dose.ingredientId,
+        qty: dose.qty,
+        unit: dose.unit,
+        usedBy: `test:${group}`,
+      });
     }
   }
-  return buildGroceryList(needs, input.ingredients, input.prices, { ownedPantry: input.ownedPantry, budget: input.budget });
+  return buildGroceryList(needs, input.ingredients, input.prices, {
+    ownedPantry: input.ownedPantry,
+    budget: input.budget,
+  });
 }
 
-function nightsFrom(input: PlanInput, planner: Planner, assign: readonly (string | null)[]): PlannedNight[] {
+function nightsFrom(
+  input: PlanInput,
+  planner: Planner,
+  assign: readonly (string | null)[],
+): PlannedNight[] {
   const cookDays = new Set(input.cookDays);
   const eatingOut = new Set(input.eatingOut);
   const bySlotDay = new Map(planner.slots.map((s, i) => [s.day, assign[i] ?? null]));
   return Array.from({ length: input.nights }, (_, i) => {
     const day = addDays(input.weekStart, i);
     const testGroup = input.testNights[day] ?? null;
-    const status: NightStatus = eatingOut.has(day) ? 'eating_out' : cookDays.has(weekday(day)) ? 'cook' : 'not_cooking';
+    const status: NightStatus = eatingOut.has(day)
+      ? 'eating_out'
+      : cookDays.has(weekday(day))
+        ? 'cook'
+        : 'not_cooking';
     const late = testGroup === 'late_dinner';
     return {
       day,
       status,
       recipeId: status === 'cook' ? (bySlotDay.get(day) ?? null) : null,
       testGroup: status === 'cook' ? testGroup : null,
-      eatBy: status !== 'cook' ? null : late ? eatByTime(input.bedtime, LATE_DINNER_GAP_MIN) : input.refluxTiming ? eatByTime(input.bedtime, REFLUX_GAP_MIN) : null,
+      eatBy:
+        status !== 'cook'
+          ? null
+          : late
+            ? eatByTime(input.bedtime, LATE_DINNER_GAP_MIN)
+            : input.refluxTiming
+              ? eatByTime(input.bedtime, REFLUX_GAP_MIN)
+              : null,
     };
   });
 }
@@ -431,14 +480,22 @@ export function generatePlan(input: PlanInput): WeekPlan {
   const seed = `${input.seed}|${input.weekStart}|${input.shuffle ?? 0}`;
   const planner = new Planner(input, seed);
   let assign = planner.improve(planner.greedy());
-  let list = groceryFor(input, assign.filter((x): x is string => x !== null), planner.byId);
+  let list = groceryFor(
+    input,
+    assign.filter((x): x is string => x !== null),
+    planner.byId,
+  );
 
   // Over budget: lean harder on cost.
   for (const weight of [3, 8]) {
     if (list.total <= input.budget) break;
     planner.costWeight = weight;
     const next = planner.improve(planner.greedy());
-    const nextList = groceryFor(input, next.filter((x): x is string => x !== null), planner.byId);
+    const nextList = groceryFor(
+      input,
+      next.filter((x): x is string => x !== null),
+      planner.byId,
+    );
     if (nextList.total < list.total) {
       assign = next;
       list = nextList;
@@ -447,7 +504,14 @@ export function generatePlan(input: PlanInput): WeekPlan {
 
   const nights = nightsFrom(input, planner, assign);
   const over = list.total > input.budget ? roundCents(list.total - input.budget) : null;
-  const plan: WeekPlan = { weekStart: input.weekStart, nights, total: list.total, budget: input.budget, overBudgetBy: over, suggestions: [] };
+  const plan: WeekPlan = {
+    weekStart: input.weekStart,
+    nights,
+    total: list.total,
+    budget: input.budget,
+    overBudgetBy: over,
+    suggestions: [],
+  };
   if (over !== null) plan.suggestions = budgetSuggestions(input, plan);
   return plan;
 }
@@ -455,16 +519,27 @@ export function generatePlan(input: PlanInput): WeekPlan {
 /** Grocery list for a plan (whole packs, test foods included). */
 export function planGroceries(input: PlanInput, plan: WeekPlan): GroceryList {
   const byId = new Map(input.recipes.map((r) => [r.id, r]));
-  return groceryFor(input, plan.nights.map((n) => n.recipeId).filter((x): x is string => x !== null), byId);
+  return groceryFor(
+    input,
+    plan.nights.map((n) => n.recipeId).filter((x): x is string => x !== null),
+    byId,
+  );
 }
 
 /** Up to `n` alternatives for one night, cheapest-objective first, with the change in weekly total. */
-export function swapOptions(input: PlanInput, plan: WeekPlan, day: DayKey, n = 3): { recipeId: string; priceDelta: number }[] {
+export function swapOptions(
+  input: PlanInput,
+  plan: WeekPlan,
+  day: DayKey,
+  n = 3,
+): { recipeId: string; priceDelta: number }[] {
   const planner = new Planner(input, `${input.seed}|${input.weekStart}|${input.shuffle ?? 0}`);
   const slotIndex = planner.slots.findIndex((s) => s.day === day);
   const slot = planner.slots[slotIndex];
   if (!slot) return [];
-  const assign = planner.slots.map((s) => plan.nights.find((x) => x.day === s.day)?.recipeId ?? null);
+  const assign = planner.slots.map(
+    (s) => plan.nights.find((x) => x.day === s.day)?.recipeId ?? null,
+  );
   const used = new Set(assign.filter((x): x is string => x !== null));
   const ranked = planner
     .candidates(slot)
@@ -478,16 +553,33 @@ export function swapOptions(input: PlanInput, plan: WeekPlan, day: DayKey, n = 3
     .slice(0, n);
   return ranked.map(({ r, trial }) => ({
     recipeId: r.id,
-    priceDelta: roundCents(groceryFor(input, trial.filter((x): x is string => x !== null), planner.byId).total - plan.total),
+    priceDelta: roundCents(
+      groceryFor(
+        input,
+        trial.filter((x): x is string => x !== null),
+        planner.byId,
+      ).total - plan.total,
+    ),
   }));
 }
 
 /** Replaces one night's dinner. */
-export function applySwap(input: PlanInput, plan: WeekPlan, day: DayKey, recipeId: string): WeekPlan {
-  const nights = plan.nights.map((n) => (n.day === day && n.status === 'cook' ? { ...n, recipeId } : n));
+export function applySwap(
+  input: PlanInput,
+  plan: WeekPlan,
+  day: DayKey,
+  recipeId: string,
+): WeekPlan {
+  const nights = plan.nights.map((n) =>
+    n.day === day && n.status === 'cook' ? { ...n, recipeId } : n,
+  );
   const next = { ...plan, nights };
   const total = planGroceries(input, next).total;
-  return { ...next, total, overBudgetBy: total > input.budget ? roundCents(total - input.budget) : null };
+  return {
+    ...next,
+    total,
+    overBudgetBy: total > input.budget ? roundCents(total - input.budget) : null,
+  };
 }
 
 function budgetSuggestions(input: PlanInput, plan: WeekPlan): PlanSuggestion[] {
@@ -498,7 +590,13 @@ function budgetSuggestions(input: PlanInput, plan: WeekPlan): PlanSuggestion[] {
     if (night.status !== 'cook' || !night.recipeId) continue;
     for (const opt of swapOptions(input, plan, night.day, 5)) {
       if (opt.priceDelta < 0 && (!bestSwap || -opt.priceDelta > bestSwap.saves)) {
-        bestSwap = { kind: 'swap', day: night.day, from: night.recipeId, to: opt.recipeId, saves: roundCents(-opt.priceDelta) };
+        bestSwap = {
+          kind: 'swap',
+          day: night.day,
+          from: night.recipeId,
+          to: opt.recipeId,
+          saves: roundCents(-opt.priceDelta),
+        };
       }
     }
   }
@@ -508,9 +606,13 @@ function budgetSuggestions(input: PlanInput, plan: WeekPlan): PlanSuggestion[] {
   let bestSkip: PlanSuggestion | null = null;
   for (const night of plan.nights) {
     if (night.status !== 'cook' || !night.recipeId || night.testGroup) continue;
-    const others = plan.nights.filter((x) => x.day !== night.day).map((x) => x.recipeId).filter((x): x is string => x !== null);
+    const others = plan.nights
+      .filter((x) => x.day !== night.day)
+      .map((x) => x.recipeId)
+      .filter((x): x is string => x !== null);
     const saves = roundCents(plan.total - groceryFor(input, others, byId).total);
-    if (!bestSkip || saves > bestSkip.saves) bestSkip = { kind: 'skip_night', day: night.day, saves };
+    if (!bestSkip || saves > bestSkip.saves)
+      bestSkip = { kind: 'skip_night', day: night.day, saves };
   }
   if (bestSkip) out.push(bestSkip);
   return out.slice(0, 2);

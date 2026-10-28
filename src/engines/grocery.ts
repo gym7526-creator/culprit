@@ -86,7 +86,12 @@ export function cheapestPacks(
     }
     counts[i] = 0;
   };
-  search(0, 0, 0, packs.map(() => 0));
+  search(
+    0,
+    0,
+    0,
+    packs.map(() => 0),
+  );
 
   if (found.cost < Infinity) {
     const choice = found.counts
@@ -110,12 +115,16 @@ export function packLabel(size: number, unit: PackUnit, count: number): string {
   let s: string;
   if (unit === 'each') s = format(groceryCopy.sizeCount, { n: size });
   else if (unit === 'ml') {
-    s = size >= 3700 ? format(groceryCopy.sizeGal, { n: Math.round((size / 3785.41) * 10) / 10 }) : format(groceryCopy.sizeFlOz, { n: Math.round(size / 29.5735) });
+    s =
+      size >= 3700
+        ? format(groceryCopy.sizeGal, { n: Math.round((size / 3785.41) * 10) / 10 })
+        : format(groceryCopy.sizeFlOz, { n: Math.round(size / 29.5735) });
   } else {
     const oz = size / 28.3495;
-    s = oz >= 15.5 && Math.abs(oz / 16 - Math.round(oz / 16)) < 0.1
-      ? format(groceryCopy.sizeLb, { n: Math.round(oz / 16) })
-      : format(groceryCopy.sizeOz, { n: Math.round(oz * 10) / 10 });
+    s =
+      oz >= 15.5 && Math.abs(oz / 16 - Math.round(oz / 16)) < 0.1
+        ? format(groceryCopy.sizeLb, { n: Math.round(oz / 16) })
+        : format(groceryCopy.sizeOz, { n: Math.round(oz * 10) / 10 });
   }
   return format(groceryCopy.packCount, { count, size: s });
 }
@@ -158,9 +167,16 @@ export function buildGroceryList(
     const options = ing.packs
       .map((p, packIndex) => ({ p, packIndex }))
       .filter(({ p }) => p.unit === unit);
-    const priced = options.map(({ p, packIndex }) => ({ size: p.size, price: packPrice(p, id, packIndex, ctx), packIndex }));
+    const priced = options.map(({ p, packIndex }) => ({
+      size: p.size,
+      price: packPrice(p, id, packIndex, ctx),
+      packIndex,
+    }));
     const { choice, cost } = cheapestPacks(t.need, priced);
-    const mapped = choice.map((c) => ({ packIndex: priced[c.packIndex]!.packIndex, count: c.count }));
+    const mapped = choice.map((c) => ({
+      packIndex: priced[c.packIndex]!.packIndex,
+      count: c.count,
+    }));
     const pantry = opts.ownedPantry.includes(id);
     lines.push({
       ingredientId: id,
@@ -169,7 +185,9 @@ export function buildGroceryList(
       need: Math.round(t.need * 100) / 100,
       unit,
       packs: mapped,
-      packLabel: mapped.map((c) => packLabel(ing.packs[c.packIndex]!.size, unit, c.count)).join(' + '),
+      packLabel: mapped
+        .map((c) => packLabel(ing.packs[c.packIndex]!.size, unit, c.count))
+        .join(' + '),
       priceEst: pantry ? 0 : cost,
       usedBy: [...t.usedBy].sort(),
       pantry,
@@ -184,7 +202,13 @@ export function buildGroceryList(
   })).filter((s) => s.lines.length > 0);
 
   const total = roundCents(lines.reduce((sum, l) => sum + l.priceEst, 0));
-  return { sections, custom: opts.custom ?? [], total, budget: opts.budget, status: budgetStatus(total, opts.budget) };
+  return {
+    sections,
+    custom: opts.custom ?? [],
+    total,
+    budget: opts.budget,
+    status: budgetStatus(total, opts.budget),
+  };
 }
 
 /** Plain-text export for "Share list". */
@@ -196,7 +220,8 @@ export function listAsText(list: GroceryList, formatMoney: (n: number) => string
     owned.push(...s.lines.filter((l) => l.pantry).map((l) => l.name));
     if (buy.length === 0) continue;
     out.push(groceryCopy.aisles[s.aisle]);
-    for (const l of buy) out.push(format(groceryCopy.shareLine, { name: l.name, packs: l.packLabel }));
+    for (const l of buy)
+      out.push(format(groceryCopy.shareLine, { name: l.name, packs: l.packLabel }));
     out.push('');
   }
   if (list.custom.length > 0) {

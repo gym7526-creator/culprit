@@ -1,5 +1,11 @@
 import { addDays } from '@/engines/dates';
-import { fromMinutes, isQuiet, scheduleNotifications, toMinutes, type ScheduleInput } from '@/engines/schedule';
+import {
+  fromMinutes,
+  isQuiet,
+  scheduleNotifications,
+  toMinutes,
+  type ScheduleInput,
+} from '@/engines/schedule';
 
 const TUE = '2026-05-05';
 const ALL = { checkin: true, tests: true, plan: true, trial: true, milestones: true };
@@ -69,7 +75,9 @@ describe('check-in nudges', () => {
 describe('other notifications', () => {
   it('test heads-up at 4 pm', () => {
     const day = addDays(TUE, 1);
-    const n = scheduleNotifications(input({ testNights: { [day]: { portion: '¼ clove garlic', dish: 'stir-fry' } } }));
+    const n = scheduleNotifications(
+      input({ testNights: { [day]: { portion: '¼ clove garlic', dish: 'stir-fry' } } }),
+    );
     expect(n.find((x) => x.kind === 'test_heads_up')).toMatchObject({
       day,
       time: '16:00',
@@ -78,7 +86,9 @@ describe('other notifications', () => {
   });
 
   it('Sunday plan drop at 10 am', () => {
-    const n = scheduleNotifications(input({ sundayPlan: { count: 5, total: '$108.20', store: 'Walmart' } }));
+    const n = scheduleNotifications(
+      input({ sundayPlan: { count: 5, total: '$108.20', store: 'Walmart' } }),
+    );
     expect(n.find((x) => x.kind === 'sunday_plan')).toMatchObject({
       day: '2026-05-10',
       time: '10:00',
@@ -88,29 +98,53 @@ describe('other notifications', () => {
 
   it('trial reminder 24 h before the trial ends', () => {
     const n = scheduleNotifications(input({ trialEnds: { day: addDays(TUE, 3), time: '15:00' } }));
-    expect(n.find((x) => x.kind === 'trial_ending')).toMatchObject({ day: addDays(TUE, 2), time: '15:00' });
+    expect(n.find((x) => x.kind === 'trial_ending')).toMatchObject({
+      day: addDays(TUE, 2),
+      time: '15:00',
+    });
   });
 
   it('moves a trial reminder out of quiet hours to the evening before', () => {
     const n = scheduleNotifications(input({ trialEnds: { day: addDays(TUE, 3), time: '06:30' } }));
-    expect(n.find((x) => x.kind === 'trial_ending')).toMatchObject({ day: addDays(TUE, 1), time: '21:00' });
+    expect(n.find((x) => x.kind === 'trial_ending')).toMatchObject({
+      day: addDays(TUE, 1),
+      time: '21:00',
+    });
   });
 
   it('milestones fire right away, or at 8 am during quiet hours', () => {
     const day = scheduleNotifications(input({ milestones: [{ kind: 'calm_complete' }] }));
     expect(day.find((x) => x.kind === 'calm_complete')).toMatchObject({ day: TUE, time: '09:01' });
-    const night = scheduleNotifications(input({ now: { day: TUE, time: '23:10' }, milestones: [{ kind: 'result_ready', group: 'Garlic' }] }));
-    expect(night.find((x) => x.kind === 'result_ready')).toMatchObject({ day: addDays(TUE, 1), time: '08:00', body: 'Garlic test complete. Tap to see the verdict.' });
+    const night = scheduleNotifications(
+      input({
+        now: { day: TUE, time: '23:10' },
+        milestones: [{ kind: 'result_ready', group: 'Garlic' }],
+      }),
+    );
+    expect(night.find((x) => x.kind === 'result_ready')).toMatchObject({
+      day: addDays(TUE, 1),
+      time: '08:00',
+      body: 'Garlic test complete. Tap to see the verdict.',
+    });
   });
 
   it('respects per-type toggles', () => {
-    const n = scheduleNotifications(input({ enabled: { ...ALL, checkin: false }, sundayPlan: { count: 5, total: '$1', store: 'X' } }));
+    const n = scheduleNotifications(
+      input({
+        enabled: { ...ALL, checkin: false },
+        sundayPlan: { count: 5, total: '$1', store: 'X' },
+      }),
+    );
     expect(n.some((x) => x.kind.startsWith('checkin'))).toBe(false);
     expect(n.some((x) => x.kind === 'sunday_plan')).toBe(true);
   });
 
   it('returns notifications in time order', () => {
     const n = scheduleNotifications(input({ testNights: { [TUE]: { portion: 'x', dish: 'y' } } }));
-    expect(n.slice(0, 3).map((x) => x.kind)).toEqual(['test_heads_up', 'checkin', 'checkin_followup']);
+    expect(n.slice(0, 3).map((x) => x.kind)).toEqual([
+      'test_heads_up',
+      'checkin',
+      'checkin_followup',
+    ]);
   });
 });

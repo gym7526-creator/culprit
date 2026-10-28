@@ -6,10 +6,25 @@ export type Profile = 'fodmap' | 'reflux' | 'mixed';
 
 export type Score = 0 | 1 | 2 | 3 | 4;
 
-export const SYMPTOMS = ['bloating', 'gas', 'pain', 'heartburn', 'diarrhea', 'constipation', 'nausea'] as const;
+export const SYMPTOMS = [
+  'bloating',
+  'gas',
+  'pain',
+  'heartburn',
+  'diarrhea',
+  'constipation',
+  'nausea',
+] as const;
 export type Symptom = (typeof SYMPTOMS)[number];
 
-export const UNUSUAL_REASONS = ['sick', 'period', 'stressed', 'travel', 'alcohol', 'poor_sleep'] as const;
+export const UNUSUAL_REASONS = [
+  'sick',
+  'period',
+  'stressed',
+  'travel',
+  'alcohol',
+  'poor_sleep',
+] as const;
 export type UnusualReason = (typeof UNUSUAL_REASONS)[number];
 
 /** One evening check-in (spec §6.2). Missing days are simply absent, never assumed. */

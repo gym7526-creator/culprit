@@ -26,7 +26,12 @@ export function toGrams(qty: number, unit: RecipeUnit, ing: Ingredient): number 
 }
 
 /** Converts a recipe quantity into the given pack unit (g, ml or each). */
-export function toPackUnit(qty: number, unit: RecipeUnit, ing: Ingredient, target: PackUnit): number {
+export function toPackUnit(
+  qty: number,
+  unit: RecipeUnit,
+  ing: Ingredient,
+  target: PackUnit,
+): number {
   if (target === 'each') {
     if (unit === 'each') return qty;
     if (ing.gEach === undefined) throw new Error(`"${ing.id}" is sold by count but has no gEach`);

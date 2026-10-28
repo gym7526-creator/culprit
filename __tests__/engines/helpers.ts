@@ -10,7 +10,12 @@ export const RECIPES = z.array(Recipe).parse(recipesJson);
 export const RECIPE = new Map(RECIPES.map((r) => [r.id, r]));
 export const TESTS = TestsFile.parse(testsJson);
 
-export const NEUTRAL_PRICES = { chainId: 'kroger', regionMultiplier: 1, chainIndex: 1, overrides: {} };
+export const NEUTRAL_PRICES = {
+  chainId: 'kroger',
+  regionMultiplier: 1,
+  chainIndex: 1,
+  overrides: {},
+};
 
 export function recipe(id: string) {
   const r = RECIPE.get(id);

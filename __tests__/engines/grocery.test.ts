@@ -49,7 +49,11 @@ describe('packLabel', () => {
 });
 
 describe('buildGroceryList', () => {
-  const recipes = [recipe('ginger_soy_chicken_rice_bowls'), recipe('beef_and_broccoli'), recipe('chicken_quinoa_bowls')];
+  const recipes = [
+    recipe('ginger_soy_chicken_rice_bowls'),
+    recipe('beef_and_broccoli'),
+    recipe('chicken_quinoa_bowls'),
+  ];
 
   it('scales needs to the household', () => {
     const needs = needsForRecipes([recipe('beef_and_broccoli')], 2);
@@ -58,7 +62,10 @@ describe('buildGroceryList', () => {
   });
 
   it('sums shared ingredients and records which dinners use them', () => {
-    const list = buildGroceryList(needsForRecipes(recipes, 4), ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 100 });
+    const list = buildGroceryList(needsForRecipes(recipes, 4), ING, NEUTRAL_PRICES, {
+      ownedPantry: [],
+      budget: 100,
+    });
     const lines = list.sections.flatMap((s) => s.lines);
     const chicken = lines.find((l) => l.ingredientId === 'chicken_breast');
     expect(chicken?.need).toBe(1100);
@@ -66,7 +73,10 @@ describe('buildGroceryList', () => {
   });
 
   it('groups lines in store-walk order', () => {
-    const list = buildGroceryList(needsForRecipes(recipes, 4), ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 100 });
+    const list = buildGroceryList(needsForRecipes(recipes, 4), ING, NEUTRAL_PRICES, {
+      ownedPantry: [],
+      budget: 100,
+    });
     const order = list.sections.map((s) => AISLE_ORDER.indexOf(s.aisle));
     expect(order).toEqual([...order].sort((a, b) => a - b));
     expect(list.sections[0]?.aisle).toBe('produce');
@@ -75,8 +85,13 @@ describe('buildGroceryList', () => {
   it('crosses off owned pantry staples and leaves them out of the total', () => {
     const needs = needsForRecipes(recipes, 4);
     const full = buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 100 });
-    const owned = buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: ['white_rice', 'vegetable_oil'], budget: 100 });
-    const rice = owned.sections.flatMap((s) => s.lines).find((l) => l.ingredientId === 'white_rice');
+    const owned = buildGroceryList(needs, ING, NEUTRAL_PRICES, {
+      ownedPantry: ['white_rice', 'vegetable_oil'],
+      budget: 100,
+    });
+    const rice = owned.sections
+      .flatMap((s) => s.lines)
+      .find((l) => l.ingredientId === 'white_rice');
     expect(rice?.pantry).toBe(true);
     expect(rice?.priceEst).toBe(0);
     expect(owned.total).toBeLessThan(full.total);
@@ -85,14 +100,23 @@ describe('buildGroceryList', () => {
   it('applies region and chain prices', () => {
     const needs = needsForRecipes(recipes, 4);
     const base = buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 100 });
-    const pricey = buildGroceryList(needs, ING, { ...NEUTRAL_PRICES, chainIndex: 1.3 }, { ownedPantry: [], budget: 100 });
+    const pricey = buildGroceryList(
+      needs,
+      ING,
+      { ...NEUTRAL_PRICES, chainIndex: 1.3 },
+      { ownedPantry: [], budget: 100 },
+    );
     expect(pricey.total).toBeGreaterThan(base.total);
   });
 
   it('reports budget status', () => {
     const needs = needsForRecipes(recipes, 4);
-    expect(buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 500 }).status).toBe('under');
-    expect(buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 10 }).status).toBe('over');
+    expect(
+      buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 500 }).status,
+    ).toBe('under');
+    expect(
+      buildGroceryList(needs, ING, NEUTRAL_PRICES, { ownedPantry: [], budget: 10 }).status,
+    ).toBe('over');
   });
 
   it('exports a shareable text list', () => {
