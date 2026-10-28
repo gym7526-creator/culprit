@@ -60,6 +60,9 @@ export type TestResult = {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
+/** Portions read mid-sentence: "Finish dinner…" → "finish dinner…" (numbers are unchanged). */
+const inline = (p: string | undefined) => (p ? p.charAt(0).toLowerCase() + p.slice(1) : '');
+
 function isValid(c: CheckIn | undefined): c is CheckIn {
   return c !== undefined && c.unusual.length === 0;
 }
@@ -248,15 +251,15 @@ export function scoreTest(
     const vars = {
       from: label(base.baseline),
       to: label(w.score ?? base.baseline),
-      portion: test.portions[reactionIndex] ?? '',
-      safePortion: test.portions[reactionIndex - 1] ?? '',
+      portion: inline(test.portions[reactionIndex]),
+      safePortion: inline(test.portions[reactionIndex - 1]),
       recovery: recoveryText(recoveryDays(peakDay, base.baseline, checkins)),
     };
     explanation = format(outcome === 'trigger' ? resultCopy.trigger : resultCopy.partial, vars);
   } else {
     explanation = format(resultCopy.tolerated, {
       from: label(base.baseline),
-      portion: test.portions[test.portions.length - 1] ?? '',
+      portion: inline(test.portions[test.portions.length - 1]),
     });
   }
 

@@ -55,3 +55,16 @@ jest.mock('expo-notifications', () => ({
 }));
 
 jest.mock('expo-keep-awake', () => ({ useKeepAwake: () => undefined }));
+
+jest.mock('expo-print', () => ({
+  printToFileAsync: jest.fn(() => Promise.resolve({ uri: 'file:///report.pdf' })),
+  printAsync: jest.fn(() => Promise.resolve()),
+}));
+jest.mock('expo-sharing', () => ({ shareAsync: jest.fn(() => Promise.resolve()) }));
+jest.mock('expo-store-review', () => ({
+  hasAction: jest.fn(() => Promise.resolve(true)),
+  requestReview: jest.fn(() => Promise.resolve()),
+}));
+jest.mock('react-native-view-shot', () => ({
+  captureRef: jest.fn(() => Promise.resolve('file:///card.png')),
+}));

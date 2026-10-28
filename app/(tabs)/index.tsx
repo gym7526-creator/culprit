@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { X } from 'lucide-react-native';
 import { useState } from 'react';
 import { Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -16,13 +16,23 @@ import {
   Text,
   TextButton,
 } from '@/components';
-import { format, formatClock, formatDay, formatMoney, tabsCopy, todayCopy } from '@/copy';
+import {
+  format,
+  formatClock,
+  formatDay,
+  formatMoney,
+  revealCopy,
+  tabsCopy,
+  todayCopy,
+} from '@/copy';
 import { recipeCostEstimate } from '@/engines/plan';
 import { AppHeader } from '@/features/app/AppHeader';
+import { CheckInCard } from '@/features/checkin/CheckInCard';
 import { useAppStore } from '@/features/appStore';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { usePlanInput } from '@/features/plan/hooks';
 import { recipeVisual } from '@/features/recipes/visual';
+import { useMoments } from '@/features/today/useMoments';
 import { useTodayModel, type PillTone } from '@/features/today/useTodayModel';
 import { radius, size, space, useTheme, type ColorTokens } from '@/theme';
 
@@ -36,7 +46,12 @@ const pillColors: Record<PillTone, { fill: keyof ColorTokens; text: keyof ColorT
 export default function Today() {
   const router = useRouter();
   const { colors } = useTheme();
+  const { checkin } = useLocalSearchParams<{ checkin?: string }>();
   const m = useTodayModel();
+  const moments = useMoments(checkin === '1');
+  const celebrate = useAppStore((s) => s.markCelebrated);
+  const [pinned, setPinned] = useState<NonNullable<typeof moments>['checkin']>(null);
+  const target = pinned ?? moments?.checkin ?? null;
   const input = usePlanInput(m?.plan ?? null);
   const household = useOnboardingStore((s) => s.answers.household);
   const dismiss = useAppStore((s) => s.dismissCard);
@@ -67,6 +82,76 @@ export default function Today() {
             {m.pill.text}
           </Text>
         </View>
+
+        {moments?.unrevealed.map((r) => (
+          <Pressable
+            key={r.id}
+            onPress={() => router.push(`/test/${r.group}?reveal=1`)}
+            accessibilityRole="button"
+            style={[styles.moment, { backgroundColor: colors.brandSoft }]}
+            testID={`reveal-${r.group}`}
+          >
+            <Text variant="bodyStrong" color="brandInk" style={styles.flex}>
+              {format(revealCopy.resultReady, { group: r.name })}
+            </Text>
+          </Pressable>
+        ))}
+        {moments?.solved ? (
+          <Pressable
+            onPress={() => router.push('/results')}
+            accessibilityRole="button"
+            style={[styles.moment, { backgroundColor: colors.goodSoft }]}
+            testID="case-solved"
+          >
+            <Text variant="bodyStrong" color="goodInk">
+              {revealCopy.caseSolved}
+            </Text>
+          </Pressable>
+        ) : null}
+        {moments?.calmDone ? (
+          <Card style={[styles.section, styles.gap]} testID="calm-done">
+            <View style={styles.cardHead}>
+              <Text variant="bodyStrong" color="goodInk" style={styles.flex}>
+                {revealCopy.calmDone}
+              </Text>
+              <Pressable
+                onPress={() => celebrate('calm_complete')}
+                accessibilityRole="button"
+                accessibilityLabel={todayCopy.dismiss}
+                hitSlop={space.sm}
+              >
+                <X size={size.iconMd} color={colors.textSecondary} />
+              </Pressable>
+            </View>
+            <Text variant="callout" color="textSecondary">
+              {revealCopy.calmDoneBody}
+            </Text>
+          </Card>
+        ) : null}
+
+        {target ? (
+          <View style={styles.section}>
+            <CheckInCard
+              key={target.day}
+              day={target.day}
+              isYesterday={target.isYesterday}
+              testDay={target.testDay}
+              streak={moments?.streak ?? 0}
+              onLogged={() => setPinned(target)}
+              onFinished={() => setPinned(null)}
+            />
+          </View>
+        ) : moments?.loggedToday ? (
+          <View style={styles.section}>
+            <CheckInCard
+              key={m.today}
+              day={m.today}
+              isYesterday={false}
+              testDay={false}
+              streak={moments.streak}
+            />
+          </View>
+        ) : null}
 
         {m.test ? (
           <View style={styles.section}>
@@ -210,5 +295,11 @@ const styles = StyleSheet.create({
   idea: { width: size.ring * 1.6, gap: space.xxs },
   ringRow: { flexDirection: 'row', alignItems: 'center', gap: space.md },
   cardHead: { flexDirection: 'row', alignItems: 'center' },
+  moment: {
+    marginTop: space.md,
+    borderRadius: radius.card,
+    padding: space.md,
+    minHeight: size.minTouch,
+  },
   flex: { flex: 1 },
 });

@@ -21,6 +21,8 @@ export type PrefsState = {
   devTimeOffsetDays: number;
   /** Random per-install id: seeds plans. Not personal, never tied to an account. */
   installId: string;
+  /** Epoch ms of the last App Store rating prompt (max once per 120 days). */
+  lastRatingPromptAt: number | null;
 };
 
 export type PrefsActions = {
@@ -31,6 +33,7 @@ export type PrefsActions = {
   setBedtime: (time: string) => void;
   shiftDevTime: (days: number) => void;
   resetPrefs: () => void;
+  setRatingPrompted: (at: number) => void;
 };
 
 function randomId(): string {
@@ -45,6 +48,7 @@ export const defaultPrefs: PrefsState = {
   bedtime: '23:00',
   devTimeOffsetDays: 0,
   installId: '',
+  lastRatingPromptAt: null,
 };
 
 export const usePrefsStore = create<PrefsState & PrefsActions>()(
@@ -59,6 +63,7 @@ export const usePrefsStore = create<PrefsState & PrefsActions>()(
       setBedtime: (bedtime) => set({ bedtime }),
       shiftDevTime: (days) => set((s) => ({ devTimeOffsetDays: s.devTimeOffsetDays + days })),
       resetPrefs: () => set({ ...defaultPrefs, installId: randomId() }),
+      setRatingPrompted: (lastRatingPromptAt) => set({ lastRatingPromptAt }),
     }),
     {
       name: 'culprit-prefs',

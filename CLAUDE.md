@@ -270,6 +270,24 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
   cards use gradient + emoji. Overrides: `data-pipeline/source/photo-overrides.json`.
 - New approved deps installed: `expo-keep-awake`, `@shopify/flash-list` (added to Jest transformIgnorePatterns).
 
+## Check-ins, tests, results (Phase 6, done)
+
+- Pure: `engines/checkin.ts` (card from 5 pm; yesterday until noon; streak), `engines/report.ts` (suspect board,
+  counts, 7-day trend, per-test chart window, case report, share line, `caseSolved`), `engines/simulate.ts`
+  (clear / noisy / placebo-reaction synthetic check-ins, used by the debug screen and the 8-week test).
+- Check-in: `features/checkin/CheckInCard.tsx` on Today. The first face tap saves the day and advances the
+  program (`submitCheckin` → `syncProgramAndPlan`); symptoms, the test-food yes/no (dose days) and "unusual day"
+  are optional extras. `/?checkin=1` forces the card (notification tap, Phase 7). Analytics never get scores.
+- Reveals: Today shows "{Group} test complete" cards for unrevealed results → `app/test/[group].tsx` (1.4 s
+  suspense, verdict pill, explanation, confidence + why, SVG chart with baseline and dose markers, Retest).
+  Calm-complete and case-solved moments are one-time (`appStore.celebrated`).
+- Results tab: subtitle counts, suspect board grid, trend chart (calm shaded), solved report (triggers / small
+  amounts / cleared / unclear / self-reported / placebo days), share card (`app/share.tsx`, view-shot 1080×1350 +
+  expo-sharing, outcomes only), doctor PDF (`features/results/doctorReport.ts` → expo-print), rating prompt via
+  expo-store-review once per 120 days when the case is solved. Charts are hand-rolled SVG (no chart dependency).
+- Debug: seed a demo user, simulate 7 days (clear / noisy / placebo) or 8 weeks; the app clock moves with it.
+- New approved deps: `react-native-view-shot`, `expo-sharing`, `expo-print`, `expo-store-review`.
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -284,7 +302,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - [x] **4 Paywall + purchases:** RevenueCat (owner adds keys/products), 3-step paywall, welcome offer, restore,
       Customer Center, entitlement gating, trial reminder.
 - [x] **5 Main tabs:** Today, Plan (swap/eating out/shuffle/2-week), Recipe + cooking mode, List.
-- [ ] **6 Check-ins, tests, results:** check-in flow, test lifecycle, case file, reveals, share card, doctor PDF, rating.
+- [x] **6 Check-ins, tests, results:** check-in flow, test lifecycle, case file, reveals, share card, doctor PDF, rating.
 - [ ] **7 Polish:** notifications, analytics, settings, export/delete, a11y pass, reduce motion, perf, error boundaries.
 - [ ] **8 Skin mode** behind `FEATURE_SKIN`.
 - [ ] **9 Ship prep:** icon/splash, screenshots plan, metadata, review notes, TestFlight.
@@ -306,4 +324,6 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - 2026-10-28: Food photos: owner approved licensed stock photos (closest match per recipe, free commercial
   licence such as Unsplash/Pexels, attribution recorded). Applies from Phase 5.
 - 2026-10-28: Terms link defaults to Apple's standard EULA; privacy URL is a placeholder for the owner.
+- 2026-10-28: Check-in card stays on the day being logged until "Done" (logging yesterday before noon no
+  longer jumps straight to today's card).
 - 2026-10-28: Red-flag option worded "Losing weight without trying" (the copy test bans "weight loss").

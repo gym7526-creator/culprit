@@ -17,7 +17,14 @@ export type AnalyticsEvent =
   | { name: 'dinner_swapped' }
   | { name: 'eating_out_marked' }
   | { name: 'list_item_checked' }
-  | { name: 'list_shared' };
+  | { name: 'list_shared' }
+  | { name: 'checkin_submitted' }
+  | { name: 'test_started'; props: { group: string } }
+  | { name: 'test_completed' }
+  | { name: 'retest_requested' }
+  | { name: 'share_card_created' }
+  | { name: 'pdf_exported' }
+  | { name: 'rating_prompt_shown' };
 
 const sink: AnalyticsEvent[] = [];
 

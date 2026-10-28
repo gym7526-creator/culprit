@@ -30,6 +30,10 @@ export type AppState = {
   /** Education card ids dismissed. */
   dismissedCards: string[];
   checkins: Record<DayKey, CheckIn>;
+  /** Completed test ids whose verdict has been revealed. */
+  revealed: string[];
+  /** One-time moments already celebrated ('calm_complete', 'case_solved'). */
+  celebrated: string[];
 };
 
 type Actions = {
@@ -45,6 +49,9 @@ type Actions = {
   bumpShuffle: (weekStart: DayKey) => number;
   setTwoWeek: (v: boolean) => void;
   dismissCard: (id: string) => void;
+  saveCheckin: (c: CheckIn) => void;
+  markRevealed: (testId: string) => void;
+  markCelebrated: (key: string) => void;
   resetAll: () => void;
 };
 
@@ -60,6 +67,8 @@ const initial: AppState = {
   twoWeek: false,
   dismissedCards: [],
   checkins: {},
+  revealed: [],
+  celebrated: [],
 };
 
 function toggle(list: readonly string[], id: string): string[] {
@@ -103,8 +112,18 @@ export const useAppStore = create<AppState & Actions>()(
       },
       setTwoWeek: (twoWeek) => set({ twoWeek }),
       dismissCard: (id) => set((s) => ({ dismissedCards: [...s.dismissedCards, id] })),
+      saveCheckin: (c) => set((s) => ({ checkins: { ...s.checkins, [c.day]: c } })),
+      markRevealed: (id) =>
+        set((s) => (s.revealed.includes(id) ? s : { revealed: [...s.revealed, id] })),
+      markCelebrated: (key) =>
+        set((s) => (s.celebrated.includes(key) ? s : { celebrated: [...s.celebrated, key] })),
       resetAll: () => set(initial),
     }),
-    { name: 'culprit-app', version: 1, storage: createJSONStorage(() => healthStorage) },
+    {
+      name: 'culprit-app',
+      version: 1,
+      storage: createJSONStorage(() => healthStorage),
+      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<AppState>) }),
+    },
   ),
 );

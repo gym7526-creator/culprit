@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Card, Screen, SecondaryButton, Text } from '@/components';
 import { debugCopy, format } from '@/copy';
 import { useAppStore } from '@/features/appStore';
+import { seedDemoUser, simulateDays } from '@/features/debug/actions';
 import { useClock } from '@/features/clock';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { usePrefsStore } from '@/features/prefsStore';
@@ -18,6 +19,7 @@ export default function Debug() {
   const offset = usePrefsStore((s) => s.devTimeOffsetDays);
   const program = useAppStore((s) => s.program);
   const planCount = useAppStore((s) => Object.keys(s.plans).length);
+  const checkinCount = useAppStore((s) => Object.keys(s.checkins).length);
   const isPro = useSubscriptionStore((s) => s.isPro);
 
   if (!__DEV__) return <Redirect href="/" />;
@@ -60,6 +62,32 @@ export default function Debug() {
           }}
         />
       </View>
+      <View style={styles.row}>
+        <SecondaryButton
+          label={debugCopy.seed}
+          onPress={() => {
+            seedDemoUser();
+            router.replace('/');
+          }}
+          testID="debug-seed"
+        />
+        <SecondaryButton
+          label={debugCopy.sim7Clear}
+          onPress={() => simulateDays(7, 'clear')}
+          testID="debug-sim-clear"
+        />
+        <SecondaryButton label={debugCopy.sim7Noisy} onPress={() => simulateDays(7, 'noisy')} />
+        <SecondaryButton
+          label={debugCopy.sim7Placebo}
+          onPress={() => simulateDays(7, 'control_reaction')}
+        />
+        <SecondaryButton
+          label={debugCopy.sim8Weeks}
+          onPress={() => simulateDays(56, 'clear')}
+          testID="debug-sim-8w"
+        />
+      </View>
+      <Text variant="bodyStrong">{format(debugCopy.checkins, { count: checkinCount })}</Text>
       <Text variant="bodyStrong">{format(debugCopy.plans, { count: planCount })}</Text>
       <Text variant="bodyStrong">{debugCopy.program}</Text>
       <Card>
