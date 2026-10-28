@@ -33,6 +33,7 @@ export const galleryCopy = {
     title: 'Your first week is ready.',
     headline: 'Tonight’s dinner',
     body: 'Eating 3 hours before bed is one of the biggest heartburn helpers.',
+    cooking: 'Stir in the ginger and cook for 30 seconds.',
     bodyStrong: 'One tap. Two seconds.',
     callout: 'Set aside for now: onion, garlic, wheat',
     caption: 'Prices are estimates',

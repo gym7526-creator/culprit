@@ -53,3 +53,5 @@ jest.mock('expo-notifications', () => ({
   cancelScheduledNotificationAsync: jest.fn(() => Promise.resolve()),
   SchedulableTriggerInputTypes: { DATE: 'date' },
 }));
+
+jest.mock('expo-keep-awake', () => ({ useKeepAwake: () => undefined }));

@@ -1,11 +1,144 @@
-/** Main-app shell copy (tabs, settings). Phase 5 and 7 extend these. */
+/** Main-app copy (spec §10, §11). Voice: friendly detective, calm, short. */
 export const tabsCopy = {
   today: 'Today',
+  plan: 'Plan',
+  list: 'List',
+  results: 'Results',
   settings: 'Settings',
-  todayPlaceholder: {
-    title: 'Your case is open',
-    body: 'Your calm start begins tomorrow. Today, Plan and List arrive in the next update.',
+  profile: 'Open settings',
+} as const;
+
+export const todayCopy = {
+  phase: {
+    calm: 'Calm · Day {day} of {total}',
+    testing: 'Testing · {group} · Day {dose} of {total}',
+    rest: 'Testing · Rest day',
+    personal: 'Your plan',
+    paused: 'Paused',
+    gentle: 'Balanced plan',
+    startsTomorrow: 'Calm start begins tomorrow',
   },
+  tonight: 'Tonight’s dinner',
+  tomorrow: 'Tomorrow’s dinner',
+  servings: '{count} servings',
+  startCooking: 'Start cooking',
+  viewRecipe: 'See recipe',
+  notCooking: 'No dinner planned tonight',
+  notCookingBody: 'Eat whatever works for you. Keep it simple and gentle.',
+  eatingOut: 'Eating out tonight',
+  eatingOutBody: 'Pick something simple. Skip anything you’re testing this week.',
+  noPlan: 'Your plan is on its way',
+  testTitle: 'Tonight’s test',
+  testDetail: '{portion}, {how}.',
+  testInDinner: 'added to your {dish}',
+  testSide: 'alongside dinner',
+  testTiming: 'eaten later than usual',
+  whyAmount: 'Why this amount?',
+  ideasTitle: 'Breakfast & lunch ideas',
+  breakfast: 'Breakfast',
+  lunch: 'Lunch',
+  ringLabel: 'Program progress',
+  ringCenter: '{pct}%',
+  nextTest: 'Next: {group} test starts {day}',
+  nextCalm: 'Calm start: day {day} of {total}',
+  allDone: 'Every food has been tested. Your plan is built around your results.',
+  learn: 'Today’s clue',
+  dismiss: 'Dismiss',
+  source: 'Source: {label}',
+  checkinSoon: 'Check-in opens at 5 pm.',
+} as const;
+
+export const planCopy = {
+  title: 'Your plan',
+  week: 'This week',
+  twoWeek: '2-week plan',
+  shuffle: 'Shuffle week',
+  shuffled: 'New dinners picked for the rest of the week.',
+  notCooking: 'Not cooking',
+  eatingOut: 'Eating out',
+  total: '{total} est. this week',
+  totalTwo: '{total} est. for 2 weeks',
+  sheetTitle: 'Change this dinner',
+  swap: 'Swap for',
+  swapDelta: '{sign}{amount}',
+  same: 'same price',
+  noSwaps: 'No other dinners fit tonight’s rules.',
+  markEatingOut: 'Mark as eating out',
+  cookTonight: 'Cook at home instead',
+  testNightLocked: 'Test nights need a home-cooked dinner, so this one can’t be eating out.',
+  like: 'Thumbs up',
+  dislike: 'Thumbs down',
+  liked: 'We’ll pick this more often.',
+  disliked: 'Got it, we’ll show this less.',
+  swapped: 'Swapped. Your list is updated.',
+  overBudget: '{amount} over budget',
+  suggestSwap: 'Swap {from} for {to} to save {amount}',
+  suggestSkip: 'Skip {day} (leftovers or eat out) to save {amount}',
+  past: 'Done',
+} as const;
+
+export const recipeCopy = {
+  servings: 'Servings',
+  ingredients: 'Ingredients',
+  steps: 'Steps',
+  startCooking: 'Start cooking',
+  optional: 'optional',
+  tip: 'Tip: {text}',
+  testIngredient: 'Test food: {portion}',
+  testNote: 'Add exactly this amount, for one person only. Everyone else eats the dinner as usual.',
+  notFound: 'We couldn’t find that recipe.',
+  back: 'Back',
+  minutes: '{minutes} min',
+  photoCredit: 'Photo: {credit}',
+  eatBy: 'Eat by {time}',
+} as const;
+
+export const cookCopy = {
+  step: 'Step {current} of {total}',
+  next: 'Next',
+  prev: 'Back',
+  close: 'Close cooking mode',
+  startTimer: 'Start {time} timer',
+  pause: 'Pause',
+  resume: 'Resume',
+  reset: 'Reset',
+  timerDone: 'Time’s up!',
+  done: 'Done! Check in tonight.',
+  doneBody: 'Enjoy your dinner. One tap tonight keeps your results accurate.',
+  finish: 'Finish',
+  swipeHint: 'Swipe for the next step',
+} as const;
+
+export const listCopy = {
+  title: 'Grocery list',
+  items: '{count} items',
+  total: '{total} est.',
+  estInfo: 'How prices are estimated',
+  estBody:
+    'Prices are typical store-brand prices for your area and store, adjusted with public U.S. average price data. Real prices vary by store, sales and season, so every total is an estimate.',
+  youHave: 'you have this',
+  tapToNeed: 'Tap if you need it',
+  usedIn: 'For {dishes}',
+  testFood: 'test food',
+  add: 'Add item',
+  addPlaceholder: 'e.g. paper towels',
+  addConfirm: 'Add',
+  share: 'Share list',
+  doneShopping: 'Done shopping',
+  undoDone: 'Show checked items',
+  checkedHidden: '{count} checked items hidden',
+  empty: 'No list yet',
+  emptyBody: 'Your list fills in once your week is planned.',
+  remove: 'Remove {name}',
+  shareTitle: 'Culprit grocery list',
+  checked: 'checked',
+  unchecked: 'not checked',
+} as const;
+
+export const resultsCopy = {
+  title: 'Your case file',
+  placeholder:
+    'Your results build up here as you test foods. Check-ins and results arrive in the next update.',
 } as const;
 
 export const settingsCopy = {
@@ -14,4 +147,20 @@ export const settingsCopy = {
   active: 'Culprit Pro is active.',
   inactive: 'No active subscription.',
   manage: 'Manage subscription',
+} as const;
+
+export const debugCopy = {
+  title: 'Debug',
+  today: 'App date: {day}',
+  back1: '−1 day',
+  fwd1: '+1 day',
+  fwd7: '+7 days',
+  resetTime: 'Back to today',
+  resetOnboarding: 'Reset onboarding',
+  forcePaywall: 'Open paywall',
+  forceOffer: 'Open welcome offer',
+  togglePro: 'Toggle Pro (test store)',
+  program: 'Program state',
+  plans: '{count} saved plans',
+  gallery: 'Design gallery',
 } as const;

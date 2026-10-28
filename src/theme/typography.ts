@@ -11,7 +11,15 @@ export const fonts = {
 } as const;
 
 export type TextVariant =
-  'display' | 'title' | 'headline' | 'body' | 'bodyStrong' | 'callout' | 'caption' | 'button';
+  | 'display'
+  | 'title'
+  | 'headline'
+  | 'body'
+  | 'bodyStrong'
+  | 'callout'
+  | 'caption'
+  | 'button'
+  | 'cooking';
 
 /**
  * Type scale (spec §7.2). Plus Jakarta Sans for headings + buttons, Inter for body and small text.
@@ -26,4 +34,6 @@ export const typography: Record<TextVariant, TextStyle> = {
   callout: { fontFamily: fonts.bodyMedium, fontSize: 15, lineHeight: 21 },
   caption: { fontFamily: fonts.bodyMedium, fontSize: 13, lineHeight: 18 },
   button: { fontFamily: fonts.headingSemiBold, fontSize: 17, lineHeight: 22 },
+  /** Cooking mode step text: readable from arm's length. */
+  cooking: { fontFamily: fonts.headingSemiBold, fontSize: 26, lineHeight: 36 },
 };

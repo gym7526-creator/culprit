@@ -250,6 +250,26 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - Checklist + owner setup steps: `docs/PAYWALL_CHECKLIST.md`. Sandbox purchase needs the owner's App Store
   Connect + RevenueCat setup and a dev build (not possible in the cloud sandbox).
 
+## Main tabs (Phase 5, done)
+
+- `src/features/appStore.ts` (health data → SQLite `health_kv`): program, plans by weekStart, feedback, list
+  checks/custom items/done-shopping, pantry un-crosses, shuffles, 2-week flag, dismissed cards, check-ins (Phase 6).
+  Onboarding's O20 now writes the program + first week here (the `repositories.ts` tables are unused for now).
+- `src/features/plan/actions.ts`: `syncProgramAndPlan(today)` (advance the program, generate a plan when none
+  covers today, re-plan the rest of the week when projected test nights move), swap, eating out (and back),
+  shuffle (rest of the week only), 2-week toggle. Pure helpers: `engines/week.ts`, `engines/today.ts`,
+  `engines/amount.ts` (US units, servings scale).
+- Tabs `app/(tabs)/`: Today (phase pill, tonight/tomorrow dinner, test banner + "why this amount", ideas, program
+  ring + next test, daily education card), Plan (week strip, swap sheet with ± price, thumbs, eating out, shuffle,
+  2-week, suggestions when over budget, BudgetBar), List (FlashList by aisle, checkboxes, pack + price + "for"
+  dishes, pantry cross-off, add item, share, done shopping, est. info), Results placeholder (Phase 6).
+  `app/recipe/[id]` (servings scaler, tips, amber test food) and `app/recipe/[id]/cook` (paged steps, timers,
+  keep-awake, confetti end). `app/debug.tsx` (dev only): time travel, toggle Pro, open paywall/offer, reset.
+- Photos: `npm run content:photos` (needs `PEXELS_API_KEY`; the cloud sandbox can't reach Pexels) writes
+  `assets/photos/*.jpg`, `data-pipeline/source/photo-credits.json` and `src/data/photos.ts`. Without photos,
+  cards use gradient + emoji. Overrides: `data-pipeline/source/photo-overrides.json`.
+- New approved deps installed: `expo-keep-awake`, `@shopify/flash-list` (added to Jest transformIgnorePatterns).
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -263,7 +283,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
       notification pre-permission. Maestro: 3 profiles + under-18 blocked.
 - [x] **4 Paywall + purchases:** RevenueCat (owner adds keys/products), 3-step paywall, welcome offer, restore,
       Customer Center, entitlement gating, trial reminder.
-- [ ] **5 Main tabs:** Today, Plan (swap/eating out/shuffle/2-week), Recipe + cooking mode, List.
+- [x] **5 Main tabs:** Today, Plan (swap/eating out/shuffle/2-week), Recipe + cooking mode, List.
 - [ ] **6 Check-ins, tests, results:** check-in flow, test lifecycle, case file, reveals, share card, doctor PDF, rating.
 - [ ] **7 Polish:** notifications, analytics, settings, export/delete, a11y pass, reduce motion, perf, error boundaries.
 - [ ] **8 Skin mode** behind `FEATURE_SKIN`.

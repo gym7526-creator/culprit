@@ -13,7 +13,11 @@ export type AnalyticsEvent =
   | { name: 'trial_started'; props: { product: string } }
   | { name: 'purchase_completed'; props: { product: string } }
   | { name: 'purchase_restored' }
-  | { name: 'welcome_offer_viewed' };
+  | { name: 'welcome_offer_viewed' }
+  | { name: 'dinner_swapped' }
+  | { name: 'eating_out_marked' }
+  | { name: 'list_item_checked' }
+  | { name: 'list_shared' };
 
 const sink: AnalyticsEvent[] = [];
 

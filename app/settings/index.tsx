@@ -3,7 +3,7 @@ import { ChevronLeft } from 'lucide-react-native';
 import { Linking, Pressable, StyleSheet, View } from 'react-native';
 
 import { Card, Screen, SecondaryButton, Text, TextButton } from '@/components';
-import { common, paywallCopy, settingsCopy } from '@/copy';
+import { common, debugCopy, paywallCopy, settingsCopy } from '@/copy';
 import { LINKS } from '@/config';
 import { restore } from '@/features/purchases/hooks';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
@@ -57,6 +57,9 @@ export default function Settings() {
           />
         </View>
       </Card>
+      {__DEV__ ? (
+        <TextButton label={debugCopy.title} onPress={() => router.push('/debug')} />
+      ) : null}
     </Screen>
   );
 }

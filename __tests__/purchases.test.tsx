@@ -12,6 +12,11 @@ import TabsLayout from '../app/(tabs)/_layout';
 import Today from '../app/(tabs)/index';
 import { paywallCopy } from '@/copy';
 import { DAY_MS } from '@/engines/paywall';
+import { emptyAnswers } from '@/engines/onboarding';
+import { useAppStore } from '@/features/appStore';
+import { clockNow } from '@/features/clock';
+import { buildFirstWeek } from '@/features/onboarding/buildFirstWeek';
+import { useOnboardingStore } from '@/features/onboardingStore';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
 import { trialReminderDate } from '@/notifications/trialReminder';
 import { setPurchasesClient } from '@/purchases';
@@ -41,6 +46,9 @@ const routes = {
   '(onboarding)/first-week': () => null,
   '(tabs)/_layout': TabsLayout,
   '(tabs)/index': Today,
+  '(tabs)/plan': () => null,
+  '(tabs)/list': () => null,
+  '(tabs)/results': () => null,
 };
 
 jest.setTimeout(30000);
@@ -152,6 +160,20 @@ describe('entitlement gating', () => {
   });
 
   it('lets subscribers in', async () => {
+    const answers = {
+      ...emptyAnswers,
+      birthYear: 1990,
+      symptoms: ['bloating' as const],
+      diet: 'none' as const,
+      maxMinutes: 30 as const,
+      zip: '60614',
+      chainId: 'kroger',
+      budget: 90,
+      consent: true,
+    };
+    useOnboardingStore.setState({ answers });
+    const week = buildFirstWeek(answers, clockNow(0).today, 'seed');
+    useAppStore.setState({ program: week.program, plans: { [week.plan.weekStart]: week.plan } });
     useSubscriptionStore.getState().setPro(true);
     await renderRouter(routes, { initialUrl: '/(tabs)', wrapper: Wrapper });
     expect(screen.getByTestId('today')).toBeTruthy();

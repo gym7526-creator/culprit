@@ -34,7 +34,8 @@ export function planInputFor(
   extras: Partial<PlanInput> = {},
 ): PlanInput {
   const profile = detectProfile(a.symptoms);
-  const projection = projectSchedule(program, weekStart, 7);
+  const nights = extras.nights ?? 7;
+  const projection = projectSchedule(program, weekStart, nights);
   const testNights = Object.fromEntries(
     Object.entries(projection).flatMap(([day, p]) =>
       p.type === 'dose' && p.kind !== 'control' ? [[day, p.group]] : [],
@@ -45,7 +46,7 @@ export function planInputFor(
     ingredients: ingredientMap,
     tests: content.tests.tests,
     weekStart,
-    nights: 7,
+    nights,
     cookDays: a.cookDays,
     eatingOut: [],
     household: a.household,

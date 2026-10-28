@@ -1,5 +1,4 @@
 import { useRouter } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
 import { Check } from 'lucide-react-native';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -8,10 +7,10 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { haptics, Screen, ScoreRing, Text } from '@/components';
 import { format, onboardingCopy } from '@/copy';
 import { content } from '@/data/content';
-import { savePlan, saveProgram } from '@/data/repositories';
 import { detectProfile } from '@/engines/onboarding';
 import { eatByTime } from '@/engines/plan';
 import { track } from '@/analytics';
+import { useAppStore } from '@/features/appStore';
 import { buildFirstWeek } from '@/features/onboarding/buildFirstWeek';
 import { onboardingHref, useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
 import { usePrefsStore } from '@/features/prefsStore';
@@ -30,7 +29,6 @@ function formatClock(time: string): string {
 /** O20: animated checklist + ring while the real engines build the plan. */
 export default function Building() {
   const router = useRouter();
-  const db = useSQLiteContext();
   const { colors } = useTheme();
   const { answers, today } = useOnboardingNav('building');
   const seed = usePrefsStore((s) => s.installId);
@@ -65,12 +63,10 @@ export default function Building() {
     if (built.current) return;
     built.current = true;
     const week = buildFirstWeek(answers, today, seed);
-    (async () => {
-      await saveProgram(db, week.program);
-      await savePlan(db, week.plan);
-      track({ name: 'plan_generated' });
-    })().catch(() => undefined);
-  }, [answers, today, seed, db]);
+    // A fresh program replaces anything from an earlier run through onboarding.
+    useAppStore.setState({ program: week.program, plans: { [week.plan.weekStart]: week.plan } });
+    track({ name: 'plan_generated' });
+  }, [answers, today, seed]);
 
   // Timed checklist and ring.
   useEffect(() => {

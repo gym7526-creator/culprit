@@ -1,7 +1,7 @@
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Clock, Ellipsis, FlaskConical, Lock } from 'lucide-react-native';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View, type ImageSourcePropType } from 'react-native';
 
 import { componentCopy, format } from '@/copy';
 import { gradients, opacity, radius, size, space, useTheme, type GradientKey } from '@/theme';
@@ -12,6 +12,8 @@ export type DinnerCardProps = {
   title: string;
   emoji: string;
   gradient: GradientKey;
+  /** Licensed stock photo; falls back to the gradient + emoji. */
+  photo?: ImageSourcePropType;
   minutes: number;
   /** Already formatted, e.g. "$11.40". The component appends "est.". */
   price: string;
@@ -32,6 +34,7 @@ export function DinnerCard({
   title,
   emoji,
   gradient,
+  photo,
   minutes,
   price,
   eatBy,
@@ -73,9 +76,18 @@ export function DinnerCard({
           end={{ x: 1, y: 1 }}
           style={[styles.hero, large ? styles.heroLarge : null]}
         >
-          <Text style={large ? styles.emojiLarge : styles.emoji} accessible={false}>
-            {emoji}
-          </Text>
+          {photo ? (
+            <Image
+              source={photo}
+              style={StyleSheet.absoluteFill}
+              resizeMode="cover"
+              accessible={false}
+            />
+          ) : (
+            <Text style={large ? styles.emojiLarge : styles.emoji} accessible={false}>
+              {emoji}
+            </Text>
+          )}
           {testNight ? (
             <View style={[styles.badge, styles.badgeLeft, { backgroundColor: colors.partialSoft }]}>
               <FlaskConical size={size.iconSm} color={colors.partialInk} />
@@ -150,7 +162,7 @@ const HERO_LARGE = 160;
 
 const styles = StyleSheet.create({
   card: { borderRadius: radius.card, overflow: 'hidden' },
-  hero: { minHeight: HERO, alignItems: 'center', justifyContent: 'center' },
+  hero: { minHeight: HERO, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   heroLarge: { minHeight: HERO_LARGE },
   emoji: { fontSize: size.heroEmoji * 0.75, lineHeight: size.heroEmoji },
   emojiLarge: { fontSize: size.heroEmoji, lineHeight: size.heroEmoji * 1.3 },

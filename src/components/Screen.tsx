@@ -1,5 +1,11 @@
-import type { PropsWithChildren } from 'react';
-import { ScrollView, StyleSheet, View, type ViewStyle } from 'react-native';
+import type { PropsWithChildren, Ref } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  type ScrollViewInstance,
+  type ViewStyle,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { space, useTheme } from '@/theme';
@@ -10,6 +16,8 @@ type ScreenProps = PropsWithChildren<{
   bottomInset?: number;
   contentStyle?: ViewStyle;
   testID?: string;
+  /** For scroll-to (e.g. the Plan week strip). */
+  scrollRef?: Ref<ScrollViewInstance>;
 }>;
 
 /** Screen container: themed background, safe-area top padding, 20 pt side padding. */
@@ -19,6 +27,7 @@ export function Screen({
   bottomInset = 0,
   contentStyle,
   testID,
+  scrollRef,
 }: ScreenProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -31,6 +40,7 @@ export function Screen({
   if (scroll) {
     return (
       <ScrollView
+        ref={scrollRef}
         testID={testID}
         style={[styles.flex, { backgroundColor: colors.bg }]}
         contentContainerStyle={[padding, contentStyle]}
