@@ -26,6 +26,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-dev-client",
       "expo-sqlite",
       "expo-font",
       [
@@ -34,7 +35,9 @@
           "image": "./assets/splash-icon.png",
           "imageWidth": 160,
           "backgroundColor": "#FBFAF7",
-          "dark": { "backgroundColor": "#0E0E12" }
+          "dark": {
+            "backgroundColor": "#0E0E12"
+          }
         }
       ]
     ],

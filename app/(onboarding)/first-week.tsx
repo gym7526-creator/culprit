@@ -1,5 +1,6 @@
 import { BlurView } from 'expo-blur';
 import { Lock } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
@@ -21,6 +22,7 @@ import { recipeMap } from '@/data/content';
 import { weekday } from '@/engines/dates';
 import { useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
 import { usePlanPreview } from '@/features/onboarding/usePlanPreview';
+import { usePrefsStore } from '@/features/prefsStore';
 import { size, space, useTheme, type GradientKey } from '@/theme';
 
 const c = onboardingCopy.firstWeek;
@@ -41,6 +43,10 @@ export default function FirstWeek() {
   const { goNext, goTo } = useOnboardingNav('first-week');
   const { preview, error } = usePlanPreview();
   const { scheme } = useTheme();
+  const router = useRouter();
+  const completed = usePrefsStore((st) => st.onboardingCompleted);
+  // After onboarding, the locked preview leads straight back to the paywall.
+  const unlock = () => (completed ? router.push('/(paywall)') : goNext());
 
   useEffect(() => {
     if (preview) track({ name: 'plan_preview_viewed' });
@@ -161,7 +167,7 @@ export default function FirstWeek() {
         </Card>
       </Screen>
       <BottomCTA>
-        <PrimaryButton label={c.cta} onPress={() => goNext()} testID="unlock-plan" />
+        <PrimaryButton label={c.cta} onPress={unlock} testID="unlock-plan" />
       </BottomCTA>
     </View>
   );

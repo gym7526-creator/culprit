@@ -235,6 +235,21 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - Maestro flows in `.maestro/` (fodmap, reflux, mixed, under-18). They need a simulator/dev build: not run in the
   cloud sandbox.
 
+## Paywall + purchases (Phase 4, done)
+
+- `src/purchases`: `PurchasesClient` interface; `revenuecat.ts` (real, loaded lazily only when a key exists),
+  `mock.ts` (in-memory test store for dev/preview/tests), `index.ts` picks one. Keys:
+  `EXPO_PUBLIC_REVENUECAT_IOS_KEY` / `_ANDROID_KEY` (EAS env). Release build without a key → store unavailable.
+- Pure rules in `src/engines/paywall.ts` (period parsing, savings %, welcome-offer timing, trial end).
+- `src/features/subscriptionStore.ts` (kv-store, not health data): cached `isPro`, trial start, paywall memory.
+- Screens `app/(paywall)/`: index (P1), timeline (P2, only when the annual plan has a trial), plans (P3),
+  welcome-offer (24 h after first close, once, max one auto-show a day), success. Close → locked O21.
+- `app/(tabs)` redirects non-subscribers; `app/index.tsx` routes pro → tabs, finished onboarding → welcome offer
+  or locked O21, else resume onboarding. Settings has Manage subscription (Customer Center) + Restore.
+- Trial reminder: `src/notifications/trialReminder.ts` uses `scheduleNotifications` (24 h before, out of quiet hours).
+- Checklist + owner setup steps: `docs/PAYWALL_CHECKLIST.md`. Sandbox purchase needs the owner's App Store
+  Connect + RevenueCat setup and a dev build (not possible in the cloud sandbox).
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -246,7 +261,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
       `npm run engine:simulate` prints a program simulation.
 - [x] **3 Onboarding + plan preview:** §8 screens, real engine output at O21, resume-on-relaunch, safety logic,
       notification pre-permission. Maestro: 3 profiles + under-18 blocked.
-- [ ] **4 Paywall + purchases:** RevenueCat (owner adds keys/products), 3-step paywall, welcome offer, restore,
+- [x] **4 Paywall + purchases:** RevenueCat (owner adds keys/products), 3-step paywall, welcome offer, restore,
       Customer Center, entitlement gating, trial reminder.
 - [ ] **5 Main tabs:** Today, Plan (swap/eating out/shuffle/2-week), Recipe + cooking mode, List.
 - [ ] **6 Check-ins, tests, results:** check-in flow, test lifecycle, case file, reveals, share card, doctor PDF, rating.
@@ -268,4 +283,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
   (matches the NHS guidance the spec cites). Delayed reactions still count on rest days.
 - 2026-10-28: Stovetop, oven and sheet pan are assumed available; other equipment must be selected in onboarding.
 - 2026-10-28: Test-night foods go on the grocery list at the day-3 portion (one person).
+- 2026-10-28: Food photos: owner approved licensed stock photos (closest match per recipe, free commercial
+  licence such as Unsplash/Pexels, attribution recorded). Applies from Phase 5.
+- 2026-10-28: Terms link defaults to Apple's standard EULA; privacy URL is a placeholder for the owner.
 - 2026-10-28: Red-flag option worded "Losing weight without trying" (the copy test bans "weight loss").

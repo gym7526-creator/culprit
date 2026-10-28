@@ -7,3 +7,4 @@ export { resultCopy } from './results';
 export { groceryCopy } from './grocery';
 export { paywallCopy } from './paywall';
 export { format, formatMoney } from './format';
+export { settingsCopy, tabsCopy } from './app';

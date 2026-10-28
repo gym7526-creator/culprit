@@ -46,3 +46,10 @@ jest.mock('@/data/healthStorage', () => {
     },
   };
 });
+
+jest.mock('expo-notifications', () => ({
+  requestPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
+  scheduleNotificationAsync: jest.fn(() => Promise.resolve('id')),
+  cancelScheduledNotificationAsync: jest.fn(() => Promise.resolve()),
+  SchedulableTriggerInputTypes: { DATE: 'date' },
+}));

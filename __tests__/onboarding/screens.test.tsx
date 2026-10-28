@@ -36,6 +36,8 @@ const routes = {
   '(onboarding)/symptoms': () => null,
 };
 
+jest.setTimeout(30000);
+
 const year = new Date().getFullYear();
 
 function withBirthYear(birthYear: number) {

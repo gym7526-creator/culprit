@@ -9,6 +9,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
+import { restore } from '@/features/purchases/hooks';
 import { BottomCTA, PrimaryButton, Screen, Text, TextButton } from '@/components';
 import { common, galleryCopy, onboardingCopy } from '@/copy';
 import { useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
@@ -113,7 +114,12 @@ export default function Welcome() {
       </Screen>
       <BottomCTA>
         <PrimaryButton label={c.cta} onPress={() => goNext()} testID="welcome-start" />
-        <TextButton label={c.restore} onPress={() => router.push('/(paywall)')} />
+        <TextButton
+          label={c.restore}
+          onPress={async () => {
+            if (await restore()) router.replace('/(tabs)');
+          }}
+        />
         <Text variant="caption" color="textSecondary" align="center">
           {common.disclaimerShort}
         </Text>

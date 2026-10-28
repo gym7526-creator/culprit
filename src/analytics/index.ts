@@ -7,7 +7,13 @@ export type AnalyticsEvent =
   | { name: 'onboarding_step_viewed'; props: { step: string } }
   | { name: 'onboarding_completed' }
   | { name: 'plan_preview_viewed' }
-  | { name: 'plan_generated' };
+  | { name: 'plan_generated' }
+  | { name: 'paywall_viewed'; props: { step: string; offering: string } }
+  | { name: 'paywall_closed'; props: { step: string } }
+  | { name: 'trial_started'; props: { product: string } }
+  | { name: 'purchase_completed'; props: { product: string } }
+  | { name: 'purchase_restored' }
+  | { name: 'welcome_offer_viewed' };
 
 const sink: AnalyticsEvent[] = [];
 
