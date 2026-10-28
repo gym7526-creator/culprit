@@ -13,7 +13,9 @@ export default function AgeBlocked() {
       title={c.title}
       body={c.body}
       testID="age-blocked"
-      primary={{ label: onboardingCopy.teen.back, onPress: () => {
+      primary={{
+        label: onboardingCopy.teen.back,
+        onPress: () => {
           update({ birthYear: null });
           goTo('birth-year');
         },

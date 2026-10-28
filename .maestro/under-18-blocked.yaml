@@ -1,0 +1,13 @@
+# 13–17 year olds can't start the elimination program; under-13s are blocked (spec §2).
+appId: com.culprit.app
+---
+- runFlow: _common-start.yaml
+- scrollUntilVisible:
+    element: "2014"
+    direction: DOWN
+    centerElement: true
+- tapOn: "2014"
+- tapOn: "Continue"
+- assertVisible:
+    id: "teen-block"
+- assertNotVisible: "What bothers you?"

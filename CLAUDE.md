@@ -218,6 +218,23 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - `schedule.ts` (§6.7): pure list of pending local notifications; quiet hours 22:00–08:00 except the chosen
   check-in time; follow-up +45 min; trial reminder moved out of quiet hours to 21:00 the evening before.
 
+## Onboarding (Phase 3, done)
+
+- Screens in `app/(onboarding)/`, one per step. Order and conditional visibility live in
+  `src/features/onboarding/flow.ts` (`STEPS`, `BRANCHES`, `isVisible`, `nextStep`); answer logic (age gate, profile
+  detection, budget defaults, exclusive chips) is pure in `src/engines/onboarding.ts`.
+- Answers persist in SQLite (`health_kv` via `src/data/healthStorage.ts`, sync storage for Zustand). The last step is
+  stored in prefs; `app/index.tsx` resumes there on relaunch (the loader restarts from how-it-works).
+- O20 builds the real program + first week with the engines (`buildFirstWeek`), saves both, then O21 reloads them
+  (`usePlanPreview`). The week starts tomorrow. Per-dinner prices use `recipeCostEstimate` (pro-rata, "est.").
+- Red flags: which ones were picked is never stored, only that the notice was acknowledged.
+- O22 accounts: no backend in the MVP, so it's a "saved on this phone" screen; no social login means Apple's
+  Sign in with Apple rule doesn't apply yet. `(paywall)` is a placeholder until Phase 4.
+- `prefs.installId` (random, per install) seeds plans.
+- Screen tests use `expo-router/testing-library` (`standard-navigation` added to transformIgnorePatterns).
+- Maestro flows in `.maestro/` (fodmap, reflux, mixed, under-18). They need a simulator/dev build: not run in the
+  cloud sandbox.
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -227,7 +244,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
       `npm run content:validate` prints a coverage report. (LLM drafting script pending dependency approval.)
 - [x] **2 Engines:** program, scoring (34 tests), plan (~15 ms/week in Node), grocery, price, schedule.
       `npm run engine:simulate` prints a program simulation.
-- [ ] **3 Onboarding + plan preview:** §8 screens, real engine output at O21, resume-on-relaunch, safety logic,
+- [x] **3 Onboarding + plan preview:** §8 screens, real engine output at O21, resume-on-relaunch, safety logic,
       notification pre-permission. Maestro: 3 profiles + under-18 blocked.
 - [ ] **4 Paywall + purchases:** RevenueCat (owner adds keys/products), 3-step paywall, welcome offer, restore,
       Customer Center, entitlement gating, trial reminder.
@@ -251,3 +268,4 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
   (matches the NHS guidance the spec cites). Delayed reactions still count on rest days.
 - 2026-10-28: Stovetop, oven and sheet pan are assumed available; other equipment must be selected in onboarding.
 - 2026-10-28: Test-night foods go on the grocery list at the day-3 portion (one person).
+- 2026-10-28: Red-flag option worded "Losing weight without trying" (the copy test bans "weight loss").

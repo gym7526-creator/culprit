@@ -1,0 +1,6 @@
+appId: com.culprit.app
+---
+- launchApp:
+    clearState: true
+- tapOn: "Get started"
+- tapOn: "My stomach"

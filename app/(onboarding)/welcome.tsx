@@ -7,15 +7,13 @@ import Animated, {
   useSharedValue,
   withDelay,
   withSpring,
-  withTiming,
 } from 'react-native-reanimated';
 
 import { BottomCTA, PrimaryButton, Screen, Text, TextButton } from '@/components';
 import { common, galleryCopy, onboardingCopy } from '@/copy';
 import { useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
-import { motion, radius, size, space, useTheme } from '@/theme';
+import { motion, radius, size, space, useTheme, gradients } from '@/theme';
 import { LinearGradient } from 'expo-linear-gradient';
-import { gradients } from '@/theme';
 
 const c = onboardingCopy.welcome;
 const CARDS = [

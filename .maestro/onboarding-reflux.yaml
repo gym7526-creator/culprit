@@ -1,0 +1,45 @@
+# Full onboarding for a reflux profile, ending on the first-week preview (spec §8).
+appId: com.culprit.app
+---
+- runFlow: _common-start.yaml
+- tapOn: "Continue"            # birth year (default = 30 years old)
+- tapOn: "Heartburn or reflux"
+
+- tapOn: "Continue"
+
+- tapOn: "A few times a week"
+- tapOn: "A few hours later"
+- tapOn: "Continue"            # impact
+- tapOn: "Continue"            # empathy
+- tapOn: "Skip"                # suspects
+- tapOn: "Nothing yet"
+- tapOn: "Continue"
+- tapOn: "Continue"            # objection
+- tapOn: "None of these"
+- tapOn: "Continue"
+- tapOn: "No"                  # eating disorder
+- tapOn: "No"                  # pregnancy
+- tapOn: "Continue"            # diet
+- tapOn: "Continue"            # household
+- tapOn: "Continue"            # cook nights
+- tapOn: "30 minutes"
+- tapOn: "Skip"                # equipment
+- tapOn:
+    id: "zip-input"
+- inputText: "60614"
+- tapOn: "Continue"
+- tapOn: "Kroger (and family stores)"
+- tapOn: "Continue"
+- tapOn: "Continue"            # budget
+- tapOn: "Skip"                # pantry
+- tapOn: "Continue"            # bedtime
+- tapOn: "Continue"            # check-in time
+- tapOn: "Not now"
+- tapOn: "Skip"                # source
+- tapOn: "Build my plan"
+- extendedWaitUntil:
+    visible: "Your first week is ready."
+    timeout: 15000
+- assertVisible:
+    id: "week-total"
+- assertVisible: "Unlock my plan"
