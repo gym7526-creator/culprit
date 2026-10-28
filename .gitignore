@@ -42,3 +42,6 @@ yarn-error.*
 
 # jest
 coverage/
+
+culprit-progress.zip
+culprit-backup.bundle
