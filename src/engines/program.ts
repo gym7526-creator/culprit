@@ -95,6 +95,8 @@ export type QueueOptions = {
   age: number;
   alcoholOptIn: boolean;
   seed: string;
+  /** Groups whose test foods don't fit the user's diet or allergies (see `testsToSkip`). */
+  skip?: readonly TestGroup[];
 };
 
 export type CreateOptions = QueueOptions & {
@@ -133,6 +135,7 @@ export function buildQueue(
     const t = byId.get(g);
     if (!t || o.knownFine.includes(g) || o.selfReported.includes(g)) return false;
     if (t.skipForCeliac && o.celiac) return false;
+    if (o.skip?.includes(g)) return false;
     if (t.minAge !== undefined && o.age < t.minAge) return false;
     if (t.optIn && !(g === 'alcohol' && o.alcoholOptIn)) return false;
     return true;

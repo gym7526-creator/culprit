@@ -33,6 +33,8 @@ export type Diet = 'none' | 'vegetarian' | 'vegan' | 'pescatarian';
 /** Always assumed available; other equipment must be selected in onboarding. */
 export const BASE_EQUIPMENT: readonly Equipment[] = ['stovetop', 'oven', 'sheet_pan'];
 export const TIME_TOLERANCE_MIN = 5;
+/** When the time limit has to be relaxed, how many extra choices beyond the empty slots. */
+export const RELAX_SPARE = 2;
 export const RECENT_DAYS = 28;
 export const REFLUX_GAP_MIN = 180;
 export const LATE_DINNER_GAP_MIN = 90;
@@ -218,8 +220,13 @@ class Planner {
     }
     const eligible = eligibleRecipes(input);
     const timed = eligible.filter((r) => r.minutes <= input.maxMinutes + TIME_TOLERANCE_MIN);
-    // Relax the time limit rather than repeat dinners or leave nights empty.
-    this.pool = timed.length >= this.slots.length ? timed : eligible;
+    // Too few quick recipes: add only the quickest of the rest (rather than repeat dinners or leave
+    // nights empty), never the whole list.
+    const extra = eligible
+      .filter((r) => !timed.includes(r))
+      .sort((a, b) => a.minutes - b.minutes)
+      .slice(0, Math.max(0, this.slots.length + RELAX_SPARE - timed.length));
+    this.pool = timed.length >= this.slots.length ? timed : [...timed, ...extra];
     this.byId = new Map(this.pool.map((r) => [r.id, r]));
     for (const r of this.pool) this.facts.set(r.id, recipeFacts(r, input));
   }

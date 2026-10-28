@@ -2,7 +2,13 @@
  * Onboarding logic (spec §2, §8): profile detection, age gating, defaults, and turning answers into
  * program and plan inputs. Pure; screens only collect answers.
  */
-import type { Allergen, Equipment, TestGroup } from '../data/content/schema.ts';
+import type {
+  Allergen,
+  Equipment,
+  Ingredient,
+  TestDefinition,
+  TestGroup,
+} from '../data/content/schema.ts';
 import type { Diet, Safety } from './plan.ts';
 import type { Profile, Symptom } from './types.ts';
 
@@ -255,7 +261,12 @@ export function setAsideGroups(profile: Profile): TestGroup[] {
 
 // --------------------------------------------------------------------------------------- builders
 
-export function programOptions(a: Answers, currentYear: number, seed: string) {
+export function programOptions(
+  a: Answers,
+  currentYear: number,
+  seed: string,
+  skip: readonly TestGroup[] = [],
+) {
   const age = a.birthYear ? ageFrom(a.birthYear, currentYear) : 0;
   const profile = detectProfile(a.symptoms);
   const main = a.mainSymptom ?? a.symptoms[0] ?? null;
@@ -263,6 +274,7 @@ export function programOptions(a: Answers, currentYear: number, seed: string) {
     profile,
     refluxFirst: main !== null && isRefluxSymptom(main),
     knownFine: suspectGroups(a.knownFine),
+    skip,
     selfReported: [] as TestGroup[],
     celiac: a.celiac,
     age,
@@ -293,4 +305,27 @@ export function toggleExclusive<T>(list: readonly T[], value: T, exclusive: T): 
   if (value === exclusive) return list.includes(exclusive) ? [] : [exclusive];
   const without = list.filter((x) => x !== exclusive);
   return without.includes(value) ? without.filter((x) => x !== value) : [...without, value];
+}
+
+/**
+ * Food tests whose test foods the user can't or doesn't eat: an allergen they listed, or outside
+ * their diet (e.g. the rich-food test uses bacon, the dairy test uses milk). Those groups are skipped,
+ * never tested, so nobody is told to eat something they're allergic to or avoid.
+ */
+export function testsToSkip(
+  diet: Diet,
+  allergens: readonly Allergen[],
+  tests: readonly TestDefinition[],
+  ingredients: ReadonlyMap<string, Ingredient>,
+): TestGroup[] {
+  return tests
+    .filter((t) =>
+      t.doses.some((d) => {
+        const ing = d.ingredientId ? ingredients.get(d.ingredientId) : undefined;
+        if (!ing) return false;
+        if (ing.allergens.some((a) => allergens.includes(a))) return true;
+        return diet !== 'none' && !ing.diets.includes(diet);
+      }),
+    )
+    .map((t) => t.id);
 }

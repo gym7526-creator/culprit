@@ -12,6 +12,7 @@ import {
   programOptions,
   safetyFor,
   setAsideGroups,
+  testsToSkip,
   type Answers,
 } from '@/engines/onboarding';
 import { priceContext } from '@/engines/price';
@@ -80,7 +81,8 @@ export function planInputFor(
 }
 
 export function buildFirstWeek(a: Answers, today: DayKey, seed: string): FirstWeek {
-  const opts = programOptions(a, Number(today.slice(0, 4)), seed);
+  const skip = testsToSkip(a.diet ?? 'none', a.allergens, content.tests.tests, ingredientMap);
+  const opts = programOptions(a, Number(today.slice(0, 4)), seed, skip);
   const program = createProgram(content.tests.order, content.tests.tests, { ...opts, today });
   // The calm start (and the first week) begins tomorrow.
   const first = planInputFor(a, program, addDays(today, 1), seed);

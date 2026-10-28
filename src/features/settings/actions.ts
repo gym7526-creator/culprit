@@ -2,9 +2,9 @@ import * as Notifications from 'expo-notifications';
 import { Platform, Share } from 'react-native';
 
 import { resetAnalytics, track } from '@/analytics';
-import { content } from '@/data/content';
+import { content, ingredientMap } from '@/data/content';
 import { diffDays } from '@/engines/dates';
-import type { Answers } from '@/engines/onboarding';
+import { testsToSkip, type Answers } from '@/engines/onboarding';
 import { pauseProgram, resumeProgram } from '@/engines/program';
 import { activePlan } from '@/engines/week';
 import { settingsCopy } from '@/copy';
@@ -30,6 +30,14 @@ export function replanCurrentWeek(): void {
 
 export function savePreferences(patch: Partial<Answers>): void {
   useOnboardingStore.getState().update(patch);
+  // A new diet or allergy can rule out upcoming food tests (never ones already done or running).
+  const a = useOnboardingStore.getState().answers;
+  const app = useAppStore.getState();
+  if (app.program) {
+    const skip = testsToSkip(a.diet ?? 'none', a.allergens, content.tests.tests, ingredientMap);
+    const queue = app.program.queue.filter((q) => q.kind === 'control' || !skip.includes(q.group));
+    if (queue.length !== app.program.queue.length) app.setProgram({ ...app.program, queue });
+  }
   replanCurrentWeek();
 }
 

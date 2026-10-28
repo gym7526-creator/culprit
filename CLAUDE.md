@@ -387,4 +387,10 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - 2026-10-28: Terms link defaults to Apple's standard EULA; privacy URL is a placeholder for the owner.
 - 2026-10-28: Check-in card stays on the day being logged until "Done" (logging yesterday before noon no
   longer jumps straight to today's card).
+- 2026-10-28: **Food tests respect diet and allergies** (`testsToSkip`): a test whose dose ingredient has a listed
+  allergen or is outside the diet is skipped (milk allergy → no dairy test; vegetarian → no bacon "rich food"
+  test). Changing diet/allergies in Settings removes newly conflicting upcoming tests. Placebo always stays.
+- 2026-10-28: When the time limit has to be relaxed (too few quick recipes), only the quickest extra recipes
+  are added (`RELAX_SPARE`), not the whole list. `__tests__/engines/planSafetyFuzz.test.ts` checks every rule
+  for 40 random people.
 - 2026-10-28: Red-flag option worded "Losing weight without trying" (the copy test bans "weight loss").
