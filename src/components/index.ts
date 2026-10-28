@@ -19,6 +19,7 @@ export { Stepper } from './Stepper';
 export { TestBanner } from './TestBanner';
 export { Text, type TextProps } from './Text';
 export { TextButton } from './TextButton';
+export { TextField } from './TextField';
 export { TimePicker } from './TimePicker';
 export { ToastHost } from './Toast';
 export { WheelPicker, type WheelItem } from './WheelPicker';

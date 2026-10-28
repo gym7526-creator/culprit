@@ -175,6 +175,11 @@ function recipeFacts(r: Recipe, input: PlanInput): RecipeFacts {
   return { cost, perishables, protein: r.derived.mainProtein };
 }
 
+/** Pro-rata cost of one dinner for the household (shown per dinner card, "est."). */
+export function recipeCostEstimate(r: Recipe, input: PlanInput): number {
+  return roundCents(recipeFacts(r, input).cost);
+}
+
 // ---------------------------------------------------------------------------------------- scoring
 
 type Slot = { day: DayKey; index: number; testGroup: TestGroup | null };

@@ -36,6 +36,22 @@ export const migrations: readonly Migration[] = [
       );
     `,
   },
+  {
+    version: 2,
+    description: 'health key-value (onboarding answers), weekly plans',
+    sql: `
+      CREATE TABLE IF NOT EXISTS health_kv (
+        key TEXT PRIMARY KEY NOT NULL,
+        value TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS plans (
+        week_start TEXT PRIMARY KEY NOT NULL,         -- YYYY-MM-DD of the first planned night
+        plan_json TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+    `,
+  },
 ];
 
 export const LATEST_SCHEMA_VERSION = migrations.reduce((max, m) => Math.max(max, m.version), 0);

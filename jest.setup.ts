@@ -30,3 +30,19 @@ jest.mock(
   'react-native-gesture-handler/lib/module/handlers/gestures/installUIRuntimeBindings',
   () => ({ installUIRuntimeBindings: () => undefined }),
 );
+
+// Health storage uses synchronous SQLite; back it with a Map under Jest.
+jest.mock('@/data/healthStorage', () => {
+  const store = new Map<string, string>();
+  return {
+    healthStorage: {
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => {
+        store.set(k, v);
+      },
+      removeItem: (k: string) => {
+        store.delete(k);
+      },
+    },
+  };
+});

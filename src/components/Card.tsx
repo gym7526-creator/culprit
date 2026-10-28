@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { opacity, radius, space, useTheme } from '@/theme';
 
@@ -7,7 +7,7 @@ type CardProps = PropsWithChildren<{
   onPress?: () => void;
   accessibilityLabel?: string;
   tone?: 'surface' | 'alt';
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   testID?: string;
 }>;
 

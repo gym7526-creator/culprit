@@ -19,6 +19,8 @@ export type PrefsState = {
   bedtime: string;
   /** Dev-only time travel, in days, applied to the injected `now()` (Phase 2+). */
   devTimeOffsetDays: number;
+  /** Random per-install id: seeds plans. Not personal, never tied to an account. */
+  installId: string;
 };
 
 export type PrefsActions = {
@@ -31,6 +33,10 @@ export type PrefsActions = {
   resetPrefs: () => void;
 };
 
+function randomId(): string {
+  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export const defaultPrefs: PrefsState = {
   themeOverride: null,
   onboardingStep: null,
@@ -38,24 +44,29 @@ export const defaultPrefs: PrefsState = {
   checkInTime: '20:30',
   bedtime: '23:00',
   devTimeOffsetDays: 0,
+  installId: '',
 };
 
 export const usePrefsStore = create<PrefsState & PrefsActions>()(
   persist(
     (set) => ({
       ...defaultPrefs,
+      installId: randomId(),
       setThemeOverride: (themeOverride) => set({ themeOverride }),
       setOnboardingStep: (onboardingStep) => set({ onboardingStep }),
       completeOnboarding: () => set({ onboardingCompleted: true, onboardingStep: null }),
       setCheckInTime: (checkInTime) => set({ checkInTime }),
       setBedtime: (bedtime) => set({ bedtime }),
       shiftDevTime: (days) => set((s) => ({ devTimeOffsetDays: s.devTimeOffsetDays + days })),
-      resetPrefs: () => set(defaultPrefs),
+      resetPrefs: () => set({ ...defaultPrefs, installId: randomId() }),
     }),
     {
       name: 'culprit-prefs',
       version: 1,
       storage: createJSONStorage(() => Storage),
+      onRehydrateStorage: () => (state) => {
+        if (state && !state.installId) state.installId = randomId();
+      },
     },
   ),
 );

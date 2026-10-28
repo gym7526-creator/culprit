@@ -1,34 +1,24 @@
-import { useRouter } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Redirect } from 'expo-router';
+import { useEffect, useState } from 'react';
 
-import { Screen, Text, TextButton } from '@/components';
-import { common, galleryCopy, onboardingCopy } from '@/copy';
-import { space } from '@/theme';
+import { isStep } from '@/features/onboarding/flow';
+import { onboardingHref } from '@/features/onboarding/useOnboardingNav';
+import { usePrefsStore } from '@/features/prefsStore';
 
-/** Entry route. Phase 3 replaces this with the onboarding flow (O0 Welcome). */
+/** Entry: resume onboarding where the user left off, or go on to the paywall / app. */
 export default function Index() {
-  const router = useRouter();
-  return (
-    <Screen contentStyle={styles.center}>
-      <View style={styles.copy}>
-        <Text variant="display" align="center" accessibilityRole="header">
-          {onboardingCopy.welcome.title}
-        </Text>
-        <Text variant="body" color="textSecondary" align="center">
-          {onboardingCopy.welcome.subtitle}
-        </Text>
-      </View>
-      {__DEV__ ? (
-        <TextButton label={galleryCopy.openGallery} onPress={() => router.push('/gallery')} />
-      ) : null}
-      <Text variant="caption" color="textSecondary" align="center">
-        {common.disclaimerShort}
-      </Text>
-    </Screen>
-  );
-}
+  const [hydrated, setHydrated] = useState(usePrefsStore.persist.hasHydrated());
+  const completed = usePrefsStore((s) => s.onboardingCompleted);
+  const step = usePrefsStore((s) => s.onboardingStep);
 
-const styles = StyleSheet.create({
-  center: { justifyContent: 'center', gap: space.xl },
-  copy: { gap: space.sm },
-});
+  useEffect(() => {
+    if (hydrated) return;
+    return usePrefsStore.persist.onFinishHydration(() => setHydrated(true));
+  }, [hydrated]);
+
+  if (!hydrated) return null; // native splash stays up
+  if (completed) return <Redirect href="/(paywall)" />;
+  // The loader can't be resumed mid-way; restart it from the consent screen.
+  const resume = step && isStep(step) ? (step === 'building' ? 'how-it-works' : step) : 'welcome';
+  return <Redirect href={onboardingHref(resume)} />;
+}
