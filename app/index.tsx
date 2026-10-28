@@ -2,9 +2,11 @@ import { Redirect } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 import { welcomeOfferDue } from '@/engines/paywall';
+import { useAppStore } from '@/features/appStore';
 import { isStep } from '@/features/onboarding/flow';
 import { onboardingHref } from '@/features/onboarding/useOnboardingNav';
 import { usePrefsStore } from '@/features/prefsStore';
+import { useSkinStore } from '@/features/skin/skinStore';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
 
 function useHydrated(): boolean {
@@ -38,11 +40,15 @@ export default function Index() {
   const step = usePrefsStore((s) => s.onboardingStep);
   const isPro = useSubscriptionStore((s) => s.isPro);
   const paywall = useSubscriptionStore((s) => s.paywall);
+  const hasSkin = useSkinStore((s) => s.program !== null);
+  const hasStomach = useAppStore((s) => s.program !== null);
+  const skinOnly = hasSkin && !hasStomach;
   const [openedAt] = useState(() => Date.now());
 
   if (!hydrated) return null; // native splash stays up
   if (isPro) return <Redirect href="/(tabs)" />;
   if (completed) {
+    if (skinOnly) return <Redirect href="/skin-setup/preview" />;
     return welcomeOfferDue(paywall, openedAt) ? (
       <Redirect href="/(paywall)/welcome-offer" />
     ) : (

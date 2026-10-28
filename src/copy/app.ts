@@ -318,6 +318,8 @@ export const debugCopy = {
   sim7Placebo: 'Simulate 7 days: placebo reaction',
   sim8Weeks: 'Simulate 8 weeks: clear trigger',
   checkins: '{count} check-ins logged',
+  skinOn: 'Turn on skin mode (FEATURE_SKIN)',
+  skinOff: 'Turn off skin mode (FEATURE_SKIN)',
 } as const;
 
 export const checkinCopy = {
@@ -481,3 +483,124 @@ export const groupEmoji: Record<string, string> = {
   alcohol: '🍷',
   control: '🧂',
 };
+
+export const skinCopy = {
+  tab: 'Skin',
+  title: 'Your skin',
+  setup: {
+    progress: 'Step {current} of {total}',
+    concern: {
+      title: 'What bothers your skin most?',
+      options: {
+        breakouts: { emoji: '🔴', label: 'Breakouts' },
+        blackheads: { emoji: '⚫', label: 'Blackheads' },
+        redness: { emoji: '🌹', label: 'Redness' },
+        oily: { emoji: '💧', label: 'Oily skin' },
+        dry: { emoji: '🏜️', label: 'Dry skin' },
+      },
+    },
+    areas: {
+      title: 'Where does it show up?',
+      subtitle: 'Pick all that apply.',
+      options: { forehead: 'Forehead', cheeks: 'Cheeks', chin_jaw: 'Chin & jaw', back: 'Back' },
+    },
+    duration: {
+      title: 'How long has it been going on?',
+      options: {
+        weeks: 'A few weeks',
+        months: 'A few months',
+        year: 'About a year',
+        years: 'Years',
+      },
+    },
+    current: {
+      title: 'What do you already use?',
+      subtitle: 'We’ll keep what you have and only add what’s missing.',
+      options: {
+        cleanser: 'Cleanser',
+        moisturizer: 'Moisturizer',
+        sunscreen: 'Sunscreen',
+        treatment: 'Acne product (like benzoyl peroxide)',
+      },
+      none: 'Nothing yet',
+    },
+    sensitive: {
+      title: 'Is your skin sensitive?',
+      subtitle: 'Stings, burns or turns red easily with new products.',
+      yes: 'Yes, sensitive',
+      no: 'No',
+    },
+    budget: {
+      title: 'Monthly skincare budget?',
+      label: 'Monthly budget',
+      note: 'We’ll keep your routine under this.',
+    },
+    checkInTime: {
+      title: 'When should we check in?',
+      label: 'Check-in time',
+      note: 'One tap: “Skin today?”',
+    },
+    continue: 'Continue',
+    build: 'Build my routine',
+  },
+  preview: {
+    title: 'Your routine is ready.',
+    monthly: '{total}/month at {store} (est.)',
+    upfront: 'About {total} to start (est.)',
+    unlock: 'Unlock my routine',
+    rules: 'Built on dermatologist guidance: one change at a time, judged after 6–8 weeks.',
+  },
+  checkin: {
+    title: 'Skin today?',
+    options: ['Clear', 'A few spots', 'Some breakouts', 'Bad breakout'],
+    emoji: ['✨', '🙂', '😕', '😣'],
+    logged: '✓ Logged today',
+    a11y: 'Skin today: {label}',
+  },
+  routine: {
+    am: 'Morning',
+    pm: 'Night',
+    owned: 'you have this',
+    price: '{price} est. · lasts ~{months} mo',
+    slow: 'Every other night for the first 2 weeks.',
+    lookFor: 'Look for: {items}',
+    total: '{total}/month est.',
+    done: '{done} of {total} done',
+  },
+  change: {
+    baseline: 'Getting your baseline: day {day} of 14. Keep the basic routine steady.',
+    running: '{name}: week {week} of {weeks}',
+    judgeNote: 'Give it 6–8 weeks before judging. Full clearing often takes 3–4 months.',
+    milkPause: 'Pause phase: no cow’s milk until day 28.',
+    milkBack: 'Reintroduce phase: milk is back for 2 weeks.',
+    swap: 'Lower-sugar swaps: day {day} of 56.',
+    none: 'No change running. Your routine is steady.',
+  },
+  results: {
+    title: 'Results',
+    empty: 'Results appear here after each change has run 6–8 weeks.',
+    outcome: {
+      in_progress: 'In progress',
+      not_enough_data: 'Not enough check-ins',
+      seems_to_help: 'Seems to help',
+      possibly_worse: 'Possibly breaking you out',
+      no_clear_effect: 'No clear effect',
+    },
+  },
+  experiments: {
+    title: 'Optional food experiments',
+    subtitle: 'These may help some people. One at a time, after your current change.',
+    start: 'Start',
+    queued: 'Queued',
+    adultsOnly: 'Food experiments are for adults (18+). Your routine works without them.',
+  },
+  switchTreatment: 'Switch my evening product',
+  switched: 'Switched. We’ll judge it on its own over the next 6–8 weeks.',
+  habits: 'Skin habits',
+  source: 'Source: American Academy of Dermatology',
+  setupCta: 'Set up skin mode',
+  setupBody:
+    'Get a simple morning and night routine priced at your store, and find out what actually helps.',
+  teenCta: 'Set up skin mode instead',
+  extras: 'Selfie progress photos and barcode scanning arrive in a later update.',
+} as const;

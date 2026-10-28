@@ -17,6 +17,7 @@ import {
   Recipe,
   RecipeSource,
   RegionsFile,
+  SkincareFile,
   Staples,
   TestsFile,
 } from '../../src/data/content/schema.ts';
@@ -33,6 +34,7 @@ import { recipesCalmBoth } from '../source/recipes-calm-both.ts';
 import { recipesCalmGut } from '../source/recipes-calm-gut.ts';
 import { recipesCalmReflux } from '../source/recipes-calm-reflux.ts';
 import { recipesEveryday } from '../source/recipes-everyday.ts';
+import { skincare } from '../source/skincare.ts';
 import { staples } from '../source/staples.ts';
 import { testsFile } from '../source/tests.ts';
 
@@ -83,6 +85,7 @@ const files: Record<string, unknown> = {
   'prices.json': PricesFile.parse(prices),
   'regions.json': RegionsFile.parse(regions),
   'chains.json': ChainsFile.parse(chains),
+  'skincare.json': SkincareFile.parse(skincare),
 };
 
 // Content version = hash of the content (excluding dates), so it only changes when content does.
@@ -108,6 +111,7 @@ writeFileSync(
         tests: testsFile.tests.length,
         staples: staples.length,
         cards: cards.length,
+        skinProducts: skincare.products.length,
       },
       attribution: [],
     },

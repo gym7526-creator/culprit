@@ -8,6 +8,7 @@ import { seedDemoUser, simulateDays } from '@/features/debug/actions';
 import { useClock } from '@/features/clock';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { usePrefsStore } from '@/features/prefsStore';
+import { useSkinEnabled, useSkinStore } from '@/features/skin/skinStore';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
 import { space } from '@/theme';
 
@@ -21,6 +22,7 @@ export default function Debug() {
   const planCount = useAppStore((s) => Object.keys(s.plans).length);
   const checkinCount = useAppStore((s) => Object.keys(s.checkins).length);
   const isPro = useSubscriptionStore((s) => s.isPro);
+  const skinOn = useSkinEnabled();
 
   if (!__DEV__) return <Redirect href="/" />;
 
@@ -50,11 +52,17 @@ export default function Debug() {
           label={debugCopy.forceOffer}
           onPress={() => router.push('/(paywall)/welcome-offer')}
         />
+        <SecondaryButton
+          label={skinOn ? debugCopy.skinOff : debugCopy.skinOn}
+          onPress={() => usePrefsStore.getState().setSkinOverride(!skinOn)}
+          testID="debug-skin"
+        />
         <SecondaryButton label={debugCopy.gallery} onPress={() => router.push('/gallery')} />
         <SecondaryButton
           label={debugCopy.resetOnboarding}
           onPress={() => {
             useAppStore.getState().resetAll();
+            useSkinStore.getState().reset();
             useOnboardingStore.getState().reset();
             usePrefsStore.getState().resetPrefs();
             useSubscriptionStore.getState().reset();

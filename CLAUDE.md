@@ -305,6 +305,28 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - Checklist: `docs/A11Y_CHECKLIST.md` (automated a11y sweep in `__tests__/mainApp/phase7.test.tsx`).
 - After onboarding, subscribers skip the paywall (e.g. after "Delete all my data").
 
+## Skin mode (Phase 8, done, behind `FEATURE_SKIN`)
+
+- Flag: `EXPO_PUBLIC_FEATURE_SKIN=1` (`src/config.ts`), or the debug screen switch (`prefs.skinOverride`).
+  Flag off: O1 shows "Coming soon" and nothing else changes.
+- Content: `data-pipeline/source/skincare.ts` → `assets/data/skincare.json` (`SkincareFile` schema): 6 product
+  archetypes (cleanser, oil-free moisturizer, SPF 30+, benzoyl peroxide wash, adapalene 0.1%, salicylic 2%), label
+  facts only, no brands, prices "est."; milk pause (28 + 14 days) and low-glycemic (56 days) experiments, 18+;
+  AAD habits with source.
+- Engine `engines/skin.ts`: routine builder (AM cleanser → moisturizer → SPF; PM treatment wash replaces the
+  cleanser; owned products cost nothing; region × store price index), program with a 14-day baseline then one
+  change at a time (treatment first, experiments queued after), switch treatment, scoring with 14-day windows
+  (≥ 7 check-ins each; ±0.5 on the 0–3 scale → seems to help / possibly worse; milk = reintroduction vs end of
+  pause).
+- UI: `app/skin-setup/[step]` (one question per screen; ZIP/store only if unknown) → `app/skin-setup/preview`
+  (priced routine before the paywall) → paywall. `app/(tabs)/skin.tsx`: "Skin today?" one tap, current change,
+  routine checklist with budget bar, switch evening product, results, experiments (adults only), habits.
+  Skin-only users see only the Skin tab; 13–17 can set up skin mode from the 18+ screen (no experiments).
+- Copy avoids "treatment" (banned-word test); the UI says "product".
+- **Not built (needs dependency approval):** guided selfie + before/after (needs `expo-camera` or
+  `expo-image-picker` + file storage) and barcode scan with Open Beauty Facts (needs a camera package + network
+  cache + ODbL attribution).
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -321,7 +343,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - [x] **5 Main tabs:** Today, Plan (swap/eating out/shuffle/2-week), Recipe + cooking mode, List.
 - [x] **6 Check-ins, tests, results:** check-in flow, test lifecycle, case file, reveals, share card, doctor PDF, rating.
 - [x] **7 Polish:** notifications, analytics, settings, export/delete, a11y pass, reduce motion, perf, error boundaries.
-- [ ] **8 Skin mode** behind `FEATURE_SKIN`.
+- [x] **8 Skin mode** behind `FEATURE_SKIN`.
 - [ ] **9 Ship prep:** icon/splash, screenshots plan, metadata, review notes, TestFlight.
 
 ## Decision log

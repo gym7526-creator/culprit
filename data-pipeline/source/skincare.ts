@@ -1,0 +1,126 @@
+/**
+ * Skin mode content (spec §12). Archetypes, not brands: every description is a label fact or comes
+ * from the AAD guidance cited in docs/SPEC.md §17. Prices are hand-estimated typical drugstore
+ * store-brand shelf prices, always shown as "est.".
+ */
+import type { SkincareFile } from '../../src/data/content/schema.ts';
+
+const AAD = 'https://www.aad.org/public/diseases/acne/skin-care/habits-stop';
+const DIET = 'https://blogs.the-hospitalist.org/content/update-diet-and-acne';
+
+export const skincare: SkincareFile = {
+  judgeAfterDays: 42,
+  products: [
+    {
+      id: 'gentle_cleanser',
+      step: 'cleanser',
+      name: 'Gentle foaming cleanser',
+      when: 'both',
+      how: 'Wash with lukewarm water and your fingertips, then pat dry. No scrubbing.',
+      sizeLabel: '12 fl oz',
+      basePriceUSD: 8.99,
+      monthsPerPack: 3,
+      lookFor: ['Non-comedogenic', 'Fragrance-free', 'Gentle / for sensitive skin'],
+      forConcerns: [],
+      sensitiveFriendly: true,
+    },
+    {
+      id: 'oil_free_moisturizer',
+      step: 'moisturizer',
+      name: 'Oil-free moisturizer',
+      when: 'both',
+      how: 'A thin layer after washing, morning and night.',
+      sizeLabel: '3 fl oz',
+      basePriceUSD: 10.99,
+      monthsPerPack: 2,
+      lookFor: ['Oil-free', 'Non-comedogenic', 'Fragrance-free'],
+      forConcerns: [],
+      sensitiveFriendly: true,
+    },
+    {
+      id: 'sunscreen_spf30',
+      step: 'sunscreen',
+      name: 'Face sunscreen SPF 30+',
+      when: 'am',
+      how: 'Last step every morning, even on cloudy days.',
+      sizeLabel: '2.5 fl oz',
+      basePriceUSD: 10.49,
+      monthsPerPack: 2,
+      lookFor: ['Broad spectrum SPF 30 or higher', 'Non-comedogenic', 'Oil-free'],
+      forConcerns: [],
+      sensitiveFriendly: true,
+    },
+    {
+      id: 'benzoyl_peroxide_wash',
+      step: 'treatment',
+      name: 'Benzoyl peroxide wash (4–5%)',
+      when: 'pm',
+      how: 'Use as your evening wash: lather, leave on for about a minute, rinse. Can bleach towels and pillowcases.',
+      sizeLabel: '6 fl oz',
+      basePriceUSD: 8.49,
+      monthsPerPack: 2,
+      lookFor: ['Benzoyl peroxide 4% to 5%'],
+      forConcerns: ['breakouts', 'oily'],
+      sensitiveFriendly: false,
+    },
+    {
+      id: 'adapalene_gel',
+      step: 'treatment',
+      name: 'Adapalene 0.1% gel',
+      when: 'pm',
+      how: 'A pea-sized amount over the whole face on dry skin at night, then moisturizer.',
+      sizeLabel: '15 g',
+      basePriceUSD: 12.99,
+      monthsPerPack: 3,
+      lookFor: ['Adapalene 0.1%'],
+      forConcerns: ['blackheads', 'breakouts', 'redness', 'dry'],
+      sensitiveFriendly: true,
+      startSlow: true,
+      note: 'Dryness and mild irritation are common in the first weeks. Not for use while pregnant: check with a doctor.',
+    },
+    {
+      id: 'salicylic_acid_2',
+      step: 'treatment',
+      name: 'Salicylic acid 2% cleanser',
+      when: 'pm',
+      how: 'Use as your evening wash, then moisturizer.',
+      sizeLabel: '6 fl oz',
+      basePriceUSD: 7.99,
+      monthsPerPack: 2,
+      lookFor: ['Salicylic acid 2%'],
+      forConcerns: ['blackheads', 'oily'],
+      sensitiveFriendly: false,
+    },
+  ],
+  experiments: [
+    {
+      id: 'milk_pause',
+      name: 'Pause cow’s milk',
+      phases: [
+        { key: 'pause', days: 28 },
+        { key: 'reintroduce', days: 14 },
+      ],
+      how: 'Skip cow’s milk (drinks, cereal milk, milky coffee) for 4 weeks, then have it again for 2 weeks. Cheese and yogurt can stay.',
+      evidence: 'May help some people. The evidence for milk is weaker and mostly observational.',
+      minAge: 18,
+      sourceUrl: DIET,
+    },
+    {
+      id: 'low_glycemic',
+      name: 'Lower-sugar swaps',
+      phases: [{ key: 'swap', days: 56 }],
+      how: 'For 8 weeks, swap sugary drinks, white bread and sweets for water, whole grains and fruit.',
+      evidence: 'May help some people. The evidence for low-glycemic eating is moderate.',
+      minAge: 18,
+      sourceUrl: DIET,
+    },
+  ],
+  habits: [
+    'Change one product at a time.',
+    'Give a treatment 6 to 8 weeks before judging it. Full clearing often takes 3 to 4 months.',
+    'Choose products labelled non-comedogenic.',
+    'Wash twice a day and after sweating. Don’t scrub.',
+    'Try not to pick or pop spots.',
+  ],
+  habitsSourceUrl: AAD,
+};

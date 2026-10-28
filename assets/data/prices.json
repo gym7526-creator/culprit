@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-27",
+ "updatedAt": "2026-10-28",
  "basis": "Typical regular (non-sale) store-brand prices, estimated by hand for the MVP. Shown as \"est.\" in the app. Run `npm run content:prices` to refresh from BLS where a series exists.",
  "entries": [
   {

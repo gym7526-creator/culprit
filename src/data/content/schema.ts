@@ -423,3 +423,64 @@ export const Manifest = z.object({
   attribution: z.array(z.string()),
 });
 export type Manifest = z.infer<typeof Manifest>;
+
+// ---------------------------------------------------------------------------------------------
+// Skin mode (spec §12): product archetypes and experiments. Factual descriptions only.
+// ---------------------------------------------------------------------------------------------
+
+export const SKIN_CONCERNS = ['breakouts', 'blackheads', 'redness', 'oily', 'dry'] as const;
+export const SkinConcern = z.enum(SKIN_CONCERNS);
+export type SkinConcern = z.infer<typeof SkinConcern>;
+
+export const SkinProduct = z.object({
+  id,
+  step: z.enum(['cleanser', 'moisturizer', 'sunscreen', 'treatment']),
+  name: z.string().min(3),
+  /** When it's used in the routine. */
+  when: z.enum(['am', 'pm', 'both']),
+  /** One-line how-to, e.g. "Pea-sized amount on dry skin." */
+  how: z.string().min(10),
+  sizeLabel: z.string(),
+  /** Typical store-brand shelf price in USD (shown as "est."). */
+  basePriceUSD: z.number().positive(),
+  /** About how long one pack lasts with daily use. */
+  monthsPerPack: z.number().positive(),
+  /** What to look for on the label (factual, from AAD guidance). */
+  lookFor: z.array(z.string()).min(1),
+  /** Concerns this treatment is commonly chosen for (treatments only). */
+  forConcerns: z.array(SkinConcern),
+  sensitiveFriendly: z.boolean(),
+  /** Start every other night for the first 2 weeks. */
+  startSlow: z.boolean().optional(),
+  note: z.string().optional(),
+});
+export type SkinProduct = z.infer<typeof SkinProduct>;
+
+export const SkinExperiment = z.object({
+  id,
+  name: z.string(),
+  /** Phases in days: e.g. milk = pause 28, reintroduce 14. */
+  phases: z
+    .array(
+      z.object({
+        key: z.enum(['pause', 'reintroduce', 'swap']),
+        days: z.number().int().positive(),
+      }),
+    )
+    .min(1),
+  how: z.string().min(20),
+  evidence: z.string().min(20),
+  minAge: z.number().int(),
+  sourceUrl: url,
+});
+export type SkinExperiment = z.infer<typeof SkinExperiment>;
+
+export const SkincareFile = z.object({
+  /** Judge a product only after this many days (AAD: 6–8 weeks). */
+  judgeAfterDays: z.number().int().positive(),
+  products: z.array(SkinProduct).min(6),
+  experiments: z.array(SkinExperiment),
+  habits: z.array(z.string()).min(3),
+  habitsSourceUrl: url,
+});
+export type SkincareFile = z.infer<typeof SkincareFile>;

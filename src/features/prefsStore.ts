@@ -27,6 +27,8 @@ export type PrefsState = {
   notify: { checkin: boolean; tests: boolean; plan: boolean; trial: boolean; milestones: boolean };
   /** Settings → "Share anonymous usage data" (never health data either way). */
   analyticsEnabled: boolean;
+  /** Dev override for the FEATURE_SKIN flag (null = use the build setting). */
+  skinOverride: boolean | null;
 };
 
 export type PrefsActions = {
@@ -40,6 +42,7 @@ export type PrefsActions = {
   setRatingPrompted: (at: number) => void;
   setNotify: (key: keyof PrefsState['notify'], on: boolean) => void;
   setAnalyticsEnabled: (on: boolean) => void;
+  setSkinOverride: (on: boolean | null) => void;
 };
 
 function randomId(): string {
@@ -57,6 +60,7 @@ export const defaultPrefs: PrefsState = {
   lastRatingPromptAt: null,
   notify: { checkin: true, tests: true, plan: true, trial: true, milestones: true },
   analyticsEnabled: true,
+  skinOverride: null,
 };
 
 export const usePrefsStore = create<PrefsState & PrefsActions>()(
@@ -74,6 +78,7 @@ export const usePrefsStore = create<PrefsState & PrefsActions>()(
       setRatingPrompted: (lastRatingPromptAt) => set({ lastRatingPromptAt }),
       setNotify: (key, on) => set((s) => ({ notify: { ...s.notify, [key]: on } })),
       setAnalyticsEnabled: (analyticsEnabled) => set({ analyticsEnabled }),
+      setSkinOverride: (skinOverride) => set({ skinOverride }),
     }),
     {
       name: 'culprit-prefs',

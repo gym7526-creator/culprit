@@ -1,12 +1,13 @@
 {
- "contentVersion": "1.978d2e38",
- "builtAt": "2026-10-27",
+ "contentVersion": "1.b14d3371",
+ "builtAt": "2026-10-28",
  "counts": {
   "ingredients": 390,
   "recipes": 150,
   "tests": 19,
   "staples": 32,
-  "cards": 30
+  "cards": 30,
+  "skinProducts": 6
  },
  "attribution": []
 }

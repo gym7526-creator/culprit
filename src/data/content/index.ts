@@ -8,6 +8,7 @@ import ingredientsJson from '../../../assets/data/ingredients.json';
 import manifestJson from '../../../assets/data/manifest.json';
 import recipesJson from '../../../assets/data/recipes.json';
 import regionsJson from '../../../assets/data/regions.json';
+import skincareJson from '../../../assets/data/skincare.json';
 import staplesJson from '../../../assets/data/staples.json';
 import testsJson from '../../../assets/data/tests.json';
 
@@ -18,6 +19,7 @@ import type {
   Manifest,
   Recipe,
   RegionsFile,
+  SkincareFile,
   StapleItem,
   TestsFile,
 } from './schema';
@@ -32,6 +34,7 @@ export const content = {
   cards: (cardsJson as unknown as { cards: EduCard[] }).cards,
   regions: regionsJson as unknown as RegionsFile,
   chains: chainsJson as unknown as ChainsFile,
+  skincare: skincareJson as unknown as SkincareFile,
 };
 
 export const ingredientMap: ReadonlyMap<string, Ingredient> = new Map(

@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { X } from 'lucide-react-native';
 import { useState } from 'react';
 import { Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -57,6 +57,7 @@ export default function Today() {
   const dismiss = useAppStore((s) => s.dismissCard);
   const [why, setWhy] = useState(false);
 
+  if (!m && useAppStore.getState().program === null) return <Redirect href="/skin" />;
   if (!m) {
     return (
       <Screen contentStyle={styles.center}>

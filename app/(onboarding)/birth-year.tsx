@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 
 import { WheelPicker } from '@/components';
@@ -5,10 +6,12 @@ import { onboardingCopy } from '@/copy';
 import { ageFrom, ageGate } from '@/engines/onboarding';
 import { OnboardingScreen } from '@/features/onboarding/components/OnboardingScreen';
 import { useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
+import { skinEnabledNow } from '@/features/skin/skinStore';
 
 const c = onboardingCopy.birthYear;
 
 export default function BirthYearStep() {
+  const router = useRouter();
   const { answers, update, goNext, goBack, goTo, progress, year } = useOnboardingNav('birth-year');
   const years = useMemo(
     () =>
@@ -25,6 +28,8 @@ export default function BirthYearStep() {
     const gate = ageGate(ageFrom(value, year));
     if (gate === 'blocked') goTo('age-blocked');
     else if (gate === 'teen') goTo('teen');
+    // Skin-only (behind FEATURE_SKIN): the short skin setup replaces the stomach questions.
+    else if (answers.focus === 'skin' && skinEnabledNow()) router.push('/skin-setup/concern');
     else goNext({ birthYear: value });
   };
 

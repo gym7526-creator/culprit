@@ -9,3 +9,6 @@ export const LINKS = {
 
 /** TODO(owner): the real support address. */
 export const SUPPORT_EMAIL = 'support@culprit.app';
+
+/** Skin mode (spec §12) ships behind this flag: `EXPO_PUBLIC_FEATURE_SKIN=1`, or the debug screen switch. */
+export const FEATURE_SKIN_DEFAULT = process.env.EXPO_PUBLIC_FEATURE_SKIN === '1';

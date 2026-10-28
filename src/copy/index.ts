@@ -21,6 +21,7 @@ export {
   revealCopy,
   settingsCopy,
   shareCopy,
+  skinCopy,
   tabsCopy,
   todayCopy,
 } from './app';

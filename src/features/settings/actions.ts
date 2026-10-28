@@ -14,6 +14,7 @@ import { buildFirstWeek } from '@/features/onboarding/buildFirstWeek';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { allPlans, replanFrom, syncProgramAndPlan } from '@/features/plan/actions';
 import { usePrefsStore } from '@/features/prefsStore';
+import { useSkinStore } from '@/features/skin/skinStore';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
 import { purchases } from '@/purchases';
 
@@ -69,6 +70,7 @@ export function exportJson(): string {
       checkins: app.checkins,
       plans: app.plans,
       feedback: app.feedback,
+      skin: useSkinStore.getState(),
     },
     null,
     2,
@@ -86,6 +88,7 @@ export async function exportData(): Promise<void> {
 export async function deleteAllData(): Promise<void> {
   const isPro = useSubscriptionStore.getState().isPro;
   useAppStore.getState().resetAll();
+  useSkinStore.getState().reset();
   useOnboardingStore.getState().reset();
   usePrefsStore.getState().resetPrefs();
   useSubscriptionStore.getState().reset();

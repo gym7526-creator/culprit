@@ -12,11 +12,12 @@ import {
 } from '@/engines/schedule';
 import { dayKind } from '@/engines/today';
 import { activePlan } from '@/engines/week';
-import { formatMoney } from '@/copy';
+import { formatMoney, notificationCopy } from '@/copy';
 import { useAppStore } from '@/features/appStore';
 import { clockNow } from '@/features/clock';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { usePrefsStore } from '@/features/prefsStore';
+import { useSkinStore } from '@/features/skin/skinStore';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
 
 const HORIZON_DAYS = 7;
@@ -97,6 +98,24 @@ export function currentSchedule(now = new Date()): {
       plan: prefs.notify.plan && sub.isPro,
     },
   });
+  // Skin-only users get the skin check-in at their skin time instead.
+  const skin = useSkinStore.getState();
+  if (!program && skin.program && sub.isPro && prefs.notify.checkin) {
+    const skinList = scheduleNotifications({
+      now: { day: today, time: hhmm(now) },
+      horizonDays: HORIZON_DAYS,
+      checkInTime: skin.answers.checkInTime,
+      checkedInDays: new Set(Object.keys(skin.checkins)),
+      testNights: {},
+      sundayPlan: null,
+      trialEnds: null,
+      milestones: [],
+      enabled: { checkin: true, tests: false, plan: false, trial: false, milestones: false },
+    }).map((n) =>
+      n.kind === 'checkin' ? { ...n, id: `skin-${n.id}`, body: notificationCopy.skinCheckIn } : n,
+    );
+    list.push(...skinList.filter((n) => n.kind === 'checkin'));
+  }
   return { list, milestones: fresh };
 }
 
@@ -158,6 +177,7 @@ export function routeForNotification(type: unknown): string {
   switch (type) {
     case 'checkin':
     case 'checkin_followup':
+      // Skin-only users land on the Skin tab (Today redirects there).
       return '/?checkin=1';
     case 'test_heads_up':
       return '/';
