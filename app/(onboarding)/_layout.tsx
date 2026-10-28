@@ -15,3 +15,5 @@ export default function OnboardingLayout() {
     />
   );
 }
+
+export { AppErrorBoundary as ErrorBoundary } from '@/components/AppErrorBoundary';

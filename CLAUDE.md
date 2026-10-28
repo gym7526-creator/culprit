@@ -288,6 +288,23 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - Debug: seed a demo user, simulate 7 days (clear / noisy / placebo) or 8 weeks; the app clock moves with it.
 - New approved deps: `react-native-view-shot`, `expo-sharing`, `expo-print`, `expo-store-review`.
 
+## Polish (Phase 7, done)
+
+- Notifications: `src/notifications/sync.ts` builds the full list with `scheduleNotifications` (check-in +
+  follow-up, 4 pm test heads-up with portion + dish, Sunday plan, trial, milestones once each via
+  `appStore.notified`) and reschedules on any store change (`useNotifications`, debounced, serialised). Taps route
+  by type (`routeForNotification`). Toggles + check-in time in Settings → Notifications.
+- Analytics: PostHog behind `EXPO_PUBLIC_POSTHOG_KEY` (+ optional `EXPO_PUBLIC_POSTHOG_HOST`), lazy-loaded, no
+  session replay, no screen capture, opt-out switch in Settings. Typed events only; onboarding branch screens are
+  never sent. User properties: source, mode, profile, household/budget buckets, chain, phase.
+- Settings (`app/settings/`): preferences (re-plans from today), notifications, program (pause/resume, retest,
+  restart), How Culprit works + sources, disclaimer, privacy, terms, attribution (incl. photo credits),
+  contact (`SUPPORT_EMAIL` in `src/config.ts`), export (JSON via the share sheet), delete all data (keeps the
+  cached Apple entitlement), versions.
+- `AppErrorBoundary` on the root and every route group. `NSFileProtectionComplete` entitlement.
+- Checklist: `docs/A11Y_CHECKLIST.md` (automated a11y sweep in `__tests__/mainApp/phase7.test.tsx`).
+- After onboarding, subscribers skip the paywall (e.g. after "Delete all my data").
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +
@@ -303,7 +320,7 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
       Customer Center, entitlement gating, trial reminder.
 - [x] **5 Main tabs:** Today, Plan (swap/eating out/shuffle/2-week), Recipe + cooking mode, List.
 - [x] **6 Check-ins, tests, results:** check-in flow, test lifecycle, case file, reveals, share card, doctor PDF, rating.
-- [ ] **7 Polish:** notifications, analytics, settings, export/delete, a11y pass, reduce motion, perf, error boundaries.
+- [x] **7 Polish:** notifications, analytics, settings, export/delete, a11y pass, reduce motion, perf, error boundaries.
 - [ ] **8 Skin mode** behind `FEATURE_SKIN`.
 - [ ] **9 Ship prep:** icon/splash, screenshots plan, metadata, review notes, TestFlight.
 

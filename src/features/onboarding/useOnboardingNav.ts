@@ -25,7 +25,8 @@ export function useOnboardingNav(step: Step | Branch) {
   const { year, today } = useClock();
 
   useEffect(() => {
-    track({ name: 'onboarding_step_viewed', props: { step } });
+    // Branch screens (red flags, eating disorder, pregnancy, age) would reveal health or age answers.
+    if (isStep(step)) track({ name: 'onboarding_step_viewed', props: { step } });
     setResume(step);
   }, [step, setResume]);
 

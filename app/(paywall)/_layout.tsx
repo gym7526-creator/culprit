@@ -14,3 +14,5 @@ export default function PaywallLayout() {
     />
   );
 }
+
+export { AppErrorBoundary as ErrorBoundary } from '@/components/AppErrorBoundary';

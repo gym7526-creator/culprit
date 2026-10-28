@@ -8,3 +8,5 @@ export default function TestLayout() {
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
   );
 }
+
+export { AppErrorBoundary as ErrorBoundary } from '@/components/AppErrorBoundary';

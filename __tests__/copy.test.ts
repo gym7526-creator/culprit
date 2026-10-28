@@ -36,7 +36,9 @@ describe('copy language rules', () => {
 
   it('contains no banned medical / diet language', () => {
     const offenders = strings.filter(
-      ([, text]) => !ALLOWED.has(text) && BANNED.some((re) => re.test(text)),
+      // Source URLs (spec §17) are addresses, not app copy.
+      ([, text]) =>
+        !ALLOWED.has(text) && !/^https?:\/\//.test(text) && BANNED.some((re) => re.test(text)),
     );
     expect(offenders).toEqual([]);
   });

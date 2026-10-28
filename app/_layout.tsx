@@ -22,15 +22,19 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ToastHost } from '@/components';
 import { DatabaseProvider } from '@/data/DatabaseProvider';
 import { usePurchasesBootstrap } from '@/features/purchases/hooks';
+import { useNotifications } from '@/notifications/useNotifications';
+import { useAnalyticsBootstrap } from '@/analytics/useAnalyticsBootstrap';
 import { ThemeProvider, useTheme } from '@/theme';
 
 // Surfaces render/DB-init errors with a retry instead of a white screen.
-export { ErrorBoundary } from 'expo-router';
+export { AppErrorBoundary as ErrorBoundary } from '@/components/AppErrorBoundary';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 function ThemedStack() {
   usePurchasesBootstrap();
+  useNotifications();
+  useAnalyticsBootstrap();
   const { scheme, colors } = useTheme();
   const navTheme = useMemo<NavigationTheme>(() => {
     const base = scheme === 'dark' ? DarkTheme : DefaultTheme;

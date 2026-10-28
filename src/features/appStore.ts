@@ -34,6 +34,8 @@ export type AppState = {
   revealed: string[];
   /** One-time moments already celebrated ('calm_complete', 'case_solved'). */
   celebrated: string[];
+  /** Milestone notifications already sent (so a reschedule never repeats them). */
+  notified: string[];
 };
 
 type Actions = {
@@ -52,6 +54,7 @@ type Actions = {
   saveCheckin: (c: CheckIn) => void;
   markRevealed: (testId: string) => void;
   markCelebrated: (key: string) => void;
+  markNotified: (keys: string[]) => void;
   resetAll: () => void;
 };
 
@@ -69,6 +72,7 @@ const initial: AppState = {
   checkins: {},
   revealed: [],
   celebrated: [],
+  notified: [],
 };
 
 function toggle(list: readonly string[], id: string): string[] {
@@ -117,6 +121,7 @@ export const useAppStore = create<AppState & Actions>()(
         set((s) => (s.revealed.includes(id) ? s : { revealed: [...s.revealed, id] })),
       markCelebrated: (key) =>
         set((s) => (s.celebrated.includes(key) ? s : { celebrated: [...s.celebrated, key] })),
+      markNotified: (keys) => set((s) => ({ notified: [...new Set([...s.notified, ...keys])] })),
       resetAll: () => set(initial),
     }),
     {

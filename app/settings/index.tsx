@@ -1,71 +1,143 @@
+import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
-import { ChevronLeft } from 'lucide-react-native';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Linking, Platform, StyleSheet, Switch } from 'react-native';
 
-import { Card, Screen, SecondaryButton, Text, TextButton } from '@/components';
-import { common, debugCopy, paywallCopy, settingsCopy } from '@/copy';
-import { LINKS } from '@/config';
+import { Text } from '@/components';
+import { common, debugCopy, format, paywallCopy, settingsCopy } from '@/copy';
+import { LINKS, SUPPORT_EMAIL } from '@/config';
+import { content } from '@/data/content';
+import { usePrefsStore } from '@/features/prefsStore';
 import { restore } from '@/features/purchases/hooks';
+import { SettingsRow, SettingsScreen, SettingsSection } from '@/features/settings/components';
+import { deleteAllData, exportData } from '@/features/settings/actions';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
+import { useUiStore } from '@/features/uiStore';
 import { purchases } from '@/purchases';
-import { size, space, useTheme } from '@/theme';
+import { space, useTheme } from '@/theme';
 
-/** Settings (subscription section now; the rest lands in Phase 7). */
+const s = settingsCopy;
+
+/** Settings (spec §10.6). */
 export default function Settings() {
   const router = useRouter();
   const { colors } = useTheme();
-  const isPro = useSubscriptionStore((s) => s.isPro);
-  return (
-    <Screen scroll testID="settings">
-      <Pressable
-        onPress={() => router.back()}
-        accessibilityRole="button"
-        accessibilityLabel={common.back}
-        style={styles.back}
-      >
-        <ChevronLeft size={size.iconLg} color={colors.textPrimary} />
-      </Pressable>
-      <Text variant="title" accessibilityRole="header">
-        {settingsCopy.title}
-      </Text>
+  const isPro = useSubscriptionStore((st) => st.isPro);
+  const analytics = usePrefsStore((st) => st.analyticsEnabled);
+  const setAnalytics = usePrefsStore((st) => st.setAnalyticsEnabled);
+  const toast = useUiStore((st) => st.showToast);
 
-      <Card style={styles.section}>
-        <Text variant="bodyStrong">{settingsCopy.subscription}</Text>
-        <Text variant="callout" color="textSecondary">
-          {isPro ? settingsCopy.active : settingsCopy.inactive}
-        </Text>
-        <SecondaryButton
-          label={settingsCopy.manage}
+  const confirmDelete = () => {
+    const run = async () => {
+      await deleteAllData();
+      toast(s.deleted);
+      router.replace('/');
+    };
+    if (Platform.OS === 'web') {
+      void run();
+      return;
+    }
+    Alert.alert(s.deleteTitle, s.deleteBody, [
+      { text: s.cancel, style: 'cancel' },
+      { text: s.deleteConfirm, style: 'destructive', onPress: () => void run() },
+    ]);
+  };
+
+  return (
+    <SettingsScreen title={s.title} testID="settings">
+      <SettingsSection title={s.sections.you}>
+        <SettingsRow
+          label={s.rows.preferences}
+          onPress={() => router.push('/settings/preferences')}
+          testID="row-preferences"
+        />
+        <SettingsRow
+          label={s.rows.notifications}
+          onPress={() => router.push('/settings/notifications')}
+          testID="row-notifications"
+        />
+      </SettingsSection>
+
+      <SettingsSection title={s.subscription}>
+        <SettingsRow label={isPro ? s.active : s.inactive} />
+        <SettingsRow
+          label={s.manage}
           onPress={() => purchases().manage()}
           testID="manage-subscription"
         />
-        <TextButton label={paywallCopy.footer.restore} onPress={() => restore()} />
-      </Card>
+        <SettingsRow label={paywallCopy.footer.restore} onPress={() => restore()} />
+      </SettingsSection>
 
-      <Card style={styles.section}>
-        <Text variant="caption" color="textSecondary">
-          {common.disclaimer}
-        </Text>
-        <View style={styles.links}>
-          <TextButton
-            label={paywallCopy.footer.terms}
-            onPress={() => Linking.openURL(LINKS.terms)}
-          />
-          <TextButton
-            label={paywallCopy.footer.privacy}
-            onPress={() => Linking.openURL(LINKS.privacy)}
-          />
-        </View>
-      </Card>
+      <SettingsSection title={s.sections.program}>
+        <SettingsRow
+          label={s.rows.program}
+          onPress={() => router.push('/settings/program')}
+          testID="row-program"
+        />
+      </SettingsSection>
+
+      <SettingsSection title={s.sections.about}>
+        <SettingsRow
+          label={s.rows.howItWorks}
+          onPress={() => router.push('/settings/how-it-works')}
+          testID="row-how"
+        />
+        <SettingsRow
+          label={s.rows.disclaimer}
+          onPress={() => router.push('/settings/disclaimer')}
+        />
+        <SettingsRow label={s.rows.privacy} onPress={() => Linking.openURL(LINKS.privacy)} />
+        <SettingsRow label={s.rows.terms} onPress={() => Linking.openURL(LINKS.terms)} />
+        <SettingsRow
+          label={s.rows.attribution}
+          onPress={() => router.push('/settings/attribution')}
+        />
+        <SettingsRow
+          label={s.rows.help}
+          onPress={() =>
+            Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(s.help.subject)}`)
+          }
+        />
+      </SettingsSection>
+
+      <SettingsSection title={s.sections.data}>
+        <SettingsRow
+          label={s.rows.analytics}
+          detail={s.rows.analyticsNote}
+          right={
+            <Switch
+              value={analytics}
+              onValueChange={setAnalytics}
+              accessibilityLabel={s.rows.analytics}
+              trackColor={{ true: colors.brand, false: colors.border }}
+            />
+          }
+        />
+        <SettingsRow label={s.rows.export} onPress={() => void exportData()} testID="row-export" />
+        <SettingsRow
+          label={s.rows.delete}
+          onPress={confirmDelete}
+          destructive
+          testID="row-delete"
+        />
+      </SettingsSection>
+
       {__DEV__ ? (
-        <TextButton label={debugCopy.title} onPress={() => router.push('/debug')} />
+        <SettingsSection>
+          <SettingsRow label={debugCopy.title} onPress={() => router.push('/debug')} />
+        </SettingsSection>
       ) : null}
-    </Screen>
+
+      <Text variant="caption" color="textSecondary" align="center" style={styles.version}>
+        {format(s.version, {
+          app: Constants.expoConfig?.version ?? '1.0.0',
+          content: content.manifest.contentVersion.slice(0, 8),
+        })}
+      </Text>
+      <Text variant="caption" color="textSecondary" align="center">
+        {common.disclaimerShort}
+      </Text>
+    </SettingsScreen>
   );
 }
 
-const styles = StyleSheet.create({
-  back: { width: size.minTouch, height: size.minTouch, justifyContent: 'center' },
-  section: { marginTop: space.lg, gap: space.sm },
-  links: { flexDirection: 'row', gap: space.md },
-});
+const styles = StyleSheet.create({ version: { marginTop: space.xl } });

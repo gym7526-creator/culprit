@@ -24,4 +24,6 @@ export const common = {
   loading: 'Loading',
   retry: 'Try again',
   somethingWentWrong: 'Something went wrong.',
+  errorBody:
+    'Your data is safe on this phone. Try again, and if it keeps happening, restart the app.',
 } as const;

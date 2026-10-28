@@ -6,3 +6,6 @@ export const LINKS = {
   terms: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
   privacy: 'https://culprit.app/privacy',
 } as const;
+
+/** TODO(owner): the real support address. */
+export const SUPPORT_EMAIL = 'support@culprit.app';

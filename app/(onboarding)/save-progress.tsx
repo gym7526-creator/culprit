@@ -5,6 +5,7 @@ import { onboardingCopy } from '@/copy';
 import { InfoScreen } from '@/features/onboarding/components/InfoScreen';
 import { useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
 import { usePrefsStore } from '@/features/prefsStore';
+import { useSubscriptionStore } from '@/features/subscriptionStore';
 
 const c = onboardingCopy.saveProgress;
 
@@ -29,7 +30,7 @@ export default function SaveProgress() {
         onPress: () => {
           complete();
           track({ name: 'onboarding_completed' });
-          router.replace('/(paywall)');
+          router.replace(useSubscriptionStore.getState().isPro ? '/(tabs)' : '/(paywall)');
         },
       }}
     />

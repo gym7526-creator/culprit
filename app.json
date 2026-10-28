@@ -9,7 +9,13 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.culprit.app"
+      "bundleIdentifier": "com.culprit.app",
+      "entitlements": {
+        "com.apple.developer.default-data-protection": "NSFileProtectionComplete"
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.culprit.app",

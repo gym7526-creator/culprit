@@ -147,6 +147,155 @@ export const settingsCopy = {
   active: 'Culprit Pro is active.',
   inactive: 'No active subscription.',
   manage: 'Manage subscription',
+  sections: {
+    you: 'You',
+    program: 'Program',
+    about: 'About',
+    data: 'Your data',
+  },
+  rows: {
+    preferences: 'Profile & preferences',
+    notifications: 'Notifications',
+    program: 'Pause, retest or restart',
+    howItWorks: 'How Culprit works',
+    disclaimer: 'Medical disclaimer',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Use',
+    attribution: 'Data attribution',
+    help: 'Contact & help',
+    export: 'Export my data',
+    delete: 'Delete all my data',
+    analytics: 'Share anonymous usage data',
+    analyticsNote: 'Only app usage like “opened the list”. Never symptoms, scores or results.',
+  },
+  version: 'Version {app} · Content {content}',
+  exportTitle: 'Culprit data export',
+  exported: 'Your data is ready to save or send.',
+  deleteTitle: 'Delete all your data?',
+  deleteBody:
+    'This erases your answers, check-ins, results and plans from this phone. It can’t be undone. Your subscription stays with your Apple ID.',
+  deleteConfirm: 'Delete everything',
+  deleted: 'All your data was deleted.',
+  cancel: 'Cancel',
+  saved: 'Saved. Your plan is updated from today.',
+  save: 'Save changes',
+  prefs: {
+    title: 'Profile & preferences',
+    household: 'People eating',
+    kids: 'Kids at the table',
+    budget: 'Weekly grocery budget',
+    zip: 'ZIP code',
+    store: 'Store',
+    cookNights: 'Cook nights',
+    cookTime: 'Max cooking time',
+    equipment: 'Extra equipment',
+    diet: 'Diet',
+    allergies: 'Allergies',
+    celiac: 'I have celiac disease',
+    dislikes: 'Foods you won’t eat',
+    pantry: 'Already in your kitchen',
+    bedtime: 'Bedtime',
+    minutes: '{n} min',
+  },
+  notif: {
+    title: 'Notifications',
+    checkInTime: 'Check-in time',
+    checkin: 'Nightly check-in',
+    tests: 'Test-day heads-up (4 pm)',
+    plan: 'Sunday plan',
+    trial: 'Trial reminder',
+    milestones: 'Results and milestones',
+    off: 'Notifications are off for Culprit.',
+    enable: 'Turn on notifications',
+    openSettings: 'Open iPhone Settings',
+    quiet:
+      'We never send anything between 10 pm and 8 am, except your check-in at the time you choose.',
+  },
+  program: {
+    title: 'Program',
+    pause: 'Pause program',
+    pauseBody:
+      'Traveling or sick? Pausing stops tests and keeps your progress. Calm dinners continue.',
+    resume: 'Resume program',
+    paused: 'Paused. Resume whenever you’re ready.',
+    resumed: 'Welcome back. Your plan is updated.',
+    retestTitle: 'Retest a food',
+    retestNone: 'Tested foods appear here.',
+    restart: 'Restart program',
+    restartTitle: 'Start over?',
+    restartBody: 'Your check-ins and results will be cleared and a new calm start begins tomorrow.',
+    restartConfirm: 'Restart',
+    restarted: 'Fresh start. Your calm start begins tomorrow.',
+  },
+  how: {
+    title: 'How Culprit works',
+    intro:
+      'Culprit runs a guided elimination and reintroduction, the same idea dietitians use: first calm things down, then add foods back one at a time and watch what happens.',
+    steps: [
+      {
+        title: '1. Calm start (2–4 weeks)',
+        body: 'Dinners skip the most common triggers for your symptom pattern, so you get a steady baseline.',
+      },
+      {
+        title: '2. One food at a time',
+        body: 'Each test adds one food over three nights in growing portions (the NHS reintroduction protocol), then a rest day.',
+      },
+      {
+        title: '3. One tap a night',
+        body: 'Your nightly check-in is compared with your own calm-day baseline. A clear jump, the same night or the next day, points to a likely trigger.',
+      },
+      {
+        title: '4. Placebo checks',
+        body: 'Some test days use a food that rarely causes problems. If your scores rise anyway, nearby results get lower confidence.',
+      },
+      {
+        title: '5. Your personal plan',
+        body: 'Only foods that seem to bother you are limited, and only at the amount that caused symptoms. Everything else comes back.',
+      },
+    ],
+    limits:
+      'Results are patterns from your own check-ins, not a medical answer. Stress, sleep and illness can affect them, which is why we ask about unusual days and offer retests.',
+    sources: 'Sources',
+  },
+  sourcesList: [
+    {
+      label: 'NHS FODMAP reintroduction protocol',
+      url: 'https://www.gloshospitals.nhs.uk/documents/17365/FODMAP_reintroduction_information_for_website_Feb_23_update.pdf',
+    },
+    {
+      label: 'Reintroduction study (American College of Gastroenterology)',
+      url: 'https://gi.org/journals-publications/ebgi/schoenfeld_nov2024/',
+    },
+    {
+      label: 'ACG GERD guideline update (Healio)',
+      url: 'https://www.healio.com/news/gastroenterology/20211122/acg-updates-guidelines-for-gerd-diagnosis-management',
+    },
+    {
+      label: 'Bloating survey of 88,795 US adults',
+      url: 'https://blogs.the-hospitalist.org/content/bloating-common-often-ignored-survey',
+    },
+    {
+      label: 'Reflux survey of 71,812 US adults (Cedars-Sinai)',
+      url: 'https://www.hpnonline.com/patient-satisfaction/population-health-care-continuum/article/21119353/acid-reflux-affects-nearly-a-third-of-us-adults-weekly',
+    },
+    {
+      label: 'Garlic-infused oil and fructans',
+      url: 'https://www.fodmapeveryday.com/know-whats-garlic-oil/',
+    },
+  ],
+  attribution: {
+    title: 'Data attribution',
+    items: [
+      'Grocery price estimates use U.S. Bureau of Labor Statistics Average Price data (public domain), adjusted for region and store.',
+      'FODMAP and reflux levels are general public knowledge compiled for Culprit. They are not taken from Monash University data.',
+      'Icons: Lucide (ISC license). Fonts: Plus Jakarta Sans and Inter (SIL Open Font License).',
+    ],
+    photos: 'Food photos',
+    photosNone: 'Recipe photos are added before launch. Each photo’s credit appears on its recipe.',
+  },
+  help: {
+    subject: 'Culprit help',
+  },
 } as const;
 
 export const debugCopy = {

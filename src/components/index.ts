@@ -23,3 +23,4 @@ export { TextField } from './TextField';
 export { TimePicker } from './TimePicker';
 export { ToastHost } from './Toast';
 export { WheelPicker, type WheelItem } from './WheelPicker';
+export { AppErrorBoundary } from './AppErrorBoundary';

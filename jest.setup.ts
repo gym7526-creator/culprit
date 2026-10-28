@@ -48,6 +48,12 @@ jest.mock('@/data/healthStorage', () => {
 });
 
 jest.mock('expo-notifications', () => ({
+  setNotificationHandler: jest.fn(),
+  getPermissionsAsync: jest.fn(() => Promise.resolve({ granted: false })),
+  getLastNotificationResponseAsync: jest.fn(() => Promise.resolve(null)),
+  clearLastNotificationResponseAsync: jest.fn(() => Promise.resolve()),
+  addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
+  cancelAllScheduledNotificationsAsync: jest.fn(() => Promise.resolve()),
   requestPermissionsAsync: jest.fn(() => Promise.resolve({ granted: true })),
   scheduleNotificationAsync: jest.fn(() => Promise.resolve('id')),
   cancelScheduledNotificationAsync: jest.fn(() => Promise.resolve()),
