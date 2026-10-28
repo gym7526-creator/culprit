@@ -138,6 +138,13 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
 - No date-time picker or slider package is approved, so Slider (gesture-handler) and TimePicker/WheelPicker (snapping
   ScrollView) are custom. WheelPicker is reused for the O2 birth-year picker.
 - Haptics go through `src/components/haptics.ts` (no-ops on web).
+- **Press animation** (`usePressScale` / `PressableScale`): 70 ms squeeze to 0.95 on touch, then on release a
+  quick overshoot to 1.035 that springs back (`motion.popSpring`); opacity fade with Reduce Motion. Used by
+  buttons, OptionCard, Chip, CheckInFaces, DinnerCard, PlanCard.
+- **WheelPicker**: Reanimated scroll handler drives a 3D drum (rows scale / fade / tilt by distance); always
+  settles exactly on an item (native snap for flings, plus a settle step on drag end / momentum end / 120 ms
+  idle, which also covers web); haptic tick per row; tap a row to jump; fades top and bottom. The scroller has an
+  explicit height (web otherwise grew it to fit every row, which broke scrolling).
 - Single-select OptionCard auto-advance (250 ms, `motion.autoAdvance`) is a screen-level behaviour, wired in Phase 3.
 - Reanimated shared values are written with `.set()` (React Compiler lint rule `react-hooks/immutability` rejects
   `.value =` writes). Reads inside worklets / `useAnimatedStyle` use `.value`.

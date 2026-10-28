@@ -3,10 +3,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Clock, Ellipsis, FlaskConical, Lock } from 'lucide-react-native';
 import { Image, Pressable, StyleSheet, View, type ImageSourcePropType } from 'react-native';
 
+import Animated from 'react-native-reanimated';
+
 import { componentCopy, format } from '@/copy';
 import { gradients, opacity, radius, size, space, useTheme, type GradientKey } from '@/theme';
 
 import { Text } from './Text';
+import { usePressScale } from './usePressScale';
 
 export type DinnerCardProps = {
   title: string;
@@ -48,6 +51,7 @@ export function DinnerCard({
 }: DinnerCardProps) {
   const { colors, scheme, elevated } = useTheme();
   const large = cardSize === 'large';
+  const press = usePressScale();
   const meta = `${format(componentCopy.dinner.minutes, { minutes })} · ${format(componentCopy.dinner.price, { price })}`;
   const a11y = [
     title,
@@ -62,13 +66,17 @@ export function DinnerCard({
   return (
     // The card and its "more" button are siblings: nesting buttons is invalid on web and
     // confusing for VoiceOver.
-    <View testID={testID} style={[styles.card, elevated, { backgroundColor: colors.surface }]}>
+    <Animated.View
+      testID={testID}
+      style={[styles.card, elevated, { backgroundColor: colors.surface }, press.animatedStyle]}
+    >
       <Pressable
         onPress={onPress}
+        onPressIn={onPress && !locked ? press.onPressIn : undefined}
+        onPressOut={press.onPressOut}
         disabled={!onPress || locked}
         accessibilityRole={onPress && !locked ? 'button' : undefined}
         accessibilityLabel={a11y}
-        style={({ pressed }) => (pressed ? { opacity: opacity.pressed } : null)}
       >
         <LinearGradient
           colors={gradients[scheme][gradient]}
@@ -153,7 +161,7 @@ export function DinnerCard({
           <Ellipsis size={size.iconMd} color={colors.textPrimary} />
         </Pressable>
       ) : null}
-    </View>
+    </Animated.View>
   );
 }
 

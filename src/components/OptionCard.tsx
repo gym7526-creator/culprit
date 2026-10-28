@@ -1,18 +1,12 @@
 import { Check } from 'lucide-react-native';
-import { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withSequence,
-  withSpring,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
-import { motion, opacity, radius, size, space, typography, useTheme } from '@/theme';
+import { opacity, radius, size, space, typography, useTheme } from '@/theme';
 
 import { haptics } from './haptics';
 import { Text } from './Text';
+import { usePressScale } from './usePressScale';
 
 export type OptionCardProps = {
   label: string;
@@ -38,20 +32,7 @@ export function OptionCard({
   testID,
 }: OptionCardProps) {
   const { colors, elevated } = useTheme();
-  const reduceMotion = useReducedMotion();
-  const scale = useSharedValue(1);
-  const wasSelected = useRef(selected);
-
-  useEffect(() => {
-    if (selected && !wasSelected.current && !reduceMotion) {
-      scale.set(
-        withSequence(withSpring(motion.selectedPop, motion.spring), withSpring(1, motion.spring)),
-      );
-    }
-    wasSelected.current = selected;
-  }, [selected, reduceMotion, scale]);
-
-  const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  const { onPressIn, onPressOut, animatedStyle } = usePressScale();
 
   return (
     <Pressable
@@ -60,6 +41,8 @@ export function OptionCard({
         haptics.light();
         onPress();
       }}
+      onPressIn={disabled ? undefined : onPressIn}
+      onPressOut={onPressOut}
       disabled={disabled}
       accessibilityRole={mode === 'single' ? 'radio' : 'checkbox'}
       accessibilityLabel={sublabel ? `${label}. ${sublabel}` : label}

@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
 import {
+  Easing,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
+  withSequence,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
@@ -10,29 +12,45 @@ import {
 import { motion, opacity } from '@/theme';
 
 /**
- * Pressed feedback: spring scale to 0.97. With Reduce Motion on, a quick opacity fade instead.
+ * Pressed feedback used by every tappable component: a quick squeeze on touch (70 ms), then on
+ * release a small overshoot "pop" that springs back to rest. With Reduce Motion on, a quick opacity
+ * fade instead. Runs on the UI thread, so it responds instantly.
  */
 export function usePressScale() {
   const reduceMotion = useReducedMotion();
-  const pressed = useSharedValue(0);
+  const scale = useSharedValue(1);
+  const dim = useSharedValue(1);
 
   const onPressIn = useCallback(() => {
-    pressed.set(
-      reduceMotion ? withTiming(1, { duration: motion.fast }) : withSpring(1, motion.spring),
+    if (reduceMotion) {
+      dim.set(withTiming(opacity.pressed, { duration: motion.fast }));
+      return;
+    }
+    scale.set(
+      withTiming(motion.pressedScale, {
+        duration: motion.pressIn,
+        easing: Easing.out(Easing.quad),
+      }),
     );
-  }, [pressed, reduceMotion]);
+  }, [scale, dim, reduceMotion]);
 
   const onPressOut = useCallback(() => {
-    pressed.set(
-      reduceMotion ? withTiming(0, { duration: motion.fast }) : withSpring(0, motion.spring),
+    if (reduceMotion) {
+      dim.set(withTiming(1, { duration: motion.fast }));
+      return;
+    }
+    scale.set(
+      withSequence(
+        withTiming(motion.popScale, { duration: motion.popOut, easing: Easing.out(Easing.cubic) }),
+        withSpring(1, motion.popSpring),
+      ),
     );
-  }, [pressed, reduceMotion]);
+  }, [scale, dim, reduceMotion]);
 
-  const animatedStyle = useAnimatedStyle(() =>
-    reduceMotion
-      ? { opacity: 1 - pressed.value * (1 - opacity.pressed) }
-      : { transform: [{ scale: 1 - pressed.value * (1 - motion.pressedScale) }] },
-  );
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: dim.value,
+    transform: [{ scale: scale.value }],
+  }));
 
   return { onPressIn, onPressOut, animatedStyle };
 }

@@ -24,3 +24,4 @@ export { TimePicker } from './TimePicker';
 export { ToastHost } from './Toast';
 export { WheelPicker, type WheelItem } from './WheelPicker';
 export { AppErrorBoundary } from './AppErrorBoundary';
+export { PressableScale } from './PressableScale';

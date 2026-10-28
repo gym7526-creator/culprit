@@ -159,9 +159,16 @@ export const motion = {
   autoAdvance: 250,
   toast: 2600,
   confetti: 1100,
-  pressedScale: 0.97,
+  pressedScale: 0.95,
   selectedPop: 1.03,
+  /** Press: quick squeeze in, then a small overshoot pop on release that settles fast. */
+  pressIn: 70,
+  popOut: 90,
+  popScale: 1.035,
+  popSpring: { damping: 12, stiffness: 420, mass: 0.5 },
   spring: { damping: 15, stiffness: 220, mass: 0.6 },
+  /** Wheel picker snap. */
+  wheelSnap: 180,
 } as const;
 
 export const opacity = {

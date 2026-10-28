@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -12,6 +12,7 @@ import { componentCopy, format } from '@/copy';
 import { motion, opacity, radius, size, space, useTheme } from '@/theme';
 
 import { haptics } from './haptics';
+import { PressableScale } from './PressableScale';
 import { Text } from './Text';
 
 export type CheckInScore = 0 | 1 | 2 | 3 | 4;
@@ -59,7 +60,7 @@ function Face({
   }));
 
   return (
-    <Pressable
+    <PressableScale
       onPress={() => {
         haptics.light();
         onChange(score);
@@ -68,6 +69,7 @@ function Face({
       accessibilityRole="radio"
       accessibilityLabel={format(componentCopy.checkIn.faceA11y, { label })}
       accessibilityState={{ selected, disabled }}
+      containerStyle={styles.faceCol}
       style={styles.faceCol}
     >
       <Animated.View style={[styles.faceCol, animatedStyle]}>
@@ -88,7 +90,7 @@ function Face({
           {label}
         </Text>
       </Animated.View>
-    </Pressable>
+    </PressableScale>
   );
 }
 

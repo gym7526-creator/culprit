@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react-native';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { haptics, Text } from '@/components';
+import { haptics, PressableScale, Text } from '@/components';
 import { radius, size, space, useTheme } from '@/theme';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 export function PlanCard({ title, price, sub, badge, selected, onPress, testID }: Props) {
   const { colors } = useTheme();
   return (
-    <Pressable
+    <PressableScale
       onPress={() => {
         haptics.light();
         onPress();
@@ -62,7 +62,7 @@ export function PlanCard({ title, price, sub, badge, selected, onPress, testID }
           {selected ? <Check size={size.iconSm} color={colors.onBrand} strokeWidth={3} /> : null}
         </View>
       </View>
-    </Pressable>
+    </PressableScale>
   );
 }
 
