@@ -17,9 +17,12 @@ import { advance, personalRules, projectSchedule } from '@/engines/program';
 import type { CheckIn, TestGroup } from '@/engines/types';
 import { activePlan, cookHistory, nextPlanStart, testNightsMatch } from '@/engines/week';
 import { useAppStore } from '@/features/appStore';
+import { clockNow } from '@/features/clock';
 import { planInputFor } from '@/features/onboarding/buildFirstWeek';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { usePrefsStore } from '@/features/prefsStore';
+import { storeOptions, withBestStore } from '@/features/stores/pick';
+import { bestStore } from '@/engines/stores';
 
 export function allPlans(): WeekPlan[] {
   return Object.values(useAppStore.getState().plans);
@@ -96,7 +99,11 @@ export function syncProgramAndPlan(today: DayKey, hour: number): void {
   if (start) {
     const input = inputFor(start, app.twoWeek ? 14 : 7);
     if (!input) return;
-    app.savePlan(generatePlan(input));
+    const answers = useOnboardingStore.getState().answers;
+    const best = withBestStore(answers, input, generatePlan(input));
+    if (best.chainId && best.chainId !== answers.chainId)
+      useOnboardingStore.getState().update({ chainId: best.chainId });
+    app.savePlan(best.plan);
     track({ name: 'plan_generated' });
     return;
   }
@@ -160,4 +167,33 @@ export function setTwoWeek(plan: WeekPlan | null, today: DayKey, on: boolean): v
   const from = diffDays(plan.weekStart, today) > 0 ? today : plan.weekStart;
   const next = replanFrom(plan, from, { nights: on ? 14 : 7 });
   if (next) useAppStore.getState().savePlan(next);
+}
+
+/** Re-prices the current plan for the active store (same dinners, new totals). */
+export function repriceCurrentPlan(): void {
+  const { today } = clockNow();
+  const plan = activePlan(allPlans(), today);
+  if (!plan) return;
+  const input = inputFor(plan.weekStart, nightsOf(plan));
+  if (input) useAppStore.getState().savePlan(withTotals(input, plan));
+}
+
+/** Manual store switch from the list (only offered for stores that sell everything on it). */
+export function switchStore(chainId: string): void {
+  useOnboardingStore.getState().update({ chainId, storeAuto: false });
+  repriceCurrentPlan();
+}
+
+/** Back to auto: the cheapest of the user's stores that sells everything on this week's list. */
+export function autoPickStore(): void {
+  const a = useOnboardingStore.getState().answers;
+  useOnboardingStore.getState().update({ storeAuto: true });
+  const { today } = clockNow();
+  const plan = activePlan(allPlans(), today);
+  if (!plan) return;
+  const input = inputFor(plan.weekStart, nightsOf(plan));
+  if (!input) return;
+  const best = bestStore(storeOptions(input, plan, a, a.stores));
+  if (best) useOnboardingStore.getState().update({ chainId: best });
+  repriceCurrentPlan();
 }

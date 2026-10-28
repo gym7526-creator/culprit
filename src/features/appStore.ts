@@ -36,6 +36,8 @@ export type AppState = {
   celebrated: string[];
   /** Milestone notifications already sent (so a reschedule never repeats them). */
   notified: string[];
+  /** Weeks where the user chose to split the list across two stores. */
+  splitWeeks: Record<DayKey, boolean>;
 };
 
 type Actions = {
@@ -55,6 +57,7 @@ type Actions = {
   markRevealed: (testId: string) => void;
   markCelebrated: (key: string) => void;
   markNotified: (keys: string[]) => void;
+  setSplit: (weekStart: DayKey, on: boolean) => void;
   resetAll: () => void;
 };
 
@@ -73,6 +76,7 @@ const initial: AppState = {
   revealed: [],
   celebrated: [],
   notified: [],
+  splitWeeks: {},
 };
 
 function toggle(list: readonly string[], id: string): string[] {
@@ -122,6 +126,7 @@ export const useAppStore = create<AppState & Actions>()(
       markCelebrated: (key) =>
         set((s) => (s.celebrated.includes(key) ? s : { celebrated: [...s.celebrated, key] })),
       markNotified: (keys) => set((s) => ({ notified: [...new Set([...s.notified, ...keys])] })),
+      setSplit: (w, on) => set((s) => ({ splitWeeks: { ...s.splitWeeks, [w]: on } })),
       resetAll: () => set(initial),
     }),
     {

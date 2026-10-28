@@ -30,7 +30,12 @@ import {
 } from '@/engines/skin';
 import { AppHeader } from '@/features/app/AppHeader';
 import { useClock } from '@/features/clock';
-import { currentRoutine, submitSkinCheckin } from '@/features/skin/actions';
+import {
+  currentRoutine,
+  retailerName,
+  skincareStores,
+  submitSkinCheckin,
+} from '@/features/skin/actions';
 import { RoutineList } from '@/features/skin/RoutineList';
 import { useSkinStore } from '@/features/skin/skinStore';
 import { useUiStore } from '@/features/uiStore';
@@ -201,19 +206,7 @@ export default function Skin() {
           <View style={styles.row}>
             <Text variant="caption" color="textSecondary" style={styles.flex}>
               {format(c.buyingAt, {
-                store: file.retailers.find((r) => r.id === answers.retailerId)?.name ?? '',
-              })}
-            </Text>
-            <TextButton
-              label={c.changeStore}
-              onPress={() => setPicking(true)}
-              testID="skin-change-store"
-            />
-          </View>
-          <View style={styles.row}>
-            <Text variant="caption" color="textSecondary" style={styles.flex}>
-              {format(c.buyingAt, {
-                store: file.retailers.find((r) => r.id === answers.retailerId)?.name ?? '',
+                store: retailerName(),
               })}
             </Text>
             <TextButton
@@ -306,7 +299,7 @@ export default function Skin() {
         onClose={() => setPicking(false)}
         title={c.setup.retailer.title}
       >
-        {file.retailers.map((r) => (
+        {skincareStores().map((r) => (
           <Pressable
             key={r.id}
             onPress={() => {

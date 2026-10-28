@@ -23,13 +23,15 @@ export const useOnboardingStore = create<OnboardingState>()(
       version: 1,
       storage: createJSONStorage(() => healthStorage),
       // Older saves may lack newer fields.
-      merge: (persisted, current) => ({
-        ...current,
-        answers: {
+      merge: (persisted, current) => {
+        const answers = {
           ...emptyAnswers,
           ...((persisted as { answers?: Partial<Answers> })?.answers ?? {}),
-        },
-      }),
+        };
+        // Saves from before "My stores" had a single store: keep it as their one store.
+        if (answers.stores.length === 0 && answers.chainId) answers.stores = [answers.chainId];
+        return { ...current, answers };
+      },
     },
   ),
 );

@@ -109,6 +109,10 @@ export type Answers = {
   consent: boolean;
   /** Typed name when the store is "Other / local store" (priced at the average index). */
   storeName: string | null;
+  /** Every store they shop at ("My stores"); `chainId` is the one the grocery list is priced for. */
+  stores: string[];
+  /** Let Culprit pick the cheapest of `stores` for each list (off after a manual switch). */
+  storeAuto: boolean;
   alcoholOptIn: boolean;
 };
 
@@ -146,6 +150,8 @@ export const emptyAnswers: Answers = {
   source: null,
   consent: false,
   storeName: null,
+  stores: [],
+  storeAuto: true,
   alcoholOptIn: false,
 };
 
@@ -276,7 +282,7 @@ export function readyToBuild(a: Answers): boolean {
     a.cookDays.length > 0 &&
     a.maxMinutes !== null &&
     a.zip !== null &&
-    a.chainId !== null &&
+    (a.chainId !== null || a.stores.length > 0) &&
     a.budget !== null &&
     a.consent
   );

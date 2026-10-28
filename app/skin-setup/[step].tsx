@@ -17,7 +17,7 @@ import {
 import { MultiChoice, SingleChoice, toggle } from '@/features/onboarding/components/Choices';
 import { OnboardingScreen } from '@/features/onboarding/components/OnboardingScreen';
 import { useOnboardingStore } from '@/features/onboardingStore';
-import { buildSkinProgram } from '@/features/skin/actions';
+import { buildSkinProgram, skincareStores } from '@/features/skin/actions';
 import { isSkinStep, skinSteps, type SkinStep } from '@/features/skin/setupFlow';
 import { useSkinStore } from '@/features/skin/skinStore';
 
@@ -196,10 +196,10 @@ export default function SkinSetupStep() {
         noCta: true,
         children: (
           <SingleChoice
-            options={content.skincare.retailers.map((r) => ({
+            options={skincareStores().map((r) => ({
               value: r.id,
               label: r.name,
-              sublabel: r.note,
+              sublabel: r.note || undefined,
             }))}
             value={a.retailerId}
             onPick={pickThen((retailerId: string) => update({ retailerId }))}

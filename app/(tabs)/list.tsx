@@ -16,14 +16,16 @@ import {
   TextField,
 } from '@/components';
 import { common, format, formatMoney, groceryCopy, listCopy } from '@/copy';
-import { recipeMap } from '@/data/content';
+import { recipeMap, content } from '@/data/content';
 import { listAsText, type CustomItem, type GroceryLine } from '@/engines/grocery';
 import { track } from '@/analytics';
 import { AppHeader } from '@/features/app/AppHeader';
 import { useAppStore } from '@/features/appStore';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { useActivePlan, useGroceryList } from '@/features/plan/hooks';
+import { autoPickStore, switchStore } from '@/features/plan/actions';
 import { storeLabel } from '@/features/stores/storeName';
+import { useStoreChoice } from '@/features/stores/useStoreChoice';
 import { radius, size, space, useTheme } from '@/theme';
 
 type Row =
@@ -52,6 +54,14 @@ export default function List() {
   const { toggleChecked, addCustom, removeCustom, setDoneShopping, togglePantry } =
     useAppStore.getState();
   const [info, setInfo] = useState(false);
+  const [switching, setSwitching] = useState(false);
+  const choice = useStoreChoice(plan);
+  const setSplit = useAppStore((s) => s.setSplit);
+  const chainName = (id: string) => content.chains.chains.find((c) => c.id === id)?.name ?? id;
+  const aisleList = (aisles: readonly string[]) =>
+    aisles
+      .map((a) => groceryCopy.aisles[a as keyof typeof groceryCopy.aisles].toLowerCase())
+      .join(', ');
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState('');
 
@@ -195,7 +205,17 @@ export default function List() {
             {l.name}
           </Text>
           <Text variant="caption" color="textSecondary" numberOfLines={2}>
-            {`${l.packLabel} · ${usedByText(l.usedBy)}`}
+            {[
+              l.packLabel,
+              choice?.splitOn && choice.split?.assign[l.ingredientId]
+                ? format(listCopy.atStore, {
+                    store: chainName(choice.split.assign[l.ingredientId]!),
+                  })
+                : null,
+              usedByText(l.usedBy),
+            ]
+              .filter(Boolean)
+              .join(' · ')}
           </Text>
         </View>
         <Text variant="callout" color="textSecondary">
@@ -227,6 +247,74 @@ export default function List() {
               })}
               title={listCopy.title}
             />
+            {choice ? (
+              <View
+                style={[
+                  styles.storeBar,
+                  { backgroundColor: colors.surface, borderColor: colors.border },
+                ]}
+              >
+                <View style={styles.flex}>
+                  <Text variant="bodyStrong" testID="shopping-at">
+                    {choice.splitOn && choice.split
+                      ? format(listCopy.splitActive, {
+                          a: chainName(choice.split.stores[0]!),
+                          b: chainName(choice.split.stores[1]!),
+                        })
+                      : format(listCopy.shoppingAt, { store: storeLabel(answers) })}
+                  </Text>
+                  <Text variant="caption" color="textSecondary">
+                    {choice.auto ? listCopy.autoPicked : listCopy.manualPicked}
+                  </Text>
+                </View>
+                <TextButton
+                  label={listCopy.switchStore}
+                  onPress={() => setSwitching(true)}
+                  testID="switch-store"
+                />
+              </View>
+            ) : null}
+            {choice?.split && !choice.splitOn ? (
+              <View
+                style={[
+                  styles.storeBar,
+                  { backgroundColor: colors.goodSoft, borderColor: colors.good },
+                ]}
+                testID="split-offer"
+              >
+                <View style={styles.flex}>
+                  <Text variant="bodyStrong" color="goodInk">
+                    {format(listCopy.splitOffer, { amount: formatMoney(choice.split.saves) })}
+                  </Text>
+                  <Text variant="caption" color="goodInk">
+                    {format(listCopy.splitBody, {
+                      a: chainName(choice.split.stores[0]!),
+                      aAisles: aisleList([
+                        ...new Set(
+                          Object.entries(choice.split.assign)
+                            .filter(([, st]) => st === choice.split!.stores[0])
+                            .map(
+                              ([id]) =>
+                                list.sections.find((sec) =>
+                                  sec.lines.some((ln) => ln.ingredientId === id),
+                                )?.aisle ?? 'pantry',
+                            ),
+                        ),
+                      ]),
+                      b: chainName(choice.split.stores[1]!),
+                    })}
+                  </Text>
+                </View>
+                <TextButton
+                  label={listCopy.splitOn}
+                  onPress={() => setSplit(w, true)}
+                  testID="split-on"
+                />
+              </View>
+            ) : null}
+            {choice?.splitOn ? (
+              <TextButton label={listCopy.splitUndo} onPress={() => setSplit(w, false)} />
+            ) : null}
             <View style={styles.actions}>
               <SecondaryButton
                 label={listCopy.add}
@@ -269,7 +357,9 @@ export default function List() {
       >
         <View style={styles.totalRow}>
           <Text variant="headline" style={styles.flex} testID="list-total">
-            {format(listCopy.total, { total: formatMoney(list.total) })}
+            {format(listCopy.total, {
+              total: formatMoney(choice?.splitOn && choice.split ? choice.split.total : list.total),
+            })}
           </Text>
           <Pressable
             onPress={() => setInfo(true)}
@@ -280,8 +370,85 @@ export default function List() {
             <Info size={size.iconMd} color={colors.textSecondary} />
           </Pressable>
         </View>
-        <BudgetBar total={list.total} budget={list.budget} />
+        <BudgetBar
+          total={choice?.splitOn && choice.split ? choice.split.total : list.total}
+          budget={list.budget}
+        />
       </View>
+
+      <BottomSheet
+        visible={switching}
+        onClose={() => setSwitching(false)}
+        title={listCopy.switchTitle}
+        testID="switch-sheet"
+      >
+        <Pressable
+          onPress={() => {
+            autoPickStore();
+            setSplit(w, false);
+            setSwitching(false);
+          }}
+          accessibilityRole="radio"
+          accessibilityState={{ selected: choice?.auto ?? false }}
+          accessibilityLabel={listCopy.letUsPick}
+          style={[styles.storeOption, { borderColor: choice?.auto ? colors.brand : colors.border }]}
+          testID="store-auto"
+        >
+          <Text variant="bodyStrong">{listCopy.letUsPick}</Text>
+        </Pressable>
+        {[
+          ...(choice?.mine ?? []).map((o) => ({ o, label: listCopy.yourStore })),
+          ...(choice?.near ?? []).map((o) => ({ o, label: listCopy.nearYou })),
+        ].map(({ o, label }, idx) => {
+          const blocked = o.total === null;
+          const selected = !choice?.auto && choice?.current === o.chainId;
+          const cheapest = idx === 0 && !blocked;
+          return (
+            <Pressable
+              key={o.chainId}
+              disabled={blocked}
+              onPress={() => {
+                switchStore(o.chainId);
+                setSplit(w, false);
+                setSwitching(false);
+              }}
+              accessibilityRole="radio"
+              accessibilityState={{ selected, disabled: blocked }}
+              accessibilityLabel={`${chainName(o.chainId)}, ${blocked ? format(listCopy.cantBuy, { aisles: aisleList(o.missing) }) : format(listCopy.storeTotal, { total: formatMoney(o.total!) })}`}
+              style={[
+                styles.storeOption,
+                {
+                  borderColor: selected ? colors.brand : colors.border,
+                  opacity: blocked ? 0.55 : 1,
+                },
+              ]}
+              testID={`switch-${o.chainId}`}
+            >
+              <View style={styles.flex}>
+                <Text variant="bodyStrong">{chainName(o.chainId)}</Text>
+                <Text variant="caption" color={blocked ? 'triggerInk' : 'textSecondary'}>
+                  {blocked ? format(listCopy.cantBuy, { aisles: aisleList(o.missing) }) : label}
+                </Text>
+              </View>
+              {blocked ? null : (
+                <View style={styles.alignEnd}>
+                  <Text variant="bodyStrong">
+                    {format(listCopy.storeTotal, { total: formatMoney(o.total!) })}
+                  </Text>
+                  {cheapest ? (
+                    <Text variant="caption" color="goodInk">
+                      {listCopy.cheapest}
+                    </Text>
+                  ) : null}
+                </View>
+              )}
+            </Pressable>
+          );
+        })}
+        <Text variant="caption" color="textSecondary">
+          {listCopy.addStores}
+        </Text>
+      </BottomSheet>
 
       <BottomSheet visible={info} onClose={() => setInfo(false)} title={listCopy.estInfo}>
         <Text variant="body">{listCopy.estBody}</Text>
@@ -352,4 +519,23 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   totalRow: { flexDirection: 'row', alignItems: 'center' },
+  storeBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+    borderWidth: 1,
+    borderRadius: radius.card,
+    padding: space.sm,
+  },
+  storeOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space.sm,
+    borderWidth: 1,
+    borderRadius: radius.card,
+    padding: space.md,
+    marginBottom: space.xs,
+    minHeight: size.optionCard,
+  },
+  alignEnd: { alignItems: 'flex-end' },
 });

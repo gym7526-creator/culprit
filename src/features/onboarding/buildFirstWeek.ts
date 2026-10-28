@@ -2,6 +2,7 @@
  * Turns onboarding answers into the real program and first-week plan (O20/O21). Pure: callers save
  * the results. The preview is genuinely the user's own plan (spec §8, O21).
  */
+import { withBestStore } from '@/features/stores/pick';
 import { storeLabel } from '@/features/stores/storeName';
 import { content, ingredientMap } from '@/data/content';
 import { addDays, type DayKey } from '@/engines/dates';
@@ -18,6 +19,8 @@ import { createProgram, projectSchedule, type ProgramState } from '@/engines/pro
 import type { TestGroup } from '@/engines/types';
 
 export type FirstWeek = {
+  /** The store the week is priced for (the cheapest of the user's stores when auto-pick is on). */
+  chainId: string | null;
   program: ProgramState;
   plan: WeekPlan;
   planInput: PlanInput;
@@ -80,14 +83,17 @@ export function buildFirstWeek(a: Answers, today: DayKey, seed: string): FirstWe
   const opts = programOptions(a, Number(today.slice(0, 4)), seed);
   const program = createProgram(content.tests.order, content.tests.tests, { ...opts, today });
   // The calm start (and the first week) begins tomorrow.
-  const planInput = planInputFor(a, program, addDays(today, 1), seed);
-  const plan = generatePlan(planInput);
+  const first = planInputFor(a, program, addDays(today, 1), seed);
+  // Several stores: price the week at each one that sells everything and keep the cheapest.
+  const best = withBestStore(a, first, generatePlan(first));
+  const { plan, input: planInput } = best;
   const list = planGroceries(planInput, plan);
   return {
     program,
     plan,
     planInput,
-    chainName: storeLabel(a),
+    chainId: best.chainId,
+    chainName: storeLabel({ ...a, chainId: best.chainId }),
     setAside: program.gentle ? [] : setAsideGroups(opts.profile),
     firstSuspects: program.queue
       .filter((q) => q.kind === 'real')

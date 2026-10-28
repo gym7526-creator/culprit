@@ -383,8 +383,37 @@ export const RegionsFile = z.object({
 });
 export type RegionsFile = z.infer<typeof RegionsFile>;
 
+export const STORE_TYPES = [
+  'supermarket',
+  'bigbox',
+  'discount',
+  'warehouse',
+  'natural',
+  'international',
+  'drugstore',
+  'dollar',
+  'online',
+] as const;
+export const StoreType = z.enum(STORE_TYPES);
+export type StoreType = z.infer<typeof StoreType>;
+export const Coverage = z.enum(['full', 'limited', 'none']);
+export type Coverage = z.infer<typeof Coverage>;
+/** What a store sells: every grocery aisle plus skincare. */
+export const SELL_KEYS = [...AISLES, 'skincare'] as const;
+export type SellKey = (typeof SELL_KEYS)[number];
+
 export const Chain = z.object({
   id,
+  /** Store type: decides what it sells and its category price levels unless overridden below. */
+  type: StoreType,
+  /** Overrides of the type's coverage, e.g. a dollar store that does carry produce. */
+  sells: z.partialRecord(z.enum(SELL_KEYS), Coverage).optional(),
+  /** Overrides of the type's per-aisle price adjustment (multiplied with `index`). */
+  aisleIndex: z.partialRecord(z.enum(AISLES), z.number().positive()).optional(),
+  /** Store-brand skincare price index (drugstore = 1.00); defaults by type. */
+  skinIndex: z.number().positive().optional(),
+  /** Factual store-brand name, e.g. "Equate". */
+  storeBrand: z.string().optional(),
   name: z.string(),
   index: z.number().positive(),
   /** Where it's common, to order the O13 list ("all" = nationwide). */
@@ -479,19 +508,7 @@ export const SkinExperiment = z.object({
 });
 export type SkinExperiment = z.infer<typeof SkinExperiment>;
 
-export const SkinRetailer = z.object({
-  id,
-  name: z.string(),
-  /** Store-brand skincare price index relative to a typical drugstore = 1.00 (estimate). */
-  index: z.number().positive(),
-  /** Factual note, e.g. its store brand or "online, ships to you". */
-  note: z.string(),
-});
-export type SkinRetailer = z.infer<typeof SkinRetailer>;
-
 export const SkincareFile = z.object({
-  /** Where people buy skincare: drugstores, big-box and online, not grocery chains. */
-  retailers: z.array(SkinRetailer).min(3),
   /** Judge a product only after this many days (AAD: 6–8 weeks). */
   judgeAfterDays: z.number().int().positive(),
   products: z.array(SkinProduct).min(6),

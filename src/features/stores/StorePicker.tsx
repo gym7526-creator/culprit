@@ -16,19 +16,21 @@ export function tierOf(index: number): keyof typeof c.tiers {
 
 type Props = {
   zip: string;
-  value: string | null;
+  /** Every store they shop at (multi-select). */
+  values: readonly string[];
   storeName: string | null;
-  onPick: (chainId: string) => void;
+  onToggle: (chainId: string) => void;
   onStoreName: (name: string) => void;
 };
 
 /**
- * O13 store picker: chains with stores in the user's state first, then nationwide chains, then a
- * searchable list of every chain, plus "Other / local store" with an optional typed name.
+ * O13 "My stores" picker (multi-select): chains with stores in the user's state first, then
+ * nationwide chains, then a searchable list of every chain, plus "Other / local store" with a typed
+ * name. The app then picks the best of these for each shopping list.
  */
-export function StorePicker({ zip, value, storeName, onPick, onStoreName }: Props) {
+export function StorePicker({ zip, values, storeName, onToggle, onStoreName }: Props) {
   const groups = useMemo(() => storeGroups(zip, content.regions, content.chains), [zip]);
-  const pickedInMore = groups.more.some((ch) => ch.id === value);
+  const pickedInMore = groups.more.some((ch) => values.includes(ch.id));
   const [showMore, setShowMore] = useState(pickedInMore);
   const [query, setQuery] = useState('');
 
@@ -37,8 +39,9 @@ export function StorePicker({ zip, value, storeName, onPick, onStoreName }: Prop
       key={ch.id}
       label={ch.name}
       sublabel={[ch.family, c.tiers[tierOf(ch.index)]].filter(Boolean).join(' · ')}
-      selected={value === ch.id}
-      onPress={() => onPick(ch.id)}
+      selected={values.includes(ch.id)}
+      mode="multi"
+      onPress={() => onToggle(ch.id)}
       testID={`store-${ch.id}`}
     />
   );
@@ -95,7 +98,7 @@ export function StorePicker({ zip, value, storeName, onPick, onStoreName }: Prop
       {groups.other ? (
         <View style={styles.group}>
           {card(groups.other)}
-          {value === 'other' ? (
+          {values.includes('other') ? (
             <>
               <TextField
                 label={c.otherName}

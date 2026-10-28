@@ -89,6 +89,28 @@ describe('main app screens', () => {
     await waitFor(() => screen.getByText('Swap for'));
   });
 
+  it('List lets you switch only to stores that sell everything on it', async () => {
+    useOnboardingStore.setState({
+      answers: {
+        ...answers,
+        stores: ['jewel_osco', 'walgreens'],
+        chainId: 'jewel_osco',
+        storeAuto: true,
+      },
+    });
+    await renderRouter(routes, { initialUrl: '/list', wrapper: Wrapper });
+    await waitFor(() => screen.getByTestId('shopping-at'));
+    await fireEvent.press(screen.getByTestId('switch-store'));
+    const walgreens = screen.getByTestId('switch-walgreens');
+    expect(walgreens.props.accessibilityState).toMatchObject({ disabled: true });
+    expect(screen.getAllByText(/Doesn’t sell: .*produce/).length).toBeGreaterThan(0);
+    await fireEvent.press(screen.getByTestId('switch-jewel_osco'));
+    expect(useOnboardingStore.getState().answers).toMatchObject({
+      chainId: 'jewel_osco',
+      storeAuto: false,
+    });
+  });
+
   it('List shows aisles, a total and checks items off', async () => {
     await renderRouter(routes, { initialUrl: '/list', wrapper: Wrapper });
     await waitFor(() => screen.getByTestId('list'));

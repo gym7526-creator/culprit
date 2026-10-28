@@ -16,6 +16,7 @@ import {
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { savePreferences } from '@/features/settings/actions';
 import { SettingsScreen } from '@/features/settings/components';
+import { provisionalStore } from '@/features/stores/pick';
 import { StorePicker } from '@/features/stores/StorePicker';
 import { useUiStore } from '@/features/uiStore';
 import { size, space, useTheme } from '@/theme';
@@ -53,7 +54,7 @@ export default function Preferences() {
       footer={
         <PrimaryButton
           label={settingsCopy.save}
-          disabled={!zipValid || a.cookDays.length === 0}
+          disabled={!zipValid || a.cookDays.length === 0 || a.stores.length === 0}
           onPress={() => {
             savePreferences(a);
             toast(settingsCopy.saved, 'good');
@@ -110,9 +111,12 @@ export default function Preferences() {
         <Group title={p.store}>
           <StorePicker
             zip={a.zip ?? ''}
-            value={a.chainId}
+            values={a.stores}
             storeName={a.storeName}
-            onPick={(chainId) => set({ chainId })}
+            onToggle={(id) => {
+              const stores = toggle(a.stores, id);
+              set({ stores, chainId: provisionalStore(stores), storeAuto: true });
+            }}
             onStoreName={(storeName) => set({ storeName })}
           />
         </Group>

@@ -9,21 +9,6 @@ const AAD = 'https://www.aad.org/public/diseases/acne/skin-care/habits-stop';
 const DIET = 'https://blogs.the-hospitalist.org/content/update-diet-and-acne';
 
 export const skincare: SkincareFile = {
-  // Store-brand price indexes are estimates (drugstore = 1.00), shown as "est.".
-  retailers: [
-    { id: 'walmart', name: 'Walmart', index: 0.85, note: 'Store brand: Equate' },
-    { id: 'target', name: 'Target', index: 0.92, note: 'Store brand: up&up' },
-    { id: 'cvs', name: 'CVS', index: 1.05, note: 'Store brand: CVS Health' },
-    { id: 'walgreens', name: 'Walgreens', index: 1.05, note: 'Store brand: Walgreens' },
-    { id: 'amazon', name: 'Amazon', index: 0.9, note: 'Online, ships to you' },
-    {
-      id: 'costco',
-      name: 'Costco / Sam’s Club',
-      index: 0.8,
-      note: 'Bigger packs, membership store',
-    },
-    { id: 'grocery', name: 'My grocery store', index: 1.0, note: 'Health & beauty aisle' },
-  ],
   judgeAfterDays: 42,
   products: [
     {

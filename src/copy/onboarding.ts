@@ -275,8 +275,10 @@ export const onboardingCopy = {
   },
 
   store: {
-    title: 'Where do you usually shop?',
+    title: 'Where do you shop?',
+    subtitle: 'Pick every store you use. We’ll send each list to the best one for it.',
     confirm: 'We’ll estimate prices at {store} near {zip}.',
+    picked: '{count} stores picked. We’ll pick the best one for each list.',
     near: 'Near you in {state}',
     nearUnknown: 'Popular stores',
     nationwide: 'Nationwide',

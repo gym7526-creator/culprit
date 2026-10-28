@@ -2,7 +2,8 @@
  * Price engine (spec §6.6): price(pack) = basePriceUSD × regionMultiplier × chainIndex, rounded to
  * cents, with the user's overrides applied last. Every price shown is labelled "est." in the UI.
  */
-import type { ChainsFile, Pack, Region, RegionsFile } from '../data/content/schema.ts';
+import type { Aisle, ChainsFile, Pack, Region, RegionsFile } from '../data/content/schema.ts';
+import { aisleIndexFor } from './stores.ts';
 
 export type PriceOverrides = Readonly<Record<string, number>>;
 
@@ -10,6 +11,8 @@ export type PriceContext = {
   chainId: string;
   regionMultiplier: number;
   chainIndex: number;
+  /** Category price adjustments for this store type (multiplied with chainIndex). */
+  aisleIndex?: Partial<Record<Aisle, number>>;
   /** Keyed by overrideKey(chainId, ingredientId, packIndex). */
   overrides: PriceOverrides;
 };
@@ -28,10 +31,12 @@ export function packPrice(
   ingredientId: string,
   packIndex: number,
   ctx: PriceContext,
+  aisle?: Aisle,
 ): number {
   const override = ctx.overrides[overrideKey(ctx.chainId, ingredientId, packIndex)];
   if (override !== undefined) return roundCents(override);
-  return roundCents(pack.basePriceUSD * ctx.regionMultiplier * ctx.chainIndex);
+  const category = aisle ? (ctx.aisleIndex?.[aisle] ?? 1) : 1;
+  return roundCents(pack.basePriceUSD * ctx.regionMultiplier * ctx.chainIndex * category);
 }
 
 /** "30301" → "GA" using the bundled ZIP3 table; null for unknown or invalid ZIPs. */
@@ -61,6 +66,7 @@ export function priceContext(
     chainId,
     regionMultiplier: region ? regions.multipliers[region] : 1,
     chainIndex: chain?.index ?? 1,
+    aisleIndex: aisleIndexFor(chain),
     overrides,
   };
 }

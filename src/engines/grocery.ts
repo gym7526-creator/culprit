@@ -169,7 +169,7 @@ export function buildGroceryList(
       .filter(({ p }) => p.unit === unit);
     const priced = options.map(({ p, packIndex }) => ({
       size: p.size,
-      price: packPrice(p, id, packIndex, ctx),
+      price: packPrice(p, id, packIndex, ctx, ing.aisle),
       packIndex,
     }));
     const { choice, cost } = cheapestPacks(t.need, priced);

@@ -3,6 +3,9 @@
  "chains": [
   {
    "id": "walmart",
+   "type": "bigbox",
+   "skinIndex": 0.85,
+   "storeBrand": "Great Value / Equate",
    "name": "Walmart",
    "index": 0.9,
    "regions": [
@@ -11,6 +14,9 @@
   },
   {
    "id": "target",
+   "type": "bigbox",
+   "skinIndex": 0.92,
+   "storeBrand": "Good & Gather / up&up",
    "name": "Target",
    "index": 1.03,
    "regions": [
@@ -19,6 +25,8 @@
   },
   {
    "id": "costco",
+   "type": "warehouse",
+   "storeBrand": "Kirkland Signature",
    "name": "Costco",
    "index": 0.88,
    "regions": [
@@ -27,6 +35,8 @@
   },
   {
    "id": "sams_club",
+   "type": "warehouse",
+   "storeBrand": "Member's Mark",
    "name": "Sam's Club",
    "index": 0.88,
    "regions": [
@@ -35,6 +45,8 @@
   },
   {
    "id": "whole_foods",
+   "type": "natural",
+   "storeBrand": "365",
    "name": "Whole Foods",
    "index": 1.3,
    "regions": [
@@ -43,6 +55,11 @@
   },
   {
    "id": "trader_joes",
+   "type": "natural",
+   "sells": {
+    "skincare": "limited",
+    "international": "full"
+   },
    "name": "Trader Joe's",
    "index": 0.98,
    "regions": [
@@ -51,6 +68,7 @@
   },
   {
    "id": "aldi",
+   "type": "discount",
    "name": "Aldi",
    "index": 0.85,
    "regions": [
@@ -100,6 +118,7 @@
   },
   {
    "id": "kroger",
+   "type": "supermarket",
    "name": "Kroger",
    "index": 1,
    "regions": [
@@ -134,6 +153,7 @@
   },
   {
    "id": "ralphs",
+   "type": "supermarket",
    "name": "Ralphs",
    "index": 1,
    "regions": [
@@ -149,6 +169,7 @@
   },
   {
    "id": "fred_meyer",
+   "type": "supermarket",
    "name": "Fred Meyer",
    "index": 1,
    "regions": [
@@ -167,6 +188,7 @@
   },
   {
    "id": "king_soopers",
+   "type": "supermarket",
    "name": "King Soopers / City Market",
    "index": 1,
    "regions": [
@@ -185,6 +207,7 @@
   },
   {
    "id": "frys",
+   "type": "supermarket",
    "name": "Fry's Food",
    "index": 1,
    "regions": [
@@ -200,6 +223,7 @@
   },
   {
    "id": "smiths",
+   "type": "supermarket",
    "name": "Smith's",
    "index": 1,
    "regions": [
@@ -221,6 +245,7 @@
   },
   {
    "id": "harris_teeter",
+   "type": "supermarket",
    "name": "Harris Teeter",
    "index": 1,
    "regions": [
@@ -240,6 +265,7 @@
   },
   {
    "id": "marianos",
+   "type": "supermarket",
    "name": "Mariano's",
    "index": 1,
    "regions": [
@@ -252,6 +278,7 @@
   },
   {
    "id": "dillons",
+   "type": "supermarket",
    "name": "Dillons",
    "index": 1,
    "regions": [
@@ -267,6 +294,7 @@
   },
   {
    "id": "qfc",
+   "type": "supermarket",
    "name": "QFC",
    "index": 1,
    "regions": [
@@ -280,6 +308,7 @@
   },
   {
    "id": "pick_n_save",
+   "type": "supermarket",
    "name": "Pick 'n Save / Metro Market",
    "index": 1,
    "regions": [
@@ -295,6 +324,7 @@
   },
   {
    "id": "albertsons_safeway",
+   "type": "supermarket",
    "name": "Safeway / Albertsons",
    "index": 1.1,
    "regions": [
@@ -329,6 +359,7 @@
   },
   {
    "id": "vons",
+   "type": "supermarket",
    "name": "Vons / Pavilions",
    "index": 1.1,
    "regions": [
@@ -342,6 +373,7 @@
   },
   {
    "id": "jewel_osco",
+   "type": "supermarket",
    "name": "Jewel-Osco",
    "index": 1.1,
    "regions": [
@@ -359,6 +391,7 @@
   },
   {
    "id": "acme",
+   "type": "supermarket",
    "name": "Acme Markets",
    "index": 1.1,
    "regions": [
@@ -376,6 +409,7 @@
   },
   {
    "id": "shaws",
+   "type": "supermarket",
    "name": "Shaw's / Star Market",
    "index": 1.1,
    "regions": [
@@ -392,6 +426,7 @@
   },
   {
    "id": "tom_thumb",
+   "type": "supermarket",
    "name": "Tom Thumb / Randalls",
    "index": 1.1,
    "regions": [
@@ -404,6 +439,7 @@
   },
   {
    "id": "heb",
+   "type": "supermarket",
    "name": "H-E-B",
    "index": 0.95,
    "regions": [
@@ -418,6 +454,7 @@
   },
   {
    "id": "publix",
+   "type": "supermarket",
    "name": "Publix",
    "index": 1.12,
    "regions": [
@@ -440,6 +477,7 @@
   },
   {
    "id": "winn_dixie",
+   "type": "supermarket",
    "name": "Winn-Dixie",
    "index": 1,
    "regions": [
@@ -460,6 +498,7 @@
   },
   {
    "id": "food_lion",
+   "type": "supermarket",
    "name": "Food Lion",
    "index": 0.95,
    "regions": [
@@ -484,6 +523,7 @@
   },
   {
    "id": "ingles",
+   "type": "supermarket",
    "name": "Ingles",
    "index": 0.98,
    "regions": [
@@ -500,6 +540,7 @@
   },
   {
    "id": "lidl",
+   "type": "discount",
    "name": "Lidl",
    "index": 0.86,
    "regions": [
@@ -521,6 +562,7 @@
   },
   {
    "id": "stop_and_shop",
+   "type": "supermarket",
    "name": "Stop & Shop",
    "index": 1.08,
    "regions": [
@@ -541,6 +583,7 @@
   },
   {
    "id": "giant_food",
+   "type": "supermarket",
    "name": "Giant Food",
    "index": 1.05,
    "regions": [
@@ -559,6 +602,7 @@
   },
   {
    "id": "giant_company",
+   "type": "supermarket",
    "name": "The Giant Company",
    "index": 1.02,
    "regions": [
@@ -573,6 +617,7 @@
   },
   {
    "id": "hannaford",
+   "type": "supermarket",
    "name": "Hannaford",
    "index": 1.02,
    "regions": [
@@ -593,6 +638,7 @@
   },
   {
    "id": "shoprite",
+   "type": "supermarket",
    "name": "ShopRite",
    "index": 1,
    "regions": [
@@ -612,6 +658,7 @@
   },
   {
    "id": "price_chopper",
+   "type": "supermarket",
    "name": "Price Chopper / Market 32",
    "index": 1,
    "regions": [
@@ -628,6 +675,7 @@
   },
   {
    "id": "wegmans",
+   "type": "supermarket",
    "name": "Wegmans",
    "index": 1.05,
    "regions": [
@@ -651,6 +699,8 @@
   },
   {
    "id": "bjs",
+   "type": "warehouse",
+   "storeBrand": "Wellsley Farms",
    "name": "BJ's Wholesale",
    "index": 0.9,
    "regions": [
@@ -679,6 +729,7 @@
   },
   {
    "id": "giant_eagle",
+   "type": "supermarket",
    "name": "Giant Eagle",
    "index": 1.03,
    "regions": [
@@ -698,6 +749,8 @@
   },
   {
    "id": "meijer",
+   "type": "bigbox",
+   "skinIndex": 0.9,
    "name": "Meijer",
    "index": 0.97,
    "regions": [
@@ -717,6 +770,7 @@
   },
   {
    "id": "hy_vee",
+   "type": "supermarket",
    "name": "Hy-Vee",
    "index": 1,
    "regions": [
@@ -739,6 +793,7 @@
   },
   {
    "id": "schnucks",
+   "type": "supermarket",
    "name": "Schnucks",
    "index": 1,
    "regions": [
@@ -755,6 +810,7 @@
   },
   {
    "id": "sprouts",
+   "type": "natural",
    "name": "Sprouts",
    "index": 1.08,
    "regions": [
@@ -786,6 +842,7 @@
   },
   {
    "id": "winco",
+   "type": "discount",
    "name": "WinCo Foods",
    "index": 0.85,
    "regions": [
@@ -807,6 +864,7 @@
   },
   {
    "id": "raleys",
+   "type": "supermarket",
    "name": "Raley's",
    "index": 1.12,
    "regions": [
@@ -819,6 +877,7 @@
   },
   {
    "id": "stater_bros",
+   "type": "supermarket",
    "name": "Stater Bros.",
    "index": 1,
    "regions": [
@@ -830,6 +889,7 @@
   },
   {
    "id": "smart_final",
+   "type": "discount",
    "name": "Smart & Final",
    "index": 0.95,
    "regions": [
@@ -842,7 +902,465 @@
    ]
   },
   {
+   "id": "cvs",
+   "type": "drugstore",
+   "storeBrand": "CVS Health",
+   "name": "CVS",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "walgreens",
+   "type": "drugstore",
+   "storeBrand": "Walgreens",
+   "name": "Walgreens",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "dollar_general",
+   "type": "dollar",
+   "sells": {
+    "produce": "limited"
+   },
+   "storeBrand": "Clover Valley",
+   "name": "Dollar General",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "family_dollar",
+   "type": "dollar",
+   "name": "Family Dollar",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "dollar_tree",
+   "type": "dollar",
+   "name": "Dollar Tree",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "amazon",
+   "type": "online",
+   "storeBrand": "Amazon Basics / Solimo",
+   "name": "Amazon",
+   "index": 1,
+   "regions": [
+    "all"
+   ]
+  },
+  {
+   "id": "save_a_lot",
+   "type": "discount",
+   "name": "Save A Lot",
+   "index": 0.88,
+   "regions": [
+    "midwest",
+    "south",
+    "northeast"
+   ],
+   "states": [
+    "MO",
+    "IL",
+    "OH",
+    "PA",
+    "KY",
+    "TN",
+    "MI",
+    "IN",
+    "FL",
+    "GA",
+    "AL",
+    "MS",
+    "LA",
+    "NC",
+    "SC",
+    "VA",
+    "WV",
+    "NY",
+    "NJ",
+    "MD",
+    "AR",
+    "OK",
+    "TX",
+    "WI"
+   ]
+  },
+  {
+   "id": "grocery_outlet",
+   "type": "discount",
+   "name": "Grocery Outlet",
+   "index": 0.85,
+   "regions": [
+    "west",
+    "northeast"
+   ],
+   "states": [
+    "CA",
+    "OR",
+    "WA",
+    "ID",
+    "NV",
+    "PA",
+    "MD",
+    "NJ",
+    "DE"
+   ]
+  },
+  {
+   "id": "food_4_less",
+   "type": "discount",
+   "name": "Food 4 Less",
+   "index": 0.88,
+   "regions": [
+    "west",
+    "midwest"
+   ],
+   "states": [
+    "CA",
+    "IL",
+    "IN"
+   ],
+   "family": "Kroger family"
+  },
+  {
+   "id": "h_mart",
+   "type": "international",
+   "name": "H Mart",
+   "index": 1,
+   "regions": [
+    "all"
+   ],
+   "states": [
+    "NY",
+    "NJ",
+    "CA",
+    "TX",
+    "GA",
+    "IL",
+    "VA",
+    "MD",
+    "WA",
+    "PA",
+    "MA",
+    "MI",
+    "MN",
+    "OR",
+    "AZ",
+    "NV",
+    "NC",
+    "FL",
+    "CO",
+    "HI",
+    "MO",
+    "OH",
+    "CT"
+   ]
+  },
+  {
+   "id": "ranch_99",
+   "type": "international",
+   "name": "99 Ranch Market",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA",
+    "WA",
+    "TX",
+    "NV",
+    "OR",
+    "NJ",
+    "NY",
+    "MA",
+    "MD",
+    "VA",
+    "GA"
+   ]
+  },
+  {
+   "id": "fiesta_mart",
+   "type": "international",
+   "name": "Fiesta Mart",
+   "index": 0.92,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "TX"
+   ]
+  },
+  {
+   "id": "natural_grocers",
+   "type": "natural",
+   "name": "Natural Grocers",
+   "index": 1.15,
+   "regions": [
+    "west",
+    "midwest",
+    "south"
+   ],
+   "states": [
+    "CO",
+    "TX",
+    "AZ",
+    "NM",
+    "OK",
+    "KS",
+    "NE",
+    "MO",
+    "UT",
+    "ID",
+    "OR",
+    "WA",
+    "WY",
+    "MT",
+    "NV",
+    "IA",
+    "AR",
+    "MN",
+    "ND",
+    "SD",
+    "LA"
+   ]
+  },
+  {
+   "id": "fresh_thyme",
+   "type": "natural",
+   "name": "Fresh Thyme Market",
+   "index": 1.05,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "IL",
+    "IN",
+    "IA",
+    "MI",
+    "MN",
+    "MO",
+    "NE",
+    "OH",
+    "WI",
+    "KY",
+    "PA"
+   ]
+  },
+  {
+   "id": "fareway",
+   "type": "supermarket",
+   "name": "Fareway",
+   "index": 0.97,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "IA",
+    "NE",
+    "MN",
+    "SD",
+    "IL",
+    "MO"
+   ]
+  },
+  {
+   "id": "brookshires",
+   "type": "supermarket",
+   "name": "Brookshire's",
+   "index": 1.02,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "TX",
+    "LA",
+    "AR"
+   ]
+  },
+  {
+   "id": "weis",
+   "type": "supermarket",
+   "name": "Weis Markets",
+   "index": 1,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "PA",
+    "MD",
+    "NJ",
+    "NY",
+    "VA",
+    "WV",
+    "DE"
+   ]
+  },
+  {
+   "id": "tops",
+   "type": "supermarket",
+   "name": "Tops Markets",
+   "index": 1.02,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "NY",
+    "PA",
+    "VT"
+   ]
+  },
+  {
+   "id": "big_y",
+   "type": "supermarket",
+   "name": "Big Y",
+   "index": 1.03,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "MA",
+    "CT"
+   ]
+  },
+  {
+   "id": "market_basket",
+   "type": "supermarket",
+   "name": "Market Basket",
+   "index": 0.92,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "MA",
+    "NH",
+    "ME"
+   ],
+   "leaderIn": [
+    "NH"
+   ]
+  },
+  {
+   "id": "woodmans",
+   "type": "supermarket",
+   "name": "Woodman's",
+   "index": 0.93,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "WI",
+    "IL"
+   ]
+  },
+  {
+   "id": "cub",
+   "type": "supermarket",
+   "name": "Cub",
+   "index": 1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "MN"
+   ],
+   "leaderIn": [
+    "MN"
+   ]
+  },
+  {
+   "id": "lowes_foods",
+   "type": "supermarket",
+   "name": "Lowes Foods",
+   "index": 1.03,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "NC",
+    "SC"
+   ]
+  },
+  {
+   "id": "piggly_wiggly",
+   "type": "supermarket",
+   "name": "Piggly Wiggly",
+   "index": 1.02,
+   "regions": [
+    "south",
+    "midwest"
+   ],
+   "states": [
+    "AL",
+    "GA",
+    "MS",
+    "SC",
+    "TN",
+    "NC",
+    "LA",
+    "WI",
+    "IL",
+    "KY",
+    "VA",
+    "FL"
+   ]
+  },
+  {
+   "id": "harps",
+   "type": "supermarket",
+   "name": "Harps",
+   "index": 1,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "AR",
+    "MO",
+    "OK",
+    "KS"
+   ]
+  },
+  {
+   "id": "united_supermarkets",
+   "type": "supermarket",
+   "name": "United Supermarkets",
+   "index": 1.02,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "TX"
+   ],
+   "family": "Albertsons family"
+  },
+  {
+   "id": "gelsons",
+   "type": "natural",
+   "name": "Gelson's",
+   "index": 1.3,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA"
+   ]
+  },
+  {
    "id": "other",
+   "type": "supermarket",
    "name": "Other / local store",
    "index": 1,
    "regions": [

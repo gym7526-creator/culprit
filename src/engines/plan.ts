@@ -167,7 +167,8 @@ function recipeFacts(r: Recipe, input: PlanInput): RecipeFacts {
     const unit = ing.packs[0]!.unit;
     let best = Infinity;
     ing.packs.forEach((p, i) => {
-      if (p.unit === unit) best = Math.min(best, packPrice(p, ing.id, i, input.prices) / p.size);
+      if (p.unit === unit)
+        best = Math.min(best, packPrice(p, ing.id, i, input.prices, ing.aisle) / p.size);
     });
     const qty = toPackUnit((ri.qty * input.household) / r.servingsBase, ri.unit, ing, unit);
     cost += qty * best;

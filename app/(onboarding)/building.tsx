@@ -31,7 +31,7 @@ function formatClock(time: string): string {
 export default function Building() {
   const router = useRouter();
   const { colors } = useTheme();
-  const { answers, today } = useOnboardingNav('building');
+  const { answers, today, update } = useOnboardingNav('building');
   const seed = usePrefsStore((s) => s.installId);
   const [shown, setShown] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -66,8 +66,9 @@ export default function Building() {
     const week = buildFirstWeek(answers, today, seed);
     // A fresh program replaces anything from an earlier run through onboarding.
     useAppStore.setState({ program: week.program, plans: { [week.plan.weekStart]: week.plan } });
+    if (week.chainId && week.chainId !== answers.chainId) update({ chainId: week.chainId });
     track({ name: 'plan_generated' });
-  }, [answers, today, seed]);
+  }, [answers, today, seed, update]);
 
   // Timed checklist and ring.
   useEffect(() => {

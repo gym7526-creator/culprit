@@ -100,3 +100,25 @@ describe('a simulated week in the main app', () => {
     expect(useAppStore.getState().twoWeek).toBe(true);
   });
 });
+
+describe('my stores', () => {
+  it('prices the week at the cheapest store that sells everything, and switching is limited to stores that can', () => {
+    const { storeOptions } = jest.requireActual(
+      '@/features/stores/pick',
+    ) as typeof import('@/features/stores/pick');
+    const multi = {
+      ...answers,
+      stores: ['jewel_osco', 'aldi', 'walgreens'],
+      chainId: 'jewel_osco',
+      storeAuto: true,
+    };
+    useOnboardingStore.setState({ answers: multi });
+    const week = buildFirstWeek(multi, DAY0, 'seed');
+    expect(week.chainId).toBe('aldi');
+    const input = inputFor(week.plan.weekStart, 7)!;
+    const opts = storeOptions(input, week.plan, multi, multi.stores);
+    const walgreens = opts.find((o) => o.chainId === 'walgreens')!;
+    expect(walgreens.total).toBeNull();
+    expect(walgreens.missing).toContain('produce');
+  });
+});

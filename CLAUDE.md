@@ -339,6 +339,15 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
 - Price transparency: the List header says which store/ZIP prices are for; the "est." sheet explains tiers.
 - `docs/DATA_SOURCES.md` explains every data source in plain English.
 - Location detection was not added (would need `expo-location` + a permission prompt); ZIP entry stays.
+- **My stores (multi-store):** 81 stores, each with a `type` (`STORE_TYPES`), optional `sells` / `aisleIndex` /
+  `skinIndex` / `storeBrand` overrides. `engines/stores.ts`: `TYPE_COVERAGE` (full / limited / none per aisle +
+  skincare), `TYPE_AISLE_INDEX` (category price factors, applied in `packPrice` via `PriceContext.aisleIndex`),
+  `rankStores` (stores that don't fully sell every aisle on the list are blocked, with what's missing),
+  `bestStore`, `bestSplit` (best pair, offered when it saves ≥ $8). `answers.stores` + `answers.storeAuto`;
+  `answers.chainId` = the store the list is priced for. `withBestStore` re-plans at the cheapest store when
+  building weeks. List: "Shopping at…" bar, Switch store sheet (blocked stores disabled with reasons), split
+  offer + per-line "at {store}". Skincare uses the same stores (`skinStoreId`: pick or cheapest selling skincare);
+  `skincare.json` no longer has its own retailer list.
 
 ## Phase plan (spec §15)
 
