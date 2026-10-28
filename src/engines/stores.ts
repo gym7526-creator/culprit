@@ -131,7 +131,17 @@ export const TYPE_AISLE_INDEX: Record<StoreType, Partial<Record<Aisle, number>>>
   supermarket: {},
   bigbox: {},
   discount: {},
-  warehouse: { pantry: 0.92, spices: 0.85, frozen: 0.95, beverages: 0.92, produce: 1.06 },
+  // Fresh items only come in bulk packs at clubs: a small weekly amount effectively costs more.
+  warehouse: {
+    pantry: 0.92,
+    spices: 0.85,
+    frozen: 0.95,
+    beverages: 0.92,
+    produce: 1.3,
+    meat_seafood: 1.2,
+    dairy: 1.1,
+    bakery: 1.1,
+  },
   natural: { produce: 0.97 },
   international: { international: 0.8, spices: 0.8, produce: 0.92, pantry: 0.95 },
   drugstore: { pantry: 1.25, dairy: 1.25, frozen: 1.2, bakery: 1.2, beverages: 1.15 },
