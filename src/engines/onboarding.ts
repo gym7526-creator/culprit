@@ -107,6 +107,8 @@ export type Answers = {
   notifications: 'granted' | 'denied' | 'later' | null;
   source: string | null;
   consent: boolean;
+  /** Typed name when the store is "Other / local store" (priced at the average index). */
+  storeName: string | null;
   alcoholOptIn: boolean;
 };
 
@@ -143,6 +145,7 @@ export const emptyAnswers: Answers = {
   notifications: null,
   source: null,
   consent: false,
+  storeName: null,
   alcoholOptIn: false,
 };
 

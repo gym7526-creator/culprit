@@ -28,7 +28,7 @@ appId: com.culprit.app
     id: "zip-input"
 - inputText: "60614"
 - tapOn: "Continue"
-- tapOn: "Kroger (and family stores)"
+- tapOn: "Kroger"
 - tapOn: "Continue"
 - tapOn: "Continue"            # budget
 - tapOn: "Skip"                # pantry

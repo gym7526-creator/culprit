@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
+import { storeLabel } from '@/features/stores/storeName';
 import { content, recipeMap } from '@/data/content';
 import { dayKeyOf, type DayKey } from '@/engines/dates';
 import { trialEndsAt } from '@/engines/paywall';
@@ -84,7 +85,7 @@ export function currentSchedule(now = new Date()): {
       ? {
           count: plan.nights.filter((n) => n.status === 'cook').length,
           total: formatMoney(plan.total),
-          store: content.chains.chains.find((c) => c.id === answers.chainId)?.name ?? '',
+          store: storeLabel(answers),
         }
       : null,
     trialEnds:

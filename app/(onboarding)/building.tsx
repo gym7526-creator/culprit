@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
+import { storeLabel } from '@/features/stores/storeName';
 import { haptics, Screen, ScoreRing, Text } from '@/components';
 import { format, onboardingCopy } from '@/copy';
 import { content } from '@/data/content';
@@ -39,7 +40,7 @@ export default function Building() {
   const lines = useMemo(() => {
     const profile = detectProfile(answers.symptoms);
     const names = onboardingCopy.testNames;
-    const store = content.chains.chains.find((ch) => ch.id === answers.chainId)?.name ?? '';
+    const store = storeLabel(answers);
     const out = [
       format(c.lines.matching, { count: content.recipes.length }),
       answers.gentleMode ? c.lines.gentle : c.lines.setAside,

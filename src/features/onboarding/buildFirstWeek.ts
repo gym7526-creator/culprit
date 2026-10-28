@@ -2,6 +2,7 @@
  * Turns onboarding answers into the real program and first-week plan (O20/O21). Pure: callers save
  * the results. The preview is genuinely the user's own plan (spec §8, O21).
  */
+import { storeLabel } from '@/features/stores/storeName';
 import { content, ingredientMap } from '@/data/content';
 import { addDays, type DayKey } from '@/engines/dates';
 import { planGroceries, generatePlan, type PlanInput, type WeekPlan } from '@/engines/plan';
@@ -86,7 +87,7 @@ export function buildFirstWeek(a: Answers, today: DayKey, seed: string): FirstWe
     program,
     plan,
     planInput,
-    chainName: content.chains.chains.find((c) => c.id === a.chainId)?.name ?? '',
+    chainName: storeLabel(a),
     setAside: program.gentle ? [] : setAsideGroups(opts.profile),
     firstSuspects: program.queue
       .filter((q) => q.kind === 'real')

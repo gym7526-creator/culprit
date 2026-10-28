@@ -112,10 +112,11 @@ export const cookCopy = {
 export const listCopy = {
   title: 'Grocery list',
   items: '{count} items',
+  itemsAt: '{count} items · priced for {store} near {zip} (est.)',
   total: '{total} est.',
   estInfo: 'How prices are estimated',
   estBody:
-    'Prices are typical store-brand prices for your area and store, adjusted with public U.S. average price data. Real prices vary by store, sales and season, so every total is an estimate.',
+    'Each item starts from a typical store-brand price. We adjust it for your region and for your store’s price level (discount, typical or premium), using public U.S. average price data where it exists. Real prices vary by store, sales and season, so every total is an estimate. You can change your store in Settings.',
   youHave: 'you have this',
   tapToNeed: 'Tap if you need it',
   usedIn: 'For {dishes}',
@@ -540,6 +541,10 @@ export const skinCopy = {
       label: 'Check-in time',
       note: 'One tap: “Skin today?”',
     },
+    retailer: {
+      title: 'Where do you buy skincare?',
+      subtitle: 'We’ll estimate store-brand prices there.',
+    },
     continue: 'Continue',
     build: 'Build my routine',
   },
@@ -595,6 +600,8 @@ export const skinCopy = {
     adultsOnly: 'Food experiments are for adults (18+). Your routine works without them.',
   },
   switchTreatment: 'Switch my evening product',
+  buyingAt: 'Prices for {store} (est.)',
+  changeStore: 'Change store',
   switched: 'Switched. We’ll judge it on its own over the next 6–8 weeks.',
   habits: 'Skin habits',
   source: 'Source: American Academy of Dermatology',

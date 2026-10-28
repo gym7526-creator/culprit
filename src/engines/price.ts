@@ -65,20 +65,49 @@ export function priceContext(
   };
 }
 
-/** Chains for the O13 list: ones common in the user's state/region first, then nationwide, then the rest. */
-export function chainsForZip(
-  zip: string,
-  regions: RegionsFile,
-  chains: ChainsFile,
-): ChainsFile['chains'] {
+export type Chain = ChainsFile['chains'][number];
+export type StoreGroups = {
+  state: string | null;
+  near: Chain[];
+  nationwide: Chain[];
+  more: Chain[];
+  other: Chain | null;
+};
+
+/**
+ * Store picker groups (O13): chains with stores in the user's state, then nationwide chains, then
+ * every other chain (still pickable: people travel, shop online or live near a state line).
+ */
+export function storeGroups(zip: string, regions: RegionsFile, chains: ChainsFile): StoreGroups {
   const state = zipToState(zip, regions);
-  const region = state ? regions.stateToRegion[state] : undefined;
-  const rank = (c: ChainsFile['chains'][number]): number => {
-    if (c.id === 'other') return 4;
-    if (state && c.states?.includes(state)) return 0;
-    if (region && c.regions.includes(region) && !c.states) return 1;
-    if (c.regions.includes('all')) return 2;
-    return 3;
+  const all = chains.chains.filter((c) => c.id !== 'other');
+  const isNationwide = (c: Chain) => c.regions.includes('all') && !c.states;
+  const near = state
+    ? all
+        .filter((c) => !isNationwide(c) && c.states?.includes(state))
+        // Leading grocers first, then local chains before multi-region ones.
+        .sort(
+          (a, b) =>
+            Number(b.leaderIn?.includes(state) ?? false) -
+              Number(a.leaderIn?.includes(state) ?? false) ||
+            (a.states?.length ?? 0) - (b.states?.length ?? 0),
+        )
+    : [];
+  const nationwide = all.filter(isNationwide);
+  const more = all
+    .filter((c) => !near.includes(c) && !nationwide.includes(c))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return {
+    state,
+    near,
+    nationwide,
+    more,
+    other: chains.chains.find((c) => c.id === 'other') ?? null,
   };
-  return [...chains.chains].sort((a, b) => rank(a) - rank(b));
+}
+
+/** Flat list in picker order (near you → nationwide → everything else → other). */
+export function chainsForZip(zip: string, regions: RegionsFile, chains: ChainsFile): Chain[] {
+  const g = storeGroups(zip, regions, chains);
+  return [...g.near, ...g.nationwide, ...g.more, ...(g.other ? [g.other] : [])];
 }

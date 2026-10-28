@@ -31,6 +31,8 @@ export type SkinAnswers = {
   sensitive: boolean | null;
   /** Monthly skincare budget in USD. */
   budget: number;
+  /** Where they buy skincare (skincare.json retailers). */
+  retailerId: string | null;
   checkInTime: string;
 };
 
@@ -41,6 +43,7 @@ export const emptySkinAnswers: SkinAnswers = {
   current: [],
   sensitive: null,
   budget: 25,
+  retailerId: null,
   checkInTime: '21:00',
 };
 

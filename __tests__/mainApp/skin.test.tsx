@@ -101,13 +101,17 @@ describe('skin mode', () => {
     await fireEvent.press(screen.getByText(skinCopy.setup.sensitive.no));
     await waitFor(() => expect(r.getPathname()).toBe('/skin-setup/budget'), { timeout: 2000 });
     await fireEvent.press(screen.getByTestId('skin-next'));
-    // ZIP and store are already known, so the check-in time is next and builds the routine.
-    expect(r.getPathname()).toBe('/skin-setup/check-in');
+    // The ZIP is already known, so the skincare store question comes next.
+    expect(r.getPathname()).toBe('/skin-setup/retailer');
+    await fireEvent.press(screen.getByText('CVS'));
+    await waitFor(() => expect(r.getPathname()).toBe('/skin-setup/check-in'), { timeout: 2000 });
     await fireEvent.press(screen.getByTestId('skin-next'));
     await waitFor(() => screen.getByTestId('skin-preview'));
     expect(screen.getByTestId('skin-monthly')).toBeTruthy();
     expect(useSkinStore.getState().program?.treatmentId).toBe('benzoyl_peroxide_wash');
     expect(useSkinStore.getState().answers.areas).toEqual(['chin_jaw']);
+    expect(useSkinStore.getState().answers.retailerId).toBe('cvs');
+    expect(screen.getByText(/at CVS \(est\.\)/)).toBeTruthy();
   });
 
   it('skin-only users land on the Skin tab and check in with one tap', async () => {

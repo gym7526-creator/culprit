@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AgeBlocked from '../../app/(onboarding)/age-blocked';
 import BirthYear from '../../app/(onboarding)/birth-year';
 import Teen from '../../app/(onboarding)/teen';
+import StoreStep from '../../app/(onboarding)/store';
 import Welcome from '../../app/(onboarding)/welcome';
 import { onboardingCopy } from '@/copy';
 import { emptyAnswers } from '@/engines/onboarding';
@@ -70,5 +71,28 @@ describe('onboarding screens', () => {
     const r = await renderRouter(routes, { initialUrl: '/birth-year', wrapper: Wrapper });
     await fireEvent.press(screen.getByText(onboardingCopy.continue));
     expect(r.getPathname()).not.toMatch(/teen|age-blocked/);
+  });
+});
+
+describe('store picker', () => {
+  it('shows stores near the ZIP first, lets you search all stores, and accepts a local store name', async () => {
+    useOnboardingStore.setState({ answers: { ...emptyAnswers, zip: '60614' } });
+    await renderRouter(
+      { '(onboarding)/store': StoreStep, '(onboarding)/budget': () => null },
+      { initialUrl: '/store', wrapper: Wrapper },
+    );
+    expect(screen.getByText('NEAR YOU IN IL')).toBeTruthy();
+    expect(screen.getByTestId('store-jewel_osco')).toBeTruthy();
+    expect(screen.queryByTestId('store-publix')).toBeNull();
+    await fireEvent.press(screen.getByTestId('store-more'));
+    await fireEvent.changeText(screen.getByTestId('store-search'), 'pub');
+    expect(screen.getByTestId('store-publix')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('store-other'));
+    await fireEvent.changeText(screen.getByTestId('store-other-name'), 'Joe’s Market');
+    expect(useOnboardingStore.getState().answers).toMatchObject({
+      chainId: 'other',
+      storeName: 'Joe’s Market',
+    });
+    expect(screen.getByText(/Joe’s Market near 60614/)).toBeTruthy();
   });
 });

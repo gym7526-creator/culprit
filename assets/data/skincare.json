@@ -1,4 +1,48 @@
 {
+ "retailers": [
+  {
+   "id": "walmart",
+   "name": "Walmart",
+   "index": 0.85,
+   "note": "Store brand: Equate"
+  },
+  {
+   "id": "target",
+   "name": "Target",
+   "index": 0.92,
+   "note": "Store brand: up&up"
+  },
+  {
+   "id": "cvs",
+   "name": "CVS",
+   "index": 1.05,
+   "note": "Store brand: CVS Health"
+  },
+  {
+   "id": "walgreens",
+   "name": "Walgreens",
+   "index": 1.05,
+   "note": "Store brand: Walgreens"
+  },
+  {
+   "id": "amazon",
+   "name": "Amazon",
+   "index": 0.9,
+   "note": "Online, ships to you"
+  },
+  {
+   "id": "costco",
+   "name": "Costco / Sam’s Club",
+   "index": 0.8,
+   "note": "Bigger packs, membership store"
+  },
+  {
+   "id": "grocery",
+   "name": "My grocery store",
+   "index": 1,
+   "note": "Health & beauty aisle"
+  }
+ ],
  "judgeAfterDays": 42,
  "products": [
   {

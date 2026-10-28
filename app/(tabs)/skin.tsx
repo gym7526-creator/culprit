@@ -65,6 +65,8 @@ export default function Skin() {
   const toggleDone = useSkinStore((s) => s.toggleDone);
   const toast = useUiStore((s) => s.showToast);
   const [switching, setSwitching] = useState(false);
+  const [picking, setPicking] = useState(false);
+  const update = useSkinStore((s) => s.update);
 
   // Recomputed when the answers or the program (treatment) change.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -196,6 +198,30 @@ export default function Skin() {
             onToggle={(id) => toggleDone(today, `pm:${id}`)}
           />
           <TextButton label={c.switchTreatment} onPress={() => setSwitching(true)} />
+          <View style={styles.row}>
+            <Text variant="caption" color="textSecondary" style={styles.flex}>
+              {format(c.buyingAt, {
+                store: file.retailers.find((r) => r.id === answers.retailerId)?.name ?? '',
+              })}
+            </Text>
+            <TextButton
+              label={c.changeStore}
+              onPress={() => setPicking(true)}
+              testID="skin-change-store"
+            />
+          </View>
+          <View style={styles.row}>
+            <Text variant="caption" color="textSecondary" style={styles.flex}>
+              {format(c.buyingAt, {
+                store: file.retailers.find((r) => r.id === answers.retailerId)?.name ?? '',
+              })}
+            </Text>
+            <TextButton
+              label={c.changeStore}
+              onPress={() => setPicking(true)}
+              testID="skin-change-store"
+            />
+          </View>
         </Card>
 
         <View style={styles.section}>
@@ -274,6 +300,37 @@ export default function Skin() {
           {c.extras}
         </Text>
       </Screen>
+
+      <BottomSheet
+        visible={picking}
+        onClose={() => setPicking(false)}
+        title={c.setup.retailer.title}
+      >
+        {file.retailers.map((r) => (
+          <Pressable
+            key={r.id}
+            onPress={() => {
+              update({ retailerId: r.id });
+              setPicking(false);
+            }}
+            accessibilityRole="radio"
+            accessibilityState={{ selected: answers.retailerId === r.id }}
+            accessibilityLabel={r.name}
+            style={[
+              styles.option,
+              {
+                borderColor: answers.retailerId === r.id ? colors.brand : colors.border,
+                backgroundColor: colors.surface,
+              },
+            ]}
+          >
+            <Text variant="bodyStrong">{r.name}</Text>
+            <Text variant="caption" color="textSecondary">
+              {r.note}
+            </Text>
+          </Pressable>
+        ))}
+      </BottomSheet>
 
       <BottomSheet
         visible={switching}

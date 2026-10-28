@@ -5,7 +5,7 @@ import { Slider, TextField, TimePicker } from '@/components';
 import { formatMoney, onboardingCopy, skinCopy } from '@/copy';
 import { content } from '@/data/content';
 import { SKIN_CONCERNS, type SkinConcern } from '@/data/content/schema';
-import { chainsForZip, zipToState } from '@/engines/price';
+import { zipToState } from '@/engines/price';
 import {
   PRODUCT_TYPES,
   SKIN_AREAS,
@@ -33,7 +33,7 @@ export default function SkinSetupStep() {
   const onboarding = useOnboardingStore((s) => s.answers);
   const updateOnboarding = useOnboardingStore((s) => s.update);
   const [zip, setZip] = useState(onboarding.zip ?? '');
-  const [steps] = useState(() => skinSteps(Boolean(onboarding.zip), Boolean(onboarding.chainId)));
+  const [steps] = useState(() => skinSteps(Boolean(onboarding.zip)));
 
   const current = String(step);
   useEffect(() => {
@@ -183,23 +183,26 @@ export default function SkinSetupStep() {
             onChangeText={(t) => {
               const z = t.replace(/\D/g, '').slice(0, 5);
               setZip(z);
-              if (zipToState(z, content.regions)) updateOnboarding({ zip: z, chainId: null });
+              if (zipToState(z, content.regions)) updateOnboarding({ zip: z });
             }}
             testID="skin-zip"
           />
         ),
       });
-    case 'store':
+    case 'retailer':
       return screen({
-        title: onboardingCopy.store.title,
+        title: c.retailer.title,
+        subtitle: c.retailer.subtitle,
         noCta: true,
         children: (
           <SingleChoice
-            options={chainsForZip(onboarding.zip ?? '', content.regions, content.chains).map(
-              (ch) => ({ value: ch.id, label: ch.name }),
-            )}
-            value={onboarding.chainId}
-            onPick={pickThen((chainId: string) => updateOnboarding({ chainId }))}
+            options={content.skincare.retailers.map((r) => ({
+              value: r.id,
+              label: r.name,
+              sublabel: r.note,
+            }))}
+            value={a.retailerId}
+            onPick={pickThen((retailerId: string) => update({ retailerId }))}
           />
         ),
       });

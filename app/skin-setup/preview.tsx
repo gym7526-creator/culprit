@@ -12,10 +12,9 @@ import {
   Text,
 } from '@/components';
 import { format, formatMoney, skinCopy } from '@/copy';
-import { content } from '@/data/content';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { usePrefsStore } from '@/features/prefsStore';
-import { currentRoutine } from '@/features/skin/actions';
+import { currentRoutine, retailerName } from '@/features/skin/actions';
 import { RoutineList } from '@/features/skin/RoutineList';
 import { useSkinStore } from '@/features/skin/skinStore';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
@@ -28,13 +27,13 @@ export default function SkinPreview() {
   const router = useRouter();
   const program = useSkinStore((s) => s.program);
   const answers = useSkinStore((s) => s.answers);
-  const chainId = useOnboardingStore((s) => s.answers.chainId);
+  const zip = useOnboardingStore((s) => s.answers.zip);
   const isPro = useSubscriptionStore((s) => s.isPro);
   const complete = usePrefsStore((s) => s.completeOnboarding);
   // Recomputed when the answers or program change.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const routine = useMemo(() => currentRoutine(), [program, answers, chainId]);
-  const store = content.chains.chains.find((ch) => ch.id === chainId)?.name ?? '';
+  const routine = useMemo(() => currentRoutine(), [program, answers, zip]);
+  const store = retailerName();
 
   return (
     <View style={styles.flex}>

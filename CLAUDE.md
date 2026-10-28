@@ -327,6 +327,19 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
   `expo-image-picker` + file storage) and barcode scan with Open Beauty Facts (needs a camera package + network
   cache + ODbL attribution).
 
+## Stores & pricing upgrade (after Phase 8)
+
+- 55 grocery chains in `data-pipeline/source/places.ts` with state footprints, `family` and `leaderIn`.
+  `storeGroups()` (engines/price.ts) → Near you (state; leaders first, then local before multi-region) /
+  Nationwide / All stores (searchable) / Other with a typed `answers.storeName`. `StorePicker` is shared by
+  onboarding O13 and Settings → Preferences. `storeLabel()` shows the typed name everywhere.
+- Skincare has its own retailers (`skincare.json` → `retailers`: Walmart, Target, CVS, Walgreens, Amazon,
+  Costco/Sam's, grocery aisle) with store-brand indexes; skin price = region × retailer index. Setup step
+  `retailer` replaces reusing the grocery store; changeable on the Skin tab.
+- Price transparency: the List header says which store/ZIP prices are for; the "est." sheet explains tiers.
+- `docs/DATA_SOURCES.md` explains every data source in plain English.
+- Location detection was not added (would need `expo-location` + a permission prompt); ZIP entry stays.
+
 ## Phase plan (spec §15)
 
 - [x] **0 Foundation:** Expo + TS strict + Router, ESLint/Prettier, tokens (light/dark), fonts, all §7.3 components +

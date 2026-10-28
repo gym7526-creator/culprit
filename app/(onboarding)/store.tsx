@@ -1,35 +1,39 @@
 import { Text } from '@/components';
 import { format, onboardingCopy } from '@/copy';
-import { content } from '@/data/content';
-import { chainsForZip } from '@/engines/price';
-import { SingleChoice } from '@/features/onboarding/components/Choices';
 import { OnboardingScreen } from '@/features/onboarding/components/OnboardingScreen';
 import { useOnboardingNav } from '@/features/onboarding/useOnboardingNav';
+import { StorePicker } from '@/features/stores/StorePicker';
+import { storeLabel } from '@/features/stores/storeName';
 
 const c = onboardingCopy.store;
 
-/** O13b: chains common near the ZIP come first. */
+/** O13b: stores near the ZIP first, every chain still pickable, or a local store by name. */
 export default function StoreStep() {
   const { answers, update, goNext, goBack, progress } = useOnboardingNav('store');
-  const chains = chainsForZip(answers.zip ?? '', content.regions, content.chains);
-  const options = chains.map((ch) => ({ value: ch.id, label: ch.name }));
-  const chosen = chains.find((ch) => ch.id === answers.chainId);
+  const chosen = answers.chainId !== null;
   return (
     <OnboardingScreen
       title={c.title}
       progress={progress}
       onBack={goBack}
-      cta={{ label: onboardingCopy.continue, disabled: !chosen, onPress: () => goNext() }}
+      cta={{
+        label: onboardingCopy.continue,
+        disabled: !chosen,
+        onPress: () => goNext(),
+        testID: 'store-continue',
+      }}
     >
       {chosen ? (
         <Text variant="callout" color="brandInk">
-          {format(c.confirm, { store: chosen.name, zip: answers.zip ?? '' })}
+          {format(c.confirm, { store: storeLabel(answers), zip: answers.zip ?? '' })}
         </Text>
       ) : null}
-      <SingleChoice<string>
-        options={options}
+      <StorePicker
+        zip={answers.zip ?? ''}
         value={answers.chainId}
+        storeName={answers.storeName}
         onPick={(chainId) => update({ chainId })}
+        onStoreName={(storeName) => update({ storeName })}
       />
     </OnboardingScreen>
   );

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
-import { content, recipeMap } from '@/data/content';
+import { storeLabel } from '@/features/stores/storeName';
+import { recipeMap } from '@/data/content';
 import { detectProfile, setAsideGroups } from '@/engines/onboarding';
 import { planGroceries, recipeCostEstimate, type WeekPlan } from '@/engines/plan';
 import type { ProgramState } from '@/engines/program';
@@ -48,7 +49,7 @@ export function usePlanPreview(): { preview: PlanPreview | null; error: boolean 
         preview: {
           plan,
           program,
-          chainName: content.chains.chains.find((c) => c.id === answers.chainId)?.name ?? '',
+          chainName: storeLabel(answers),
           setAside: program.gentle ? [] : setAsideGroups(detectProfile(answers.symptoms)),
           firstSuspects: program.queue
             .filter((q) => q.kind === 'real')

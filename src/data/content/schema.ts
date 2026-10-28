@@ -390,6 +390,10 @@ export const Chain = z.object({
   /** Where it's common, to order the O13 list ("all" = nationwide). */
   regions: z.array(z.union([Region, z.literal('all')])).min(1),
   states: z.array(z.string().length(2)).optional(),
+  /** Parent company, shown under the name (e.g. "Kroger family"). */
+  family: z.string().optional(),
+  /** States where it's one of the biggest grocers (listed first there). */
+  leaderIn: z.array(z.string().length(2)).optional(),
 });
 export const ChainsFile = z.object({ basis: z.string(), chains: z.array(Chain) });
 export type ChainsFile = z.infer<typeof ChainsFile>;
@@ -475,7 +479,19 @@ export const SkinExperiment = z.object({
 });
 export type SkinExperiment = z.infer<typeof SkinExperiment>;
 
+export const SkinRetailer = z.object({
+  id,
+  name: z.string(),
+  /** Store-brand skincare price index relative to a typical drugstore = 1.00 (estimate). */
+  index: z.number().positive(),
+  /** Factual note, e.g. its store brand or "online, ships to you". */
+  note: z.string(),
+});
+export type SkinRetailer = z.infer<typeof SkinRetailer>;
+
 export const SkincareFile = z.object({
+  /** Where people buy skincare: drugstores, big-box and online, not grocery chains. */
+  retailers: z.array(SkinRetailer).min(3),
   /** Judge a product only after this many days (AAD: 6–8 weeks). */
   judgeAfterDays: z.number().int().positive(),
   products: z.array(SkinProduct).min(6),

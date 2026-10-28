@@ -21,7 +21,9 @@ import { listAsText, type CustomItem, type GroceryLine } from '@/engines/grocery
 import { track } from '@/analytics';
 import { AppHeader } from '@/features/app/AppHeader';
 import { useAppStore } from '@/features/appStore';
+import { useOnboardingStore } from '@/features/onboardingStore';
 import { useActivePlan, useGroceryList } from '@/features/plan/hooks';
+import { storeLabel } from '@/features/stores/storeName';
 import { radius, size, space, useTheme } from '@/theme';
 
 type Row =
@@ -42,6 +44,7 @@ export default function List() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const plan = useActivePlan();
+  const answers = useOnboardingStore((s) => s.answers);
   const list = useGroceryList(plan);
   const w = plan?.weekStart ?? '';
   const checked = useAppStore((s) => s.checked[w]);
@@ -217,7 +220,11 @@ export default function List() {
         ListHeaderComponent={
           <View style={styles.gap}>
             <AppHeader
-              eyebrow={format(listCopy.items, { count: itemCount })}
+              eyebrow={format(listCopy.itemsAt, {
+                count: itemCount,
+                store: storeLabel(answers),
+                zip: answers.zip ?? '',
+              })}
               title={listCopy.title}
             />
             <View style={styles.actions}>

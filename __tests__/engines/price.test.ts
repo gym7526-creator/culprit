@@ -2,6 +2,7 @@ import chainsJson from '../../assets/data/chains.json';
 import regionsJson from '../../assets/data/regions.json';
 import { ChainsFile, RegionsFile, type Pack } from '@/data/content/schema';
 import {
+  storeGroups,
   chainsForZip,
   overrideKey,
   packPrice,
@@ -80,5 +81,24 @@ describe('chain ordering', () => {
     expect(tx[tx.length - 1]).toBe('other');
     const fl = chainsForZip('33101', regions, chains).map((c) => c.id);
     expect(fl[0]).toBe('publix');
+  });
+
+  it('groups stores near you, nationwide and the rest', () => {
+    const il = storeGroups('60614', regions, chains);
+    expect(il.state).toBe('IL');
+    expect(il.near[0]!.id).toBe('jewel_osco');
+    expect(il.near.map((c) => c.id)).toContain('marianos');
+    expect(il.near.map((c) => c.id)).not.toContain('publix');
+    expect(il.nationwide.map((c) => c.id)).toEqual(
+      expect.arrayContaining(['walmart', 'target', 'costco']),
+    );
+    expect(il.more.map((c) => c.id)).toContain('publix');
+    expect(il.other?.id).toBe('other');
+    const ca = storeGroups('90012', regions, chains);
+    expect(ca.near.map((c) => c.id)).toEqual(
+      expect.arrayContaining(['ralphs', 'vons', 'stater_bros']),
+    );
+    const unknown = storeGroups('00000', regions, chains);
+    expect(unknown.near).toEqual([]);
   });
 });

@@ -8,11 +8,18 @@ import { useOnboardingStore } from '@/features/onboardingStore';
 
 import { useSkinStore } from './skinStore';
 
-/** Region × store index for the user's ZIP and chain (same pricing as groceries). */
+/** Region multiplier (from the ZIP) × the skincare retailer's store-brand index. */
 export function skinPriceIndex(): number {
-  const { zip, chainId } = useOnboardingStore.getState().answers;
-  const ctx = priceContext(zip ?? '', chainId ?? 'other', content.regions, content.chains);
-  return ctx.regionMultiplier * ctx.chainIndex;
+  const { zip } = useOnboardingStore.getState().answers;
+  const region = priceContext(zip ?? '', 'other', content.regions, content.chains).regionMultiplier;
+  const retailerId = useSkinStore.getState().answers.retailerId;
+  const retailer = content.skincare.retailers.find((r) => r.id === retailerId);
+  return region * (retailer?.index ?? 1);
+}
+
+export function retailerName(): string {
+  const id = useSkinStore.getState().answers.retailerId;
+  return content.skincare.retailers.find((r) => r.id === id)?.name ?? '';
 }
 
 export function currentRoutine(): Routine {

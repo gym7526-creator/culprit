@@ -277,6 +277,16 @@ export const onboardingCopy = {
   store: {
     title: 'Where do you usually shop?',
     confirm: 'We’ll estimate prices at {store} near {zip}.',
+    near: 'Near you in {state}',
+    nearUnknown: 'Popular stores',
+    nationwide: 'Nationwide',
+    more: 'All stores ({count})',
+    hideMore: 'Hide other stores',
+    search: 'Search stores',
+    noMatch: 'No store matches “{query}”. Pick “Other / local store” and type its name.',
+    otherName: 'Store name (optional)',
+    otherNote: 'We’ll price it at a typical supermarket level for your area.',
+    tiers: { budget: 'Lower prices', mid: 'Typical prices', premium: 'Higher prices' },
   },
 
   budget: {

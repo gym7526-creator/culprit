@@ -1,5 +1,5 @@
 {
- "basis": "Static chain price indexes relative to Kroger = 1.00. Estimates for planning only; users can override any price.",
+ "basis": "Static chain price indexes relative to Kroger = 1.00, by price tier. Estimates for planning only; store footprints are approximate (whole states).",
  "chains": [
   {
    "id": "walmart",
@@ -7,26 +7,6 @@
    "index": 0.9,
    "regions": [
     "all"
-   ]
-  },
-  {
-   "id": "aldi",
-   "name": "Aldi",
-   "index": 0.85,
-   "regions": [
-    "midwest",
-    "south",
-    "northeast"
-   ]
-  },
-  {
-   "id": "kroger",
-   "name": "Kroger (and family stores)",
-   "index": 1,
-   "regions": [
-    "midwest",
-    "south",
-    "west"
    ]
   },
   {
@@ -38,75 +18,19 @@
    ]
   },
   {
-   "id": "heb",
-   "name": "H-E-B",
-   "index": 0.95,
+   "id": "costco",
+   "name": "Costco",
+   "index": 0.88,
    "regions": [
-    "south"
-   ],
-   "states": [
-    "TX"
+    "all"
    ]
   },
   {
-   "id": "publix",
-   "name": "Publix",
-   "index": 1.12,
+   "id": "sams_club",
+   "name": "Sam's Club",
+   "index": 0.88,
    "regions": [
-    "south"
-   ],
-   "states": [
-    "FL",
-    "GA",
-    "AL",
-    "SC",
-    "NC",
-    "TN",
-    "VA",
-    "KY"
-   ]
-  },
-  {
-   "id": "albertsons_safeway",
-   "name": "Albertsons / Safeway",
-   "index": 1.1,
-   "regions": [
-    "west"
-   ]
-  },
-  {
-   "id": "meijer",
-   "name": "Meijer",
-   "index": 0.97,
-   "regions": [
-    "midwest"
-   ],
-   "states": [
-    "MI",
-    "OH",
-    "IN",
-    "IL",
-    "KY",
-    "WI"
-   ]
-  },
-  {
-   "id": "wegmans",
-   "name": "Wegmans",
-   "index": 1.05,
-   "regions": [
-    "northeast",
-    "south"
-   ],
-   "states": [
-    "NY",
-    "PA",
-    "NJ",
-    "MA",
-    "MD",
-    "VA",
-    "NC",
-    "DE"
+    "all"
    ]
   },
   {
@@ -126,16 +50,800 @@
    ]
   },
   {
-   "id": "costco",
-   "name": "Costco",
-   "index": 0.88,
+   "id": "aldi",
+   "name": "Aldi",
+   "index": 0.85,
    "regions": [
-    "all"
+    "midwest",
+    "south",
+    "northeast"
+   ],
+   "states": [
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "MI",
+    "MN",
+    "MO",
+    "NE",
+    "OH",
+    "WI",
+    "AL",
+    "FL",
+    "GA",
+    "LA",
+    "MS",
+    "NC",
+    "SC",
+    "TN",
+    "TX",
+    "VA",
+    "WV",
+    "MD",
+    "DE",
+    "DC",
+    "PA",
+    "NJ",
+    "NY",
+    "CT",
+    "MA",
+    "RI",
+    "NH",
+    "VT",
+    "AR",
+    "OK",
+    "CA",
+    "AZ"
+   ]
+  },
+  {
+   "id": "kroger",
+   "name": "Kroger",
+   "index": 1,
+   "regions": [
+    "midwest",
+    "south"
+   ],
+   "states": [
+    "OH",
+    "KY",
+    "IN",
+    "MI",
+    "IL",
+    "GA",
+    "TN",
+    "TX",
+    "VA",
+    "WV",
+    "AL",
+    "MS",
+    "AR",
+    "SC",
+    "NC",
+    "LA"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "OH",
+    "KY",
+    "IN",
+    "TN"
+   ]
+  },
+  {
+   "id": "ralphs",
+   "name": "Ralphs",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "CA"
+   ]
+  },
+  {
+   "id": "fred_meyer",
+   "name": "Fred Meyer",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "OR",
+    "WA",
+    "ID",
+    "AK"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "OR"
+   ]
+  },
+  {
+   "id": "king_soopers",
+   "name": "King Soopers / City Market",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CO",
+    "WY",
+    "UT",
+    "NM"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "CO"
+   ]
+  },
+  {
+   "id": "frys",
+   "name": "Fry's Food",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "AZ"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "AZ"
+   ]
+  },
+  {
+   "id": "smiths",
+   "name": "Smith's",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "UT",
+    "NV",
+    "NM",
+    "ID",
+    "MT",
+    "WY"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "UT",
+    "NV"
+   ]
+  },
+  {
+   "id": "harris_teeter",
+   "name": "Harris Teeter",
+   "index": 1,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "NC",
+    "VA",
+    "SC",
+    "MD",
+    "DC",
+    "DE",
+    "GA",
+    "FL"
+   ],
+   "family": "Kroger family"
+  },
+  {
+   "id": "marianos",
+   "name": "Mariano's",
+   "index": 1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "IL"
+   ],
+   "family": "Kroger family"
+  },
+  {
+   "id": "dillons",
+   "name": "Dillons",
+   "index": 1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "KS"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "KS"
+   ]
+  },
+  {
+   "id": "qfc",
+   "name": "QFC",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "WA",
+    "OR"
+   ],
+   "family": "Kroger family"
+  },
+  {
+   "id": "pick_n_save",
+   "name": "Pick 'n Save / Metro Market",
+   "index": 1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "WI"
+   ],
+   "family": "Kroger family",
+   "leaderIn": [
+    "WI"
+   ]
+  },
+  {
+   "id": "albertsons_safeway",
+   "name": "Safeway / Albertsons",
+   "index": 1.1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA",
+    "OR",
+    "WA",
+    "ID",
+    "MT",
+    "WY",
+    "CO",
+    "AZ",
+    "NM",
+    "NV",
+    "UT",
+    "AK",
+    "HI",
+    "TX",
+    "LA",
+    "MD",
+    "VA",
+    "DC",
+    "DE"
+   ],
+   "family": "Albertsons family",
+   "leaderIn": [
+    "WA",
+    "MD"
+   ]
+  },
+  {
+   "id": "vons",
+   "name": "Vons / Pavilions",
+   "index": 1.1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA",
+    "NV"
+   ],
+   "family": "Albertsons family"
+  },
+  {
+   "id": "jewel_osco",
+   "name": "Jewel-Osco",
+   "index": 1.1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "IL",
+    "IN",
+    "IA"
+   ],
+   "family": "Albertsons family",
+   "leaderIn": [
+    "IL"
+   ]
+  },
+  {
+   "id": "acme",
+   "name": "Acme Markets",
+   "index": 1.1,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "PA",
+    "NJ",
+    "DE",
+    "NY",
+    "CT",
+    "MD"
+   ],
+   "family": "Albertsons family"
+  },
+  {
+   "id": "shaws",
+   "name": "Shaw's / Star Market",
+   "index": 1.1,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "MA",
+    "ME",
+    "NH",
+    "VT",
+    "RI"
+   ],
+   "family": "Albertsons family"
+  },
+  {
+   "id": "tom_thumb",
+   "name": "Tom Thumb / Randalls",
+   "index": 1.1,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "TX"
+   ],
+   "family": "Albertsons family"
+  },
+  {
+   "id": "heb",
+   "name": "H-E-B",
+   "index": 0.95,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "TX"
+   ],
+   "leaderIn": [
+    "TX"
+   ]
+  },
+  {
+   "id": "publix",
+   "name": "Publix",
+   "index": 1.12,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "FL",
+    "GA",
+    "AL",
+    "SC",
+    "NC",
+    "TN",
+    "VA",
+    "KY"
+   ],
+   "leaderIn": [
+    "FL",
+    "GA"
+   ]
+  },
+  {
+   "id": "winn_dixie",
+   "name": "Winn-Dixie",
+   "index": 1,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "FL",
+    "GA",
+    "AL",
+    "LA",
+    "MS"
+   ],
+   "leaderIn": [
+    "AL",
+    "MS",
+    "LA"
+   ]
+  },
+  {
+   "id": "food_lion",
+   "name": "Food Lion",
+   "index": 0.95,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "NC",
+    "SC",
+    "VA",
+    "GA",
+    "TN",
+    "MD",
+    "KY",
+    "WV",
+    "DE",
+    "PA"
+   ],
+   "leaderIn": [
+    "NC",
+    "SC"
+   ]
+  },
+  {
+   "id": "ingles",
+   "name": "Ingles",
+   "index": 0.98,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "NC",
+    "SC",
+    "GA",
+    "TN",
+    "VA",
+    "AL"
+   ]
+  },
+  {
+   "id": "lidl",
+   "name": "Lidl",
+   "index": 0.86,
+   "regions": [
+    "south",
+    "northeast"
+   ],
+   "states": [
+    "NC",
+    "SC",
+    "VA",
+    "GA",
+    "MD",
+    "DE",
+    "NJ",
+    "NY",
+    "PA",
+    "DC"
+   ]
+  },
+  {
+   "id": "stop_and_shop",
+   "name": "Stop & Shop",
+   "index": 1.08,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "MA",
+    "CT",
+    "RI",
+    "NY",
+    "NJ"
+   ],
+   "leaderIn": [
+    "MA",
+    "CT",
+    "RI"
+   ]
+  },
+  {
+   "id": "giant_food",
+   "name": "Giant Food",
+   "index": 1.05,
+   "regions": [
+    "south"
+   ],
+   "states": [
+    "MD",
+    "VA",
+    "DC",
+    "DE"
+   ],
+   "leaderIn": [
+    "DC",
+    "VA"
+   ]
+  },
+  {
+   "id": "giant_company",
+   "name": "The Giant Company",
+   "index": 1.02,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "PA",
+    "MD",
+    "VA",
+    "WV"
+   ]
+  },
+  {
+   "id": "hannaford",
+   "name": "Hannaford",
+   "index": 1.02,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "ME",
+    "NH",
+    "VT",
+    "MA",
+    "NY"
+   ],
+   "leaderIn": [
+    "ME",
+    "NH",
+    "VT"
+   ]
+  },
+  {
+   "id": "shoprite",
+   "name": "ShopRite",
+   "index": 1,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "NJ",
+    "NY",
+    "PA",
+    "CT",
+    "DE",
+    "MD"
+   ],
+   "leaderIn": [
+    "NJ"
+   ]
+  },
+  {
+   "id": "price_chopper",
+   "name": "Price Chopper / Market 32",
+   "index": 1,
+   "regions": [
+    "northeast"
+   ],
+   "states": [
+    "NY",
+    "VT",
+    "MA",
+    "CT",
+    "PA",
+    "NH"
+   ]
+  },
+  {
+   "id": "wegmans",
+   "name": "Wegmans",
+   "index": 1.05,
+   "regions": [
+    "northeast",
+    "south"
+   ],
+   "states": [
+    "NY",
+    "PA",
+    "NJ",
+    "MA",
+    "MD",
+    "VA",
+    "NC",
+    "DE",
+    "DC"
+   ],
+   "leaderIn": [
+    "NY"
+   ]
+  },
+  {
+   "id": "bjs",
+   "name": "BJ's Wholesale",
+   "index": 0.9,
+   "regions": [
+    "northeast",
+    "south"
+   ],
+   "states": [
+    "MA",
+    "NY",
+    "NJ",
+    "PA",
+    "CT",
+    "RI",
+    "NH",
+    "ME",
+    "DE",
+    "MD",
+    "VA",
+    "NC",
+    "SC",
+    "GA",
+    "FL",
+    "OH",
+    "MI"
+   ]
+  },
+  {
+   "id": "giant_eagle",
+   "name": "Giant Eagle",
+   "index": 1.03,
+   "regions": [
+    "midwest",
+    "northeast"
+   ],
+   "states": [
+    "PA",
+    "OH",
+    "WV",
+    "IN",
+    "MD"
+   ],
+   "leaderIn": [
+    "PA"
+   ]
+  },
+  {
+   "id": "meijer",
+   "name": "Meijer",
+   "index": 0.97,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "MI",
+    "OH",
+    "IN",
+    "IL",
+    "KY",
+    "WI"
+   ],
+   "leaderIn": [
+    "MI"
+   ]
+  },
+  {
+   "id": "hy_vee",
+   "name": "Hy-Vee",
+   "index": 1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "IA",
+    "MN",
+    "MO",
+    "NE",
+    "KS",
+    "SD",
+    "IL",
+    "WI"
+   ],
+   "leaderIn": [
+    "IA",
+    "NE"
+   ]
+  },
+  {
+   "id": "schnucks",
+   "name": "Schnucks",
+   "index": 1,
+   "regions": [
+    "midwest"
+   ],
+   "states": [
+    "MO",
+    "IL",
+    "IN"
+   ],
+   "leaderIn": [
+    "MO"
+   ]
+  },
+  {
+   "id": "sprouts",
+   "name": "Sprouts",
+   "index": 1.08,
+   "regions": [
+    "west",
+    "south"
+   ],
+   "states": [
+    "AZ",
+    "CA",
+    "CO",
+    "NV",
+    "NM",
+    "TX",
+    "UT",
+    "OK",
+    "FL",
+    "GA",
+    "NC",
+    "SC",
+    "TN",
+    "AL",
+    "VA",
+    "MD",
+    "DE",
+    "PA",
+    "NJ",
+    "KS"
+   ]
+  },
+  {
+   "id": "winco",
+   "name": "WinCo Foods",
+   "index": 0.85,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "WA",
+    "OR",
+    "ID",
+    "CA",
+    "NV",
+    "UT",
+    "AZ",
+    "MT",
+    "WY",
+    "TX",
+    "OK"
+   ]
+  },
+  {
+   "id": "raleys",
+   "name": "Raley's",
+   "index": 1.12,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA",
+    "NV"
+   ]
+  },
+  {
+   "id": "stater_bros",
+   "name": "Stater Bros.",
+   "index": 1,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA"
+   ]
+  },
+  {
+   "id": "smart_final",
+   "name": "Smart & Final",
+   "index": 0.95,
+   "regions": [
+    "west"
+   ],
+   "states": [
+    "CA",
+    "AZ",
+    "NV"
    ]
   },
   {
    "id": "other",
-   "name": "Other",
+   "name": "Other / local store",
    "index": 1,
    "regions": [
     "all"

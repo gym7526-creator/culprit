@@ -4,7 +4,6 @@ import { StyleSheet, Switch, View } from 'react-native';
 
 import { Chip, PrimaryButton, Slider, Stepper, Text, TextField, TimePicker } from '@/components';
 import { format, formatMoney, onboardingCopy, settingsCopy } from '@/copy';
-import { content } from '@/data/content';
 import type { Allergen } from '@/data/content/schema';
 import {
   BUDGET_MAX,
@@ -14,10 +13,10 @@ import {
   SELECTABLE_EQUIPMENT,
   type Answers,
 } from '@/engines/onboarding';
-import { chainsForZip } from '@/engines/price';
 import { useOnboardingStore } from '@/features/onboardingStore';
 import { savePreferences } from '@/features/settings/actions';
 import { SettingsScreen } from '@/features/settings/components';
+import { StorePicker } from '@/features/stores/StorePicker';
 import { useUiStore } from '@/features/uiStore';
 import { size, space, useTheme } from '@/theme';
 
@@ -46,7 +45,6 @@ export default function Preferences() {
   const [a, setA] = useState<Answers>(saved);
   const set = (patch: Partial<Answers>) => setA((cur) => ({ ...cur, ...patch }));
   const zipValid = /^\d{5}$/.test(a.zip ?? '');
-  const chains = zipValid ? chainsForZip(a.zip ?? '', content.regions, content.chains) : [];
 
   return (
     <SettingsScreen
@@ -108,18 +106,15 @@ export default function Preferences() {
         />
       </Group>
 
-      {chains.length > 0 ? (
+      {zipValid ? (
         <Group title={p.store}>
-          <View style={styles.chips}>
-            {chains.map((c) => (
-              <Chip
-                key={c.id}
-                label={c.name}
-                selected={a.chainId === c.id}
-                onPress={() => set({ chainId: c.id })}
-              />
-            ))}
-          </View>
+          <StorePicker
+            zip={a.zip ?? ''}
+            value={a.chainId}
+            storeName={a.storeName}
+            onPick={(chainId) => set({ chainId })}
+            onStoreName={(storeName) => set({ storeName })}
+          />
         </Group>
       ) : null}
 
