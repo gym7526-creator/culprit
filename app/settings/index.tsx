@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
-import { Alert, Linking, Platform, StyleSheet, Switch } from 'react-native';
+import { Linking, StyleSheet, Switch } from 'react-native';
 
 import { Text } from '@/components';
 import { common, debugCopy, format, paywallCopy, settingsCopy } from '@/copy';
@@ -9,9 +9,8 @@ import { content } from '@/data/content';
 import { usePrefsStore } from '@/features/prefsStore';
 import { restore } from '@/features/purchases/hooks';
 import { SettingsRow, SettingsScreen, SettingsSection } from '@/features/settings/components';
-import { deleteAllData, exportData } from '@/features/settings/actions';
+import { exportData } from '@/features/settings/actions';
 import { useSubscriptionStore } from '@/features/subscriptionStore';
-import { useUiStore } from '@/features/uiStore';
 import { purchases } from '@/purchases';
 import { space, useTheme } from '@/theme';
 
@@ -24,23 +23,6 @@ export default function Settings() {
   const isPro = useSubscriptionStore((st) => st.isPro);
   const analytics = usePrefsStore((st) => st.analyticsEnabled);
   const setAnalytics = usePrefsStore((st) => st.setAnalyticsEnabled);
-  const toast = useUiStore((st) => st.showToast);
-
-  const confirmDelete = () => {
-    const run = async () => {
-      await deleteAllData();
-      toast(s.deleted);
-      router.replace('/');
-    };
-    if (Platform.OS === 'web') {
-      void run();
-      return;
-    }
-    Alert.alert(s.deleteTitle, s.deleteBody, [
-      { text: s.cancel, style: 'cancel' },
-      { text: s.deleteConfirm, style: 'destructive', onPress: () => void run() },
-    ]);
-  };
 
   return (
     <SettingsScreen title={s.title} testID="settings">
@@ -115,7 +97,7 @@ export default function Settings() {
         <SettingsRow label={s.rows.export} onPress={() => void exportData()} testID="row-export" />
         <SettingsRow
           label={s.rows.delete}
-          onPress={confirmDelete}
+          onPress={() => router.push('/settings/delete')}
           destructive
           testID="row-delete"
         />

@@ -145,7 +145,8 @@ Tokens in `src/theme/tokens.ts` follow spec §7.2 exactly, plus these **decision
   settles exactly on an item (native snap for flings, plus a settle step on drag end / momentum end / 120 ms
   idle, which also covers web); haptic tick per row; tap a row to jump; fades top and bottom. The scroller has an
   explicit height (web otherwise grew it to fit every row, which broke scrolling).
-- Single-select OptionCard auto-advance (250 ms, `motion.autoAdvance`) is a screen-level behaviour, wired in Phase 3.
+- Single-select auto-advance: `SingleChoice` highlights the picked card at once (colour fade + pop + check zooms
+  in), locks further taps, and moves on after `motion.autoAdvance` (900 ms).
 - Reanimated shared values are written with `.set()` (React Compiler lint rule `react-hooks/immutability` rejects
   `.value =` writes). Reads inside worklets / `useAnimatedStyle` use `.value`.
 - Gesture Handler v3 hook API (`usePanGesture` + `GestureDetector`); JS callbacks from worklets via `scheduleOnRN`
@@ -308,6 +309,9 @@ alias) so Node can run them directly for `engine:simulate`; type-only imports ar
   restart), How Culprit works + sources, disclaimer, privacy, terms, attribution (incl. photo credits),
   contact (`SUPPORT_EMAIL` in `src/config.ts`), export (JSON via the share sheet), delete all data (keeps the
   cached Apple entitlement), versions.
+- Delete all data is `app/settings/delete.tsx`: what gets deleted → "Yes, delete" → type DELETE → done. Subscribers
+  see "Cancel my subscription" (Customer Center, else apps.apple.com/account/subscriptions); apps can't cancel
+  Apple subscriptions themselves.
 - `AppErrorBoundary` on the root and every route group. `NSFileProtectionComplete` entitlement.
 - Checklist: `docs/A11Y_CHECKLIST.md` (automated a11y sweep in `__tests__/mainApp/phase7.test.tsx`).
 - After onboarding, subscribers skip the paywall (e.g. after "Delete all my data").

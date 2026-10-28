@@ -156,11 +156,14 @@ export const motion = {
   fast: 150,
   base: 250,
   slow: 400,
-  autoAdvance: 250,
+  /** Single-choice answers: show the picked card (pop + colour) this long before moving on. */
+  autoAdvance: 900,
+  selectFade: 220,
+  selectPopIn: 160,
   toast: 2600,
   confetti: 1100,
   pressedScale: 0.95,
-  selectedPop: 1.03,
+  selectedPop: 1.045,
   /** Press: quick squeeze in, then a small overshoot pop on release that settles fast. */
   pressIn: 70,
   popOut: 90,

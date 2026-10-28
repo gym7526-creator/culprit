@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Chip, OptionCard } from '@/components';
@@ -11,7 +11,10 @@ export type ChoiceOption<T extends string | number> = {
   sublabel?: string;
 };
 
-/** Single-select option cards that auto-advance 250 ms after a pick (spec §7.3). */
+/**
+ * Single-select option cards: the picked card highlights at once (pop + brand colour), stays for
+ * `motion.autoAdvance` so the choice registers, then the screen moves on. Taps are locked meanwhile.
+ */
 export function SingleChoice<T extends string | number>({
   options,
   value,
@@ -22,7 +25,14 @@ export function SingleChoice<T extends string | number>({
   onPick: (value: T) => void;
 }) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const picked = useRef<T | null>(value);
+  const [pending, setPending] = useState<T | null>(null);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
+  const shown = pending ?? value;
   return (
     <View style={styles.list} accessibilityRole="radiogroup">
       {options.map((o) => (
@@ -31,12 +41,15 @@ export function SingleChoice<T extends string | number>({
           label={o.label}
           emoji={o.emoji}
           sublabel={o.sublabel}
-          selected={value === o.value}
+          selected={shown === o.value}
           testID={`option-${String(o.value)}`}
           onPress={() => {
-            picked.current = o.value;
-            if (timer.current) clearTimeout(timer.current);
-            timer.current = setTimeout(() => onPick(o.value), motion.autoAdvance);
+            if (pending !== null) return;
+            setPending(o.value);
+            timer.current = setTimeout(() => {
+              setPending(null);
+              onPick(o.value);
+            }, motion.autoAdvance);
           }}
         />
       ))}
